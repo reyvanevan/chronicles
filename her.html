@@ -16,9 +16,16 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    } else {
-    document.documentElement.classList.remove('dark')
-    }
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/config.js"></script>
+
+    <script>
+        // Check theme immediately to prevent flash
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
     </script>
 </head>
 
