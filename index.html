@@ -13,124 +13,13 @@
         rel="stylesheet">
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            pink: '#FCE7F3',
-                            blue: '#E0F2FE',
-                            dark: '#0f172a',
-                            accent: '#db2777',
-                            accentLight: '#f472b6',
-                            gold: '#fbbf24'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Custom Scrollbar - Desktop Only */
-        @media (min-width: 768px) {
-            ::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            ::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background: #cbd5e1;
-                border-radius: 4px;
-            }
-
-            .dark ::-webkit-scrollbar-thumb {
-                background: #334155;
-            }
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .dark .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            color: #e2e8f0;
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            transition: all 0.4s ease;
-        }
-
-        .dark .glass-panel {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .glass-panel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px 0 rgba(31, 38, 135, 0.15);
-            background: rgba(255, 255, 255, 0.85);
-        }
-
-        .dark .glass-panel:hover {
-            background: rgba(30, 41, 59, 0.7);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
-        }
-
-        /* Navbar Specific */
-        .nav-glass {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .dark .nav-glass {
-            background: rgba(15, 23, 42, 0.85);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-    </style>
-
-    <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+    } else {
+    document.documentElement.classList.remove('dark')
+    }
     </script>
 </head>
 
@@ -498,86 +387,7 @@
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Init Icons
-        lucide.createIcons();
-
-        // Init AOS
-        AOS.init({
-            once: true,
-            offset: 50,
-            duration: 800,
-        });
-
-        // Toggle Theme Logic
-        function toggleTheme() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
-            }
-        }
-
-        // Mobile Menu Logic
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        // Modal Logic
-        function openModal() {
-            document.getElementById('hidden-letter').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('hidden-letter').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Music Logic
-        function toggleMusic() {
-            const audio = document.getElementById('bgMusic');
-            const btn = document.getElementById('musicBtn');
-            if (audio.paused) {
-                audio.play();
-                btn.classList.add('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
-            } else {
-                audio.pause();
-                btn.classList.remove('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
-            }
-        }
-
-        // SECRET LOGIN LOGIC (Click Logo 5 times)
-        let logoClickCount = 0;
-        const secretTrigger = document.getElementById('secret-login-trigger');
-
-        secretTrigger.addEventListener('click', () => {
-            logoClickCount++;
-            if (logoClickCount === 5) {
-                // Nanti di sini kita munculin Modal Login Firebase
-                alert("Welcome back, Rey! (Login feature coming soon)");
-                logoClickCount = 0; // Reset
-            }
-
-            // Reset click count if idle for 2 seconds
-            setTimeout(() => {
-                logoClickCount = 0;
-            }, 2000);
-        });
-
-        // Navbar scroll effect (Optional: add shadow on scroll)
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 10) {
-                header.classList.add('shadow-sm');
-            } else {
-                header.classList.remove('shadow-sm');
-            }
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>

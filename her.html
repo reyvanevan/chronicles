@@ -16,119 +16,9 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            pink: '#FCE7F3',
-                            blue: '#E0F2FE',
-                            dark: '#0f172a',
-                            accent: '#db2777',
-                            accentLight: '#f472b6',
-                            gold: '#fbbf24'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'spin-slow': 'spin 8s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .dark ::-webkit-scrollbar-thumb {
-            background: #334155;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .dark .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            color: #e2e8f0;
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            transition: all 0.4s ease;
-        }
-
-        .dark .glass-panel {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .glass-panel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px 0 rgba(31, 38, 135, 0.15);
-            background: rgba(255, 255, 255, 0.85);
-        }
-
-        .dark .glass-panel:hover {
-            background: rgba(30, 41, 59, 0.7);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
-        }
-
-        /* Navbar Specific */
-        .nav-glass {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .dark .nav-glass {
-            background: rgba(15, 23, 42, 0.85);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-    </style>
-
-    <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+    } else {
+    document.documentElement.classList.remove('dark')
+    }
     </script>
 </head>
 
@@ -141,7 +31,7 @@
             <div class="flex justify-between items-center h-16 md:h-20">
 
                 <!-- Logo / Brand -->
-                <a href="/" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
                     <i data-lucide="globe-2"
                         class="w-6 h-6 text-brand-accent dark:text-brand-accentLight animate-spin-slow"></i>
                     <span
@@ -153,7 +43,7 @@
 
                 <!-- Desktop Menu -->
                 <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="/"
+                    <a href="index.html"
                         class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Our
                         Story</a>
                     <a href="her.html"
@@ -193,7 +83,7 @@
         <div id="mobile-menu"
             class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg">
             <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="/"
+                <a href="index.html"
                     class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Our
                     Story</a>
                 <a href="her.html"
@@ -212,70 +102,121 @@
     <main class="pt-24 pb-10 px-4 max-w-4xl mx-auto">
 
         <!-- Profile Header -->
-        <div class="text-center mb-12" data-aos="fade-down">
+        <div class="text-center mb-8" data-aos="fade-down">
             <div
-                class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-dashed border-brand-accent mb-4 relative group">
+                class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-brand-accent mb-4 relative group cursor-pointer">
                 <div class="absolute inset-0 rounded-full bg-brand-accent/20 animate-pulse"></div>
                 <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
                     alt="Anya"
                     class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500">
             </div>
-            <h1 class="font-serif text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-2">Zalfa Nazhifah
-            </h1>
-            <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-pink/30 dark:bg-slate-800 border border-brand-pink/50 dark:border-slate-700">
-                <i data-lucide="crown" class="w-3 h-3 text-brand-accent"></i>
-                <span
-                    class="text-[10px] font-bold tracking-[0.2em] uppercase text-brand-accent dark:text-brand-accentLight">The
-                    Main Character</span>
-            </div>
+            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">Zalfa Nazhifah</h1>
+            <p class="text-brand-accent text-xs uppercase tracking-[0.2em] font-bold mb-4">The Main Character</p>
 
-            <p
-                class="mt-6 max-w-md mx-auto text-slate-500 dark:text-slate-400 italic text-sm md:text-base leading-relaxed">
+            <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
                 "She is the poem I never knew how to write, and this life is the paper."
             </p>
         </div>
 
-        <!-- Small Details Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16" data-aos="fade-up" data-aos-delay="100">
-            <div class="glass-panel p-4 rounded-2xl text-center group hover:border-brand-pink/50 transition-colors">
+        <!-- NEW: HIGHLIGHTS SECTION -->
+        <div class="flex gap-4 md:gap-8 overflow-x-auto pb-4 mb-10 justify-start md:justify-center no-scrollbar px-2"
+            data-aos="fade-up" data-aos-delay="50">
+
+            <!-- Highlight Item: Dates -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
                 <div
-                    class="w-10 h-10 mx-auto bg-pink-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <i data-lucide="cake" class="w-5 h-5 text-pink-400"></i>
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-brand-accent to-purple-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="heart" class="w-6 h-6 text-pink-500 fill-pink-50"></i>
+                    </div>
                 </div>
-                <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Born In</p>
-                <p class="font-serif font-bold text-slate-800 dark:text-white">July 24</p>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Dates</span>
             </div>
-            <div class="glass-panel p-4 rounded-2xl text-center group hover:border-brand-pink/50 transition-colors">
+
+            <!-- Highlight Item: Trips -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
                 <div
-                    class="w-10 h-10 mx-auto bg-amber-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <i data-lucide="coffee" class="w-5 h-5 text-amber-600"></i>
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-blue-400 to-cyan-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="plane" class="w-6 h-6 text-blue-500"></i>
+                    </div>
                 </div>
-                <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Loves</p>
-                <p class="font-serif font-bold text-slate-800 dark:text-white">Matcha</p>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Trips</span>
             </div>
-            <div class="glass-panel p-4 rounded-2xl text-center group hover:border-brand-pink/50 transition-colors">
+
+            <!-- Highlight Item: Food -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
                 <div
-                    class="w-10 h-10 mx-auto bg-purple-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <i data-lucide="music" class="w-5 h-5 text-purple-500"></i>
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-400 to-orange-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="coffee" class="w-6 h-6 text-amber-600"></i>
+                    </div>
                 </div>
-                <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Vibe</p>
-                <p class="font-serif font-bold text-slate-800 dark:text-white">R&B</p>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Food</span>
             </div>
-            <div class="glass-panel p-4 rounded-2xl text-center group hover:border-brand-pink/50 transition-colors">
+
+            <!-- Highlight Item: Silly -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
                 <div
-                    class="w-10 h-10 mx-auto bg-red-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <i data-lucide="heart" class="w-5 h-5 text-red-500"></i>
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-emerald-400 to-teal-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="smile" class="w-6 h-6 text-emerald-500"></i>
+                    </div>
                 </div>
-                <p class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Status</p>
-                <p class="font-serif font-bold text-slate-800 dark:text-white">Mine</p>
+                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Silly</span>
+            </div>
+
+            <!-- Highlight Item: 2025 -->
+            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-slate-200 dark:bg-slate-700 group-hover:scale-110 transition-transform duration-300">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <span class="text-[10px] font-bold text-slate-400">2025</span>
+                    </div>
+                </div>
+                <span class="text-[11px] font-medium tracking-wide text-slate-400">Memories</span>
+            </div>
+        </div>
+
+        <!-- UPDATED: Small Details Grid (Hierarki Diturunkan) -->
+        <div class="grid grid-cols-4 gap-2 md:gap-4 mb-12 opacity-70 hover:opacity-100 transition-opacity duration-300"
+            data-aos="fade-up" data-aos-delay="100">
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="cake" class="w-4 h-4 mx-auto text-pink-400 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Born</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">July 24</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="cup-soda" class="w-4 h-4 mx-auto text-green-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Loves</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Matcha</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="music-2" class="w-4 h-4 mx-auto text-purple-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Vibe</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">R&B</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="lock" class="w-4 h-4 mx-auto text-red-400 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
+                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Mine</p>
             </div>
         </div>
 
         <!-- Her Gallery (Masonry Style) -->
-        <div class="mb-8 flex items-center gap-4" data-aos="fade-right">
-            <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-white">Captured Moments</h2>
-            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></div>
+        <div class="mb-6 flex items-center gap-4 px-2" data-aos="fade-right">
+            <i data-lucide="grid-3x3" class="w-4 h-4 text-slate-400"></i>
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Posts</span>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
         </div>
 
         <div class="columns-2 md:columns-3 gap-4 space-y-4">
@@ -285,8 +226,7 @@
                     class="w-full transform group-hover:scale-110 transition duration-500">
                 <div
                     class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <span class="text-white font-serif text-sm tracking-wide border-b border-white/50 pb-1">Candid
-                        Cantik</span>
+                    <i data-lucide="heart" class="w-6 h-6 text-white fill-white"></i>
                 </div>
             </div>
             <!-- Foto 2 -->
@@ -317,44 +257,7 @@
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Init Icons
-        lucide.createIcons();
-
-        // Init AOS
-        AOS.init({
-            once: true,
-            offset: 50,
-            duration: 800,
-        });
-
-        // Toggle Theme Logic
-        function toggleTheme() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
-            }
-        }
-
-        // Mobile Menu Logic
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 10) {
-                header.classList.add('shadow-sm');
-            } else {
-                header.classList.remove('shadow-sm');
-            }
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
