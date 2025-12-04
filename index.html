@@ -112,10 +112,10 @@
 </head>
 <body class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-pink selection:text-white transition-colors duration-500">
 
-    <div class="fixed top-6 right-6 z-50">
-        <button onclick="toggleTheme()" class="p-3 rounded-full glass-card hover:scale-110 active:scale-95 group">
-            <i data-lucide="sun" class="w-6 h-6 text-yellow-400 hidden dark:block group-hover:rotate-90 transition-transform"></i>
-            <i data-lucide="moon" class="w-6 h-6 text-brand-dark block dark:hidden group-hover:-rotate-12 transition-transform"></i>
+    <div class="fixed top-4 right-4 md:top-6 md:right-6 z-50">
+        <button onclick="toggleTheme()" class="p-2 md:p-3 rounded-full glass-card hover:scale-110 active:scale-95 group">
+            <i data-lucide="sun" class="w-5 h-5 md:w-6 md:h-6 text-yellow-400 hidden dark:block group-hover:rotate-90 transition-transform"></i>
+            <i data-lucide="moon" class="w-5 h-5 md:w-6 md:h-6 text-brand-dark block dark:hidden group-hover:-rotate-12 transition-transform"></i>
         </button>
     </div>
 
@@ -320,9 +320,9 @@
         <p>Built with ❤️ for Anya • 2025</p>
     </footer>
 
-    <div class="fixed bottom-6 right-6 z-40">
-        <button onclick="toggleMusic()" id="musicBtn" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur text-brand-accent dark:text-brand-accentLight p-4 rounded-full border border-pink-100 dark:border-slate-700 shadow-xl hover:scale-110 transition-all duration-300 group">
-            <i data-lucide="music" class="w-6 h-6 group-hover:animate-spin"></i>
+    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40">
+        <button onclick="toggleMusic()" id="musicBtn" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur text-brand-accent dark:text-brand-accentLight p-3 md:p-4 rounded-full border border-pink-100 dark:border-slate-700 shadow-xl hover:scale-110 transition-all duration-300 group">
+            <i data-lucide="music" class="w-5 h-5 md:w-6 md:h-6 group-hover:animate-spin"></i>
         </button>
         <audio id="bgMusic" loop>
             <source src="musik.mp3" type="audio/mpeg"> 
