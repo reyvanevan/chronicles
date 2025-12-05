@@ -476,6 +476,32 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/script.js"></script>
 
+    <!-- Visit Tracking -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        import { doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Track visit (session-based to avoid duplicate counting on refresh)
+        async function trackVisit() {
+            // Check if already counted in this session
+            if (sessionStorage.getItem('visit_counted')) return;
+
+            try {
+                const statsRef = doc(db, "landing", "stats");
+                await updateDoc(statsRef, {
+                    totalVisits: increment(1)
+                });
+                sessionStorage.setItem('visit_counted', 'true');
+                console.log('✅ Visit tracked');
+            } catch (error) {
+                console.log('Visit tracking skipped:', error.message);
+            }
+        }
+
+        // Track on page load
+        trackVisit();
+    </script>
+
     <script type="module">
         import { auth } from './js/firebase-config.js';
         import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
