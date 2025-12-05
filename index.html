@@ -394,9 +394,9 @@
                         <i data-lucide="heart-handshake" class="w-6 h-6"></i>
                     </div>
 
-                    <h3 class="text-2xl md:text-3xl font-serif text-slate-800 dark:text-white mb-6">Hai Anya...</h3>
+                    <h3 id="letter-title-display" class="text-2xl md:text-3xl font-serif text-slate-800 dark:text-white mb-6">Hai Anya...</h3>
 
-                    <div
+                    <div id="letter-content-display"
                         class="prose prose-slate dark:prose-invert mx-auto text-slate-600 dark:text-slate-300 leading-relaxed space-y-4 text-sm md:text-base">
                         <p>
                             Aku tau kata-kata nggak akan pernah cukup. Tapi aku harap website ini bisa jadi bukti kecil
@@ -406,10 +406,11 @@
                             Terima kasih udah kasih ruang buat aku memperbaiki diri. <i>Take your time.</i> Aku bakal
                             tetep di sini, ngejaga janji ini.
                         </p>
-                        <p class="font-bold text-brand-accent dark:text-brand-accentLight pt-4 font-serif text-lg">
-                            "I love you, today and forever."
-                        </p>
                     </div>
+                    
+                    <p id="letter-quote-display" class="font-bold text-brand-accent dark:text-brand-accentLight pt-4 font-serif text-lg">
+                        "I love you, today and forever."
+                    </p>
 
                     <div class="flex justify-center gap-4 text-3xl mt-8">
                         🥰 💝 🌹
@@ -556,6 +557,19 @@
                             if (placeholder) placeholder.classList.remove('hidden');
                         }
                     });
+                }
+
+                // Load Letter
+                const letterDoc = await getDoc(doc(db, "landing", "letter"));
+                if (letterDoc.exists()) {
+                    const letter = letterDoc.data();
+                    const letterTitle = document.getElementById('letter-title-display');
+                    const letterContent = document.getElementById('letter-content-display');
+                    const letterQuote = document.getElementById('letter-quote-display');
+                    
+                    if (letterTitle && letter.title) letterTitle.textContent = letter.title;
+                    if (letterContent && letter.content) letterContent.innerHTML = letter.content.split('\n').map(p => `<p>${p}</p>`).join('');
+                    if (letterQuote && letter.quote) letterQuote.textContent = '"' + letter.quote + '"';
                 }
 
                 console.log('✅ Landing data loaded from Firestore');

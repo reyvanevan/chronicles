@@ -103,7 +103,15 @@
                     image: null,
                     order: 3
                 }
-            ]
+            ],
+
+            // Secret Letter
+            letter: {
+                title: "Hai Anya...",
+                content: "Aku tau kata-kata nggak akan pernah cukup. Tapi aku harap website ini bisa jadi bukti kecil kalau aku bener-bener serius.\n\nTerima kasih udah kasih ruang buat aku memperbaiki diri. Take your time. Aku bakal tetep di sini, ngejaga janji ini.",
+                quote: "I love you, today and forever.",
+                updatedAt: new Date()
+            }
         };
 
         // Show data preview
@@ -141,6 +149,10 @@
                 // 4. Upload Memories
                 await setDoc(doc(db, "landing", "memories"), { items: seedData.memories });
                 addStatus('Memories data uploaded');
+
+                // 5. Upload Letter
+                await setDoc(doc(db, "landing", "letter"), seedData.letter);
+                addStatus('Letter data uploaded');
 
                 btn.className = 'w-full py-4 bg-green-600 rounded-xl font-bold text-lg';
                 btn.textContent = '✅ All Data Seeded Successfully!';
