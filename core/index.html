@@ -174,53 +174,128 @@
             }
         };
 
-        // Save Gallery Data
-        window.saveGallery = async function() {
-            try {
-                const items = [];
-                for (let i = 1; i <= 4; i++) {
-                    const img = document.getElementById(`gal${i}`);
-                    const caption = document.getElementById(`gal${i}-caption`);
-                    items.push({
-                        id: i,
-                        url: img?.src || '',
-                        caption: caption?.value || '',
-                        order: i
-                    });
-                }
-                await setDoc(doc(db, "landing", "gallery"), { items, updatedAt: new Date() });
-                alert('Gallery saved!');
-            } catch (error) {
-                console.error('Save gallery error:', error);
-                alert('Failed to save gallery');
-            }
-        };
-
         // Save Memories Data
         window.saveMemories = async function() {
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Saving...';
+            btn.disabled = true;
+
             try {
                 const iconColors = ['pink', 'blue', 'yellow'];
                 const icons = ['smile', 'heart', 'sparkles'];
                 const items = [];
+                
                 for (let i = 1; i <= 3; i++) {
                     const title = document.getElementById(`mem${i}-title`);
                     const desc = document.getElementById(`mem${i}-desc`);
                     const img = document.getElementById(`mem${i}`);
+                    
+                    // Get image src, but only if it's a valid URL (not empty or blob)
+                    let imageSrc = img?.src || null;
+                    if (imageSrc && (imageSrc === '' || imageSrc === window.location.href || imageSrc.startsWith('blob:'))) {
+                        imageSrc = null;
+                    }
+                    
                     items.push({
                         id: i,
                         title: title?.value || '',
                         description: desc?.value || '',
                         icon: icons[i-1],
                         iconColor: iconColors[i-1],
-                        image: img?.src || null,
+                        image: imageSrc,
                         order: i
                     });
                 }
+                
+                console.log('Saving memories:', items);
                 await setDoc(doc(db, "landing", "memories"), { items, updatedAt: new Date() });
-                alert('Memories saved!');
+                
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Saved!';
+                btn.classList.remove('bg-purple-500');
+                btn.classList.add('bg-green-500');
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-green-500');
+                    btn.classList.add('bg-purple-500');
+                    btn.disabled = false;
+                    lucide.createIcons();
+                }, 2000);
+                
             } catch (error) {
                 console.error('Save memories error:', error);
-                alert('Failed to save memories');
+                btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i> Error!';
+                btn.classList.add('bg-red-500');
+                btn.disabled = false;
+                lucide.createIcons();
+                
+                // Show detailed error
+                setTimeout(() => {
+                    alert('Failed to save: ' + error.message);
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-red-500');
+                    btn.classList.add('bg-purple-500');
+                }, 1000);
+            }
+        };
+
+        // Save Gallery Data with better feedback
+        window.saveGallery = async function() {
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Saving...';
+            btn.disabled = true;
+
+            try {
+                const items = [];
+                for (let i = 1; i <= 4; i++) {
+                    const img = document.getElementById(`gal${i}`);
+                    const caption = document.getElementById(`gal${i}-caption`);
+                    
+                    let imageSrc = img?.src || '';
+                    if (imageSrc === window.location.href || imageSrc.startsWith('blob:')) {
+                        imageSrc = '';
+                    }
+                    
+                    items.push({
+                        id: i,
+                        url: imageSrc,
+                        caption: caption?.value || '',
+                        order: i
+                    });
+                }
+                
+                console.log('Saving gallery:', items);
+                await setDoc(doc(db, "landing", "gallery"), { items, updatedAt: new Date() });
+                
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Saved!';
+                btn.classList.remove('bg-blue-500');
+                btn.classList.add('bg-green-500');
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-green-500');
+                    btn.classList.add('bg-blue-500');
+                    btn.disabled = false;
+                    lucide.createIcons();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Save gallery error:', error);
+                btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i> Error!';
+                btn.classList.add('bg-red-500');
+                btn.disabled = false;
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    alert('Failed to save: ' + error.message);
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-red-500');
+                    btn.classList.add('bg-blue-500');
+                }, 1000);
             }
         };
 
