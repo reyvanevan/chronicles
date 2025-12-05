@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Him | The Observer</title>
+
+    <!-- Load Modular Assets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script type="module">
+        import { auth } from '../js/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = '../index.html';
+            }
+        });
+
+        // Theme Check (Prevent Flash)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+        
+        // Tailwind Config (Copied from him.html for specific colors)
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#FCE7F3',
+                            blue: '#E0F2FE',
+                            dark: '#0f172a',
+                            accent: '#db2777',
+                            accentLight: '#f472b6',
+                            gold: '#fbbf24'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 pb-24 selection:bg-blue-500 selection:text-white">
+
+    <!-- 1. HEADER (Sticky Top) -->
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
+
+            <!-- Logo -->
+            <a href="home.html" class="flex items-center gap-2">
+                <i data-lucide="globe-2" class="w-5 h-5 text-blue-500"></i>
+                <span class="font-serif font-bold text-lg tracking-tight">World of Anya</span>
+            </a>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleTheme()"
+                    class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i data-lucide="sun" class="w-5 h-5 text-amber-500 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
+                </button>
+
+                <button class="p-2 relative">
+                    <i data-lucide="heart" class="w-6 h-6 text-slate-600 dark:text-slate-300"></i>
+                </button>
+
+                <button class="p-2">
+                    <i data-lucide="message-circle" class="w-6 h-6 text-slate-600 dark:text-slate-300"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. MAIN CONTENT -->
+    <main class="max-w-md mx-auto pt-24 px-4 space-y-6">
+
+        <!-- Profile Header -->
+        <div class="text-center mb-8" data-aos="fade-down">
+            <div
+                class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-blue-400 mb-4 relative group cursor-pointer">
+                <div class="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                    alt="Him"
+                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0">
+            </div>
+
+            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">Reyvan Evan</h1>
+            <p class="text-blue-500 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Observer</p>
+
+            <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
+                "I see the universe in your eyes, and my only job is to protect it."
+            </p>
+        </div>
+
+        <!-- HIGHLIGHTS SECTION -->
+        <div class="flex gap-4 overflow-x-auto py-2 mb-6 justify-start no-scrollbar px-2"
+            data-aos="fade-up" data-aos-delay="50">
+
+            <!-- Highlight: Her -->
+            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-pink-400 to-rose-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="camera" class="w-6 h-6 text-pink-500"></i>
+                    </div>
+                </div>
+                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Her</span>
+            </div>
+
+            <!-- Highlight: Work/Grind -->
+            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-700 to-slate-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="briefcase" class="w-6 h-6 text-slate-600 dark:text-slate-400"></i>
+                    </div>
+                </div>
+                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Grind</span>
+            </div>
+
+            <!-- Highlight: Tech/Hobby -->
+            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-blue-500 to-cyan-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="cpu" class="w-6 h-6 text-blue-500"></i>
+                    </div>
+                </div>
+                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Tech</span>
+            </div>
+
+            <!-- Highlight: Music -->
+            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
+                <div
+                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-emerald-400 to-green-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div
+                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        <i data-lucide="headphones" class="w-6 h-6 text-emerald-500"></i>
+                    </div>
+                </div>
+                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Vibe</span>
+            </div>
+        </div>
+
+        <!-- INFO GRID -->
+        <div class="grid grid-cols-4 gap-2 mb-12 opacity-70 hover:opacity-100 transition-opacity duration-300"
+            data-aos="fade-up" data-aos-delay="100">
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="shield" class="w-4 h-4 mx-auto text-blue-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Role</p>
+                <p class="font-serif text-xs text-slate-700 dark:text-slate-300">Guardian</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="star" class="w-4 h-4 mx-auto text-yellow-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Fav</p>
+                <p class="font-serif text-xs text-slate-700 dark:text-slate-300">You</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="gamepad-2" class="w-4 h-4 mx-auto text-purple-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Hobby</p>
+                <p class="font-serif text-xs text-slate-700 dark:text-slate-300">Game</p>
+            </div>
+            <div
+                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
+                <i data-lucide="lock" class="w-4 h-4 mx-auto text-red-500 mb-1"></i>
+                <p class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
+                <p class="font-serif text-xs text-slate-700 dark:text-slate-300">Taken</p>
+            </div>
+        </div>
+
+        <!-- Gallery Title -->
+        <div class="mb-6 flex items-center gap-4 px-2" data-aos="fade-right">
+            <i data-lucide="aperture" class="w-4 h-4 text-slate-400"></i>
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Through My Lens</span>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
+        </div>
+
+        <!-- Gallery (Masonry) -->
+        <div class="columns-2 gap-4 space-y-4">
+            <!-- Photo 1 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up">
+                <img src="https://images.unsplash.com/photo-1488161628813-99c974c76949?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+                <div
+                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                    <span class="text-white font-serif text-xs italic">My View</span>
+                </div>
+            </div>
+            <!-- Photo 2 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
+                data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+            </div>
+            <!-- Photo 3 -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
+                data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 3. BOTTOM NAVIGATION (Fixed) -->
+    <nav
+        class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50 pb-safe">
+        <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
+            <!-- Home -->
+            <a href="home.html" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Home</span>
+            </a>
+
+            <!-- Memories -->
+            <a href="explore.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Memories</span>
+            </a>
+
+            <!-- ADD Button (Center) -->
+            <a href="upload.html" class="relative -top-5">
+                <div
+                    class="w-14 h-14 bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform hover:scale-105">
+                    <i data-lucide="plus" class="w-7 h-7"></i>
+                </div>
+            </a>
+
+            <!-- Him (Active) -->
+            <a href="#"
+                class="flex flex-col items-center justify-center w-14 h-full text-blue-500">
+                <i data-lucide="user" class="w-6 h-6 fill-current"></i>
+                <span class="text-[10px] font-medium mt-0.5">Rey</span>
+            </a>
+
+            <!-- Her -->
+            <a href="her.html"
+                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition">
+                <i data-lucide="heart" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium mt-0.5">Anya</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Load Logic -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        // Init Plugins
+        lucide.createIcons();
+        AOS.init();
+    </script>
+
+</body>
+
+</html>
