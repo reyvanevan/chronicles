@@ -72,11 +72,12 @@
         // Load all data from Firestore
         async function loadDashboardData() {
             try {
-                // Load Profile
+                // Load Anya Profile (Princess)
                 const profileDoc = await getDoc(doc(db, "landing", "profile"));
                 if (profileDoc.exists()) {
                     const profile = profileDoc.data();
                     document.getElementById('input-name').value = profile.name || '';
+                    document.getElementById('input-title').value = profile.title || '';
                     document.getElementById('input-bio').value = profile.bio || '';
                     document.getElementById('profilePreview').src = profile.photo || '';
                     if (profile.tags) {
@@ -153,6 +154,7 @@
                 if (reyProfileDoc.exists()) {
                     const reyProfile = reyProfileDoc.data();
                     document.getElementById('input-rey-name').value = reyProfile.name || '';
+                    document.getElementById('input-rey-title').value = reyProfile.title || '';
                     document.getElementById('input-rey-bio').value = reyProfile.bio || '';
                     document.getElementById('reyProfilePreview').src = reyProfile.photo || '';
                     
@@ -265,6 +267,7 @@
             try {
                 await updateDoc(doc(db, "landing", "profileRey"), {
                     name: document.getElementById('input-rey-name').value,
+                    title: document.getElementById('input-rey-title').value,
                     bio: document.getElementById('input-rey-bio').value,
                     photo: document.getElementById('reyProfilePreview').src,
                     updatedAt: new Date()
@@ -292,7 +295,7 @@
             }
         };
 
-        // Save Profile Data
+        // Save Profile Data (Anya/Princess)
         window.saveProfile = async function() {
             const btn = event.target.closest('button');
             const originalText = btn.innerHTML;
@@ -302,6 +305,7 @@
             try {
                 await setDoc(doc(db, "landing", "profile"), {
                     name: document.getElementById('input-name').value,
+                    title: document.getElementById('input-title').value,
                     bio: document.getElementById('input-bio').value,
                     photo: document.getElementById('profilePreview').src,
                     tags: [
@@ -593,8 +597,14 @@
                 
                 <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 mt-6">Content Management</p>
                 <a href="#section-hero" class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-brand-accent dark:hover:text-brand-accentLight hover:bg-white/50 dark:hover:bg-slate-800/50 rounded-xl font-medium transition-all group">
-                    <i data-lucide="user" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
-                    Profile & Bio
+                    <i data-lucide="heart" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    Princess Profile
+                    <span class="ml-auto text-[10px] text-pink-500">her.html</span>
+                </a>
+                <a href="#section-rey-profile" class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 rounded-xl font-medium transition-all group">
+                    <i data-lucide="shield" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    Guardian Profile
+                    <span class="ml-auto text-[10px] text-blue-500">him.html</span>
                 </a>
                 <a href="#section-gallery" class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-brand-accent dark:hover:text-brand-accentLight hover:bg-white/50 dark:hover:bg-slate-800/50 rounded-xl font-medium transition-all group">
                     <i data-lucide="image" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
@@ -720,14 +730,17 @@
                 </div>
             </div>
 
-            <!-- Profile Section -->
+            <!-- Princess Profile Section (Anya - for her.html) -->
             <section id="section-hero" class="glass-card rounded-3xl overflow-hidden" data-aos="fade-up">
                 <div class="p-6 border-b border-slate-200/50 dark:border-slate-700/50 flex justify-between items-center bg-white/30 dark:bg-slate-800/30">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-pink-100 dark:bg-pink-900/30 rounded-lg text-pink-500">
-                            <i data-lucide="user" class="w-5 h-5"></i>
+                            <i data-lucide="heart" class="w-5 h-5"></i>
                         </div>
-                        <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Profile Section</h3>
+                        <div>
+                            <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Princess Profile</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Data for her.html page</p>
+                        </div>
                     </div>
                     <button onclick="saveProfile()" class="px-3 py-2 md:px-4 bg-brand-accent hover:bg-pink-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
                         <i data-lucide="save" class="w-4 h-4"></i> Save Changes
@@ -753,12 +766,17 @@
                     <div class="md:col-span-2 space-y-4 md:space-y-6">
                         <div>
                             <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Display Name</label>
-                            <input type="text" id="input-name" value="" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm">
+                            <input type="text" id="input-name" value="" placeholder="Zalfa Nazhifah" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Bio Description</label>
-                            <textarea id="input-bio" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm resize-none"></textarea>
+                            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Title / Role</label>
+                            <input type="text" id="input-title" value="" placeholder="The Main Character" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Bio / Quote</label>
+                            <textarea id="input-bio" rows="3" placeholder="She is the poem I never knew how to write..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm resize-none"></textarea>
                         </div>
                         
                         <div>
@@ -846,12 +864,17 @@
                     <div class="md:col-span-2 space-y-4 md:space-y-6">
                         <div>
                             <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Display Name</label>
-                            <input type="text" id="input-rey-name" value="" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition backdrop-blur-sm">
+                            <input type="text" id="input-rey-name" value="" placeholder="M Reyvan Purnama" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition backdrop-blur-sm">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Bio Description</label>
-                            <textarea id="input-rey-bio" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition backdrop-blur-sm resize-none"></textarea>
+                            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Title / Role</label>
+                            <input type="text" id="input-rey-title" value="" placeholder="The Observer" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition backdrop-blur-sm">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Bio / Quote</label>
+                            <textarea id="input-rey-bio" rows="3" placeholder="I see the universe in your eyes..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition backdrop-blur-sm resize-none"></textarea>
                         </div>
                         
                         <!-- Role Info Badge -->

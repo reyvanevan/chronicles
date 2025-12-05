@@ -103,17 +103,16 @@
         <div class="text-center mb-8" data-aos="fade-down">
             <div
                 class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-blue-400 mb-4 relative group cursor-pointer">
-                <div class="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
-                <!-- Ganti foto profil lu di sini -->
-                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                <div class="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse" id="him-photo-pulse"></div>
+                <img id="him-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
                     alt="Him"
                     class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0">
             </div>
 
-            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">M Reyvan Purnama</h1>
-            <p class="text-blue-500 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Observer</p>
+            <h1 id="him-name" class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">M Reyvan Purnama</h1>
+            <p id="him-title" class="text-blue-500 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Observer</p>
 
-            <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
+            <p id="him-bio" class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
                 "I see the universe in your eyes, and my only job is to protect it."
             </p>
         </div>
@@ -242,6 +241,33 @@
     <!-- Load JS Modular (Di bawah biar halaman tampil dulu) -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/script.js"></script>
+    
+    <!-- Load Profile from Firestore -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        async function loadProfile() {
+            try {
+                const profileDoc = await getDoc(doc(db, 'landing', 'profileRey'));
+                if (profileDoc.exists()) {
+                    const data = profileDoc.data();
+                    
+                    if (data.name) document.getElementById('him-name').textContent = data.name;
+                    if (data.bio) document.getElementById('him-bio').textContent = '"' + data.bio + '"';
+                    if (data.photo) document.getElementById('him-photo').src = data.photo;
+                    if (data.title) document.getElementById('him-title').textContent = data.title;
+                    
+                    // Hide loading pulse
+                    document.getElementById('him-photo-pulse')?.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+            }
+        }
+        
+        loadProfile();
+    </script>
 </body>
 
 </html>
