@@ -83,6 +83,21 @@
     <!-- 2. MAIN CONTENT (Feed) -->
     <main class="max-w-md mx-auto pt-20 px-4 space-y-6">
 
+        <!-- Personalized Greeting Banner (hidden by default, shown when logged in) -->
+        <div id="greetingBanner" class="hidden">
+            <div class="glass-card rounded-2xl p-4 border border-pink-200/50 dark:border-pink-500/20 bg-gradient-to-r from-pink-50/50 to-purple-50/50 dark:from-pink-900/20 dark:to-purple-900/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-400 to-purple-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="sparkles" id="greetingIcon" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <p id="greetingText" class="font-serif text-lg text-slate-800 dark:text-white font-semibold"></p>
+                        <p id="greetingSubtext" class="text-xs text-slate-500 dark:text-slate-400"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Stories / Highlights (Horizontal Scroll) -->
         <div class="flex gap-4 overflow-x-auto no-scrollbar py-2" id="storiesContainer">
             <!-- Add New Story -->
@@ -297,20 +312,60 @@
     
     <!-- Firebase & Firestore Module -->
     <script type="module">
-        import { auth } from '../js/firebase-config.js';
+        import { auth, db } from '../js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES } from '../js/firestore-service.js';
 
         // Auth check
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = '../index.html';
             } else {
                 // User is logged in, load data
                 loadPosts();
                 loadStories();
+                await showPersonalizedGreeting(user);
             }
         });
+        
+        // Show personalized greeting based on user role
+        async function showPersonalizedGreeting(user) {
+            const greetingBanner = document.getElementById('greetingBanner');
+            const greetingText = document.getElementById('greetingText');
+            const greetingSubtext = document.getElementById('greetingSubtext');
+            const greetingIcon = document.getElementById('greetingIcon');
+            
+            try {
+                const userIds = ['rey', 'anya'];
+                let foundUser = null;
+                
+                for (const userId of userIds) {
+                    const userDoc = await getDoc(doc(db, 'users', userId));
+                    if (userDoc.exists() && userDoc.data().email === user.email) {
+                        foundUser = { id: userId, ...userDoc.data() };
+                        break;
+                    }
+                }
+                
+                if (foundUser) {
+                    greetingText.textContent = foundUser.greeting;
+                    
+                    if (foundUser.role === 'guardian') {
+                        greetingSubtext.textContent = 'The universe awaits your command ✨';
+                        greetingIcon.setAttribute('data-lucide', 'shield');
+                    } else if (foundUser.role === 'princess') {
+                        greetingSubtext.textContent = 'Your Guardian made this for you 💕';
+                        greetingIcon.setAttribute('data-lucide', 'heart');
+                    }
+                    
+                    greetingBanner.classList.remove('hidden');
+                    lucide.createIcons();
+                }
+            } catch (error) {
+                console.error('Failed to load user greeting:', error);
+            }
+        }
 
         // Load and render posts
         async function loadPosts() {
