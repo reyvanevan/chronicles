@@ -4,22 +4,21 @@
  * Uses Base64 encoding for images (no Firebase Storage needed!)
  */
 
-import { db, auth } from './firebase-config.js';
-import { 
-    collection, 
-    addDoc, 
-    getDocs, 
-    getDoc,
-    doc,
-    query, 
-    where, 
-    orderBy, 
-    limit,
+import {
+    addDoc,
+    collection,
     deleteDoc,
-    updateDoc,
+    doc,
+    getDocs,
+    limit,
+    orderBy,
+    query,
     serverTimestamp,
-    Timestamp
+    Timestamp,
+    updateDoc,
+    where
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { auth, db } from './firebase-config.js';
 
 // ==================== CONSTANTS ====================
 

@@ -185,6 +185,64 @@
         </div>
     </nav>
 
+    <!-- Photo Modal -->
+    <div id="photoModal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div onclick="closePhotoModal()" class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative h-full flex flex-col items-center justify-center p-4">
+            <!-- Close Button -->
+            <button onclick="closePhotoModal()" class="absolute top-4 right-4 p-2 text-white/80 hover:text-white z-10">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            
+            <!-- Photo Container -->
+            <div class="max-w-lg w-full bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-2xl">
+                <!-- Image -->
+                <img id="modalImage" src="" alt="" class="w-full max-h-[50vh] object-contain bg-black">
+                
+                <!-- Info Section -->
+                <div class="p-4 space-y-3">
+                    <!-- Author -->
+                    <div class="flex items-center gap-3">
+                        <img id="modalAuthorAvatar" src="" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500">
+                        <div class="flex-1">
+                            <p id="modalAuthorName" class="font-semibold text-slate-800 dark:text-white"></p>
+                            <p id="modalLocation" class="text-xs text-slate-500"></p>
+                        </div>
+                        <p id="modalDate" class="text-xs text-slate-400"></p>
+                    </div>
+                    
+                    <!-- Caption -->
+                    <p id="modalCaption" class="text-sm text-slate-700 dark:text-slate-300"></p>
+                    
+                    <!-- Tags -->
+                    <div id="modalTags" class="flex flex-wrap gap-1"></div>
+                    
+                    <!-- Actions -->
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-4">
+                            <button class="flex items-center gap-1 text-pink-500">
+                                <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
+                                <span id="modalLikes" class="text-sm font-medium"></span>
+                            </button>
+                            <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                            </button>
+                            <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                            <i data-lucide="bookmark" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="../js/script.js"></script>
     
@@ -250,8 +308,20 @@
             const dateStr = formatDate(post.createdAt);
             const tags = (post.tags || []).join(', ');
             
+            // Encode post data for modal
+            const postData = encodeURIComponent(JSON.stringify({
+                imageBase64: post.imageBase64,
+                caption: post.caption || '',
+                location: post.location || '',
+                author: post.author || 'rey',
+                tags: post.tags || [],
+                likes: post.likes || 0,
+                createdAt: post.createdAt?.toDate?.() || new Date()
+            }));
+            
             return `
-                <div class="break-inside-avoid relative group rounded-2xl overflow-hidden cursor-pointer shadow-sm">
+                <div class="break-inside-avoid relative group rounded-2xl overflow-hidden cursor-pointer shadow-sm"
+                    onclick="openPhotoModal('${postData}')">
                     <img src="${post.imageBase64}" 
                         class="w-full h-auto object-cover transform group-hover:scale-110 transition duration-500"
                         loading="lazy">
@@ -293,6 +363,66 @@
             // For now, just filter client-side (could be improved with Firestore full-text search)
             console.log('Search:', query);
         };
+
+        // User profiles for modal
+        const USER_PROFILES = {
+            rey: {
+                name: 'Rey',
+                avatar: 'https://i.pinimg.com/736x/4b/4d/0e/4b4d0ef7c9d7ee94e8492a910c907721.jpg'
+            },
+            anya: {
+                name: 'Anya',
+                avatar: 'https://i.pinimg.com/736x/4e/35/21/4e3521f64aac209e08a39091fee0e1f6.jpg'
+            }
+        };
+
+        // Open photo modal
+        window.openPhotoModal = function(encodedData) {
+            const post = JSON.parse(decodeURIComponent(encodedData));
+            const modal = document.getElementById('photoModal');
+            const profile = USER_PROFILES[post.author] || USER_PROFILES.rey;
+            
+            // Set modal content
+            document.getElementById('modalImage').src = post.imageBase64;
+            document.getElementById('modalAuthorAvatar').src = profile.avatar;
+            document.getElementById('modalAuthorName').textContent = profile.name;
+            document.getElementById('modalLocation').textContent = post.location || '';
+            document.getElementById('modalCaption').textContent = post.caption;
+            document.getElementById('modalLikes').textContent = post.likes || 0;
+            
+            // Format date
+            const date = new Date(post.createdAt);
+            document.getElementById('modalDate').textContent = date.toLocaleDateString('id-ID', { 
+                day: 'numeric', month: 'short', year: 'numeric' 
+            });
+            
+            // Render tags
+            const tagsContainer = document.getElementById('modalTags');
+            if (post.tags && post.tags.length > 0) {
+                tagsContainer.innerHTML = post.tags.map(tag => 
+                    `<span class="px-2 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 text-xs rounded-full">#${tag}</span>`
+                ).join('');
+            } else {
+                tagsContainer.innerHTML = '';
+            }
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        };
+
+        // Close photo modal
+        window.closePhotoModal = function() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+
+        // Close on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePhotoModal();
+        });
     </script>
     
     <script>
