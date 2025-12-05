@@ -303,7 +303,8 @@
         
         async function loadProfile() {
             try {
-                const profileDoc = await getDoc(doc(db, 'landing', 'profile'));
+                // Load from profileHer (Princess Profile section in dashboard)
+                const profileDoc = await getDoc(doc(db, 'landing', 'profileHer'));
                 if (profileDoc.exists()) {
                     const data = profileDoc.data();
                     
