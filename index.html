@@ -296,9 +296,10 @@
 
                     <div class="glass-panel p-6 rounded-2xl group cursor-pointer" data-aos="fade-up"
                         data-aos-delay="100">
-                        <div class="h-56 mb-6 overflow-hidden rounded-xl relative">
+                        <div class="h-56 mb-6 overflow-hidden rounded-xl relative bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                             <img id="memory-img-1" src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500 absolute inset-0">
+                            <span id="memory-placeholder-1" class="text-6xl text-slate-300 dark:text-slate-600 font-serif hidden">?</span>
                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
                         </div>
                         <div class="flex items-center justify-between mb-4">
@@ -314,9 +315,10 @@
 
                     <div class="glass-panel p-6 rounded-2xl group cursor-pointer" data-aos="fade-up"
                         data-aos-delay="200">
-                        <div class="h-56 mb-6 overflow-hidden rounded-xl relative">
+                        <div class="h-56 mb-6 overflow-hidden rounded-xl relative bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                             <img id="memory-img-2" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500 absolute inset-0">
+                            <span id="memory-placeholder-2" class="text-6xl text-slate-300 dark:text-slate-600 font-serif hidden">?</span>
                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
                         </div>
                         <div class="flex items-center justify-between mb-4">
@@ -533,18 +535,25 @@
                     const m = memoriesDoc.data();
                     m.items?.forEach((item, i) => {
                         const img = document.getElementById(`memory-img-${i+1}`);
+                        const placeholder = document.getElementById(`memory-placeholder-${i+1}`);
                         const title = document.getElementById(`memory-title-${i+1}`);
                         const desc = document.getElementById(`memory-desc-${i+1}`);
                         
                         if (title && item.title) title.textContent = item.title;
                         if (desc && item.description) desc.textContent = item.description;
                         
-                        // Handle memory 3 placeholder specially
-                        if (img && item.image) {
-                            img.src = item.image;
-                            img.classList.remove('hidden');
-                            const placeholder = document.getElementById(`memory-placeholder-${i+1}`);
+                        // Handle image and placeholder
+                        if (item.image && item.image !== '' && item.image !== null) {
+                            // Has valid image - show image, hide placeholder
+                            if (img) {
+                                img.src = item.image;
+                                img.classList.remove('hidden');
+                            }
                             if (placeholder) placeholder.classList.add('hidden');
+                        } else {
+                            // No image - hide image, show placeholder
+                            if (img) img.classList.add('hidden');
+                            if (placeholder) placeholder.classList.remove('hidden');
                         }
                     });
                 }
