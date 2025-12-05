@@ -336,34 +336,31 @@
             const greetingSubtext = document.getElementById('greetingSubtext');
             const greetingIcon = document.getElementById('greetingIcon');
             
-            try {
-                const userIds = ['rey', 'anya'];
-                let foundUser = null;
-                
-                for (const userId of userIds) {
-                    const userDoc = await getDoc(doc(db, 'users', userId));
-                    if (userDoc.exists() && userDoc.data().email === user.email) {
-                        foundUser = { id: userId, ...userDoc.data() };
-                        break;
-                    }
+            // Define users directly (no need for Firestore lookup)
+            const userRoles = {
+                'reyvan@ganteng.com': {
+                    role: 'guardian',
+                    greeting: 'Welcome home, Guardian.',
+                    subtext: 'The universe awaits your command ✨',
+                    icon: 'shield'
+                },
+                'sayang@anya.com': {
+                    role: 'princess', 
+                    greeting: 'Hi beautiful, how was your day?',
+                    subtext: 'Your Guardian made this for you 💕',
+                    icon: 'heart'
                 }
+            };
+            
+            const userData = userRoles[user.email];
+            
+            if (userData) {
+                greetingText.textContent = userData.greeting;
+                greetingSubtext.textContent = userData.subtext;
+                greetingIcon.setAttribute('data-lucide', userData.icon);
                 
-                if (foundUser) {
-                    greetingText.textContent = foundUser.greeting;
-                    
-                    if (foundUser.role === 'guardian') {
-                        greetingSubtext.textContent = 'The universe awaits your command ✨';
-                        greetingIcon.setAttribute('data-lucide', 'shield');
-                    } else if (foundUser.role === 'princess') {
-                        greetingSubtext.textContent = 'Your Guardian made this for you 💕';
-                        greetingIcon.setAttribute('data-lucide', 'heart');
-                    }
-                    
-                    greetingBanner.classList.remove('hidden');
-                    lucide.createIcons();
-                }
-            } catch (error) {
-                console.error('Failed to load user greeting:', error);
+                greetingBanner.classList.remove('hidden');
+                lucide.createIcons();
             }
         }
 
