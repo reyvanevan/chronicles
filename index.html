@@ -1,444 +1,159 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth overflow-x-hidden">
+<html lang="id" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World of Anya | Our Private Universe</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>World of Anya</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
-        rel="stylesheet">
-
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-
+    <script src="js/config.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            pink: '#FCE7F3',
-                            blue: '#E0F2FE',
-                            dark: '#0f172a',
-                            accent: '#db2777',
-                            accentLight: '#f472b6',
-                            gold: '#fbbf24'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'spin-slow': 'spin 8s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
-                }
-            }
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Hide scrollbar for clean mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
 
-        // Check theme immediately to prevent flash
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-    </script>
+    </style>
 </head>
 
 <body
-    class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-pink selection:text-brand-accent">
+    class="bg-white dark:bg-slate-950 min-h-screen text-slate-900 dark:text-white pb-16 transition-colors duration-500">
 
-    <!-- NAVBAR HEADER -->
-    <header class="fixed top-0 left-0 w-full z-50 nav-glass transition-all duration-300" id="main-header">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 md:h-20">
-
-                <!-- Logo / Brand -->
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" id="secret-login-trigger">
-                    <i data-lucide="globe-2"
-                        class="w-6 h-6 text-brand-accent dark:text-brand-accentLight animate-spin-slow"></i>
-                    <span
-                        class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-white tracking-tight">
-                        World of <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Anya</span>
-                    </span>
-                </div>
-
-                <!-- Desktop Menu -->
-                <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="#"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Our
-                        Story</a>
-                    <a href="her.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Her</a>
-                    <a href="him.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Him</a>
-                    <a href="us.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Us</a>
-
-                    <!-- Divider -->
-                    <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
-
-                    <!-- Theme Toggle (Moved here) -->
-                    <button onclick="toggleTheme()"
-                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
-                    </button>
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center gap-4">
-                    <button onclick="toggleTheme()"
-                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
-                    </button>
-                    <button onclick="toggleMobileMenu()"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent focus:outline-none">
-                        <i data-lucide="menu" class="w-6 h-6"></i>
-                    </button>
-                </div>
+    <!-- TOP BAR -->
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800">
+        <div class="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
+            <div id="secret-login-trigger" class="font-serif text-xl font-bold cursor-pointer select-none">
+                World of <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Anya</span>
             </div>
-        </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu"
-            class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="#"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Our
-                    Story</a>
-                <a href="her.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Her
-                    Moments</a>
-                <a href="him.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Him
-                    Moments</a>
-                <a href="us.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Just
-                    Us</a>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()"><i data-lucide="sun" class="w-6 h-6 dark:hidden"></i><i
+                        data-lucide="moon" class="w-6 h-6 hidden dark:block"></i></button>
+                <button><i data-lucide="heart" class="w-6 h-6"></i></button>
+                <button><i data-lucide="message-circle" class="w-6 h-6"></i></button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content (Added padding-top so it doesn't hide behind header) -->
-    <main class="pt-16">
-
-        <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
-            <div data-aos="fade-down" data-aos-duration="1000" class="max-w-4xl mx-auto z-10 -mt-16">
-                <!-- Adjusted margin for centering -->
-                <div
-                    class="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full glass-card border-brand-pink/30 dark:border-slate-700 transition-colors">
-                    <i data-lucide="sparkles" class="w-3 h-3 text-brand-accent dark:text-brand-accentLight"></i>
-                    <span
-                        class="text-[10px] font-bold tracking-[0.2em] uppercase text-brand-accent dark:text-brand-accentLight">The
-                        Eternal Page</span>
-                </div>
-
-                <h1
-                    class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-slate-800 dark:text-white mb-6 leading-tight transition-colors drop-shadow-sm">
-                    Zalfa <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-400 dark:from-pink-300 dark:to-blue-300">Nazhifah</span>
-                </h1>
-                <p
-                    class="max-w-md md:max-w-xl mx-auto text-slate-500 dark:text-slate-400 leading-relaxed text-sm md:text-base px-2 transition-colors">
-                    Sebuah ruang kecil di internet untuk mengabadikan apa yang seharusnya dunia tahu tentang kamu.
-                    Tentang kebaikanmu, hatimu, dan kesempurnaanmu.
-                </p>
-                <!-- CTA Button -->
-                <div class="mt-8 md:mt-10" data-aos="fade-up" data-aos-delay="200">
-                    <a href="us.html"
-                        class="group relative inline-flex items-center gap-3 px-8 py-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-brand-pink/50 dark:border-brand-accent/30 rounded-full text-slate-800 dark:text-white font-serif font-medium tracking-wide shadow-lg shadow-brand-pink/20 dark:shadow-brand-accent/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-brand-accent dark:hover:border-brand-accentLight overflow-hidden">
-                        <span class="relative z-10">Enter Our Universe</span>
-                        <div
-                            class="relative z-10 w-8 h-8 rounded-full bg-brand-accent dark:bg-brand-accentLight flex items-center justify-center text-white transition-transform duration-300 group-hover:rotate-45">
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </div>
-                        <!-- Hover Gradient Background -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-pink-100 to-blue-50 dark:from-slate-700 dark:to-slate-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                    </a>
+    <!-- STORIES (Optional Placeholder) -->
+    <div
+        class="pt-16 pb-2 max-w-md mx-auto overflow-x-auto no-scrollbar flex gap-4 px-4 border-b border-slate-100 dark:border-slate-800">
+        <div class="flex flex-col items-center gap-1 min-w-[64px]">
+            <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-orange-500">
+                <div class="w-full h-full rounded-full bg-white dark:bg-slate-950 p-0.5">
+                    <img src="https://ui-avatars.com/api/?name=Us&background=random"
+                        class="w-full h-full rounded-full object-cover">
                 </div>
             </div>
-
-            <div
-                class="absolute bottom-4 md:bottom-10 left-0 w-full animate-float text-slate-400 dark:text-slate-500 z-10 text-center">
-                <p class="text-[10px] uppercase tracking-widest mb-2 font-medium">Scroll Down</p>
-                <i data-lucide="chevron-down" class="w-6 h-6 mx-auto"></i>
-            </div>
-        </section>
-
-        <section id="about" class="py-20 px-6 md:px-20 max-w-6xl mx-auto scroll-mt-20">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="relative w-full max-w-sm mx-auto md:max-w-full" data-aos="fade-right">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-tr from-blue-200 to-pink-200 dark:from-blue-900 dark:to-pink-900 rounded-2xl transform rotate-3 translate-x-2 translate-y-2 transition-colors">
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                        alt="Anya Profile"
-                        class="relative rounded-2xl shadow-xl w-full h-[400px] object-cover grayscale hover:grayscale-0 transition duration-500 ease-in-out bg-white dark:bg-slate-800">
-                </div>
-
-                <div data-aos="fade-left" class="text-center md:text-left">
-                    <h2
-                        class="font-serif text-3xl md:text-4xl font-bold mb-6 text-slate-800 dark:text-white transition-colors">
-                        Who is Anya?</h2>
-                    <div
-                        class="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed text-sm md:text-base transition-colors">
-                        <p>
-                            Dia bukan sekadar nama. Dia adalah <strong>Zalfa Nazhifah</strong>. Lahir 24 Juli 2005,
-                            membawa warna biru dan pink ke dalam hidup seseorang yang pernah kehilangan arah.
-                        </p>
-                        <p>
-                            Mungkin sekarang dia sedang kecewa. Mungkin dia sedang butuh waktu. Tapi satu hal yang
-                            pasti: <span class="italic text-brand-accent dark:text-brand-accentLight font-medium">She
-                                deserves the world.</span>
-                        </p>
-                        <div class="pt-4 flex flex-wrap justify-center md:justify-start gap-3">
-                            <span
-                                class="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-300 rounded-full text-xs font-semibold tracking-wider border border-blue-100 dark:border-blue-800">#BlueSoul</span>
-                            <span
-                                class="px-3 py-1 bg-pink-50 dark:bg-pink-900/30 text-pink-500 dark:text-pink-300 rounded-full text-xs font-semibold tracking-wider border border-pink-100 dark:border-pink-800">#PinkHeart</span>
-                            <span
-                                class="px-3 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-500 dark:text-purple-300 rounded-full text-xs font-semibold tracking-wider border border-purple-100 dark:border-purple-800">#MyUniverse</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section
-            class="py-20 bg-white/40 dark:bg-slate-900/50 backdrop-blur-sm dark:border-slate-800 transition-colors">
-            <div class="max-w-6xl mx-auto px-6">
-                <div class="text-center mb-12" data-aos="fade-up">
-                    <h2 class="font-serif text-3xl font-bold text-slate-800 dark:text-white transition-colors">Our
-                        Gallery</h2>
-                    <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">Momen kita mungkin berlalu, tapi di sini
-                        mereka abadi.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="group relative overflow-hidden rounded-2xl shadow-sm cursor-pointer h-64 md:h-80"
-                        data-aos="zoom-in" data-aos-delay="100">
-                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
-                            <p
-                                class="text-white font-serif text-lg translate-y-4 group-hover:translate-y-0 transition duration-300">
-                                The Smile</p>
-                        </div>
-                    </div>
-
-                    <div class="group relative overflow-hidden rounded-2xl shadow-sm cursor-pointer h-64 md:h-80 md:col-span-2"
-                        data-aos="zoom-in" data-aos-delay="200">
-                        <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
-                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
-                            <p
-                                class="text-white font-serif text-lg translate-y-4 group-hover:translate-y-0 transition duration-300">
-                                Our Favorite Place</p>
-                        </div>
-                    </div>
-
-                    <div class="group relative overflow-hidden rounded-2xl shadow-sm cursor-pointer h-64 md:h-80 md:col-span-2"
-                        data-aos="zoom-in" data-aos-delay="300">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
-                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
-                            <p
-                                class="text-white font-serif text-lg translate-y-4 group-hover:translate-y-0 transition duration-300">
-                                The Day We Laughed</p>
-                        </div>
-                    </div>
-
-                    <div class="group relative overflow-hidden rounded-2xl shadow-sm cursor-pointer h-64 md:h-80"
-                        data-aos="zoom-in" data-aos-delay="400">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
-                            <p
-                                class="text-white font-serif text-lg translate-y-4 group-hover:translate-y-0 transition duration-300">
-                                Cantik Banget</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section
-            class="py-20 px-4 md:px-6 bg-white/20 dark:bg-slate-900/30 backdrop-blur-sm dark:border-slate-800 transition-colors">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-16" data-aos="fade-up">
-                    <i data-lucide="infinity"
-                        class="w-8 h-8 text-brand-accent dark:text-brand-blue mx-auto mb-4 transition-colors"></i>
-                    <h2 class="font-serif text-3xl font-bold text-slate-800 dark:text-white transition-colors">
-                        Immortalized Memories</h2>
-                    <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm uppercase tracking-widest">Disimpan
-                        Selamanya</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                    <div class="glass-panel p-6 rounded-2xl group cursor-pointer" data-aos="fade-up"
-                        data-aos-delay="100">
-                        <div class="h-56 mb-6 overflow-hidden rounded-xl relative">
-                            <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-serif font-bold text-slate-800 dark:text-white transition-colors">
-                                Senyum Kamu</h3>
-                            <i data-lucide="smile" class="w-5 h-5 text-brand-accent dark:text-brand-pink"></i>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed transition-colors">
-                            Momen dimana kamu ketawa lepas. Di detik itu, dunia rasanya berhenti berputar cuma buat
-                            ngeliat kamu bahagia.
-                        </p>
-                    </div>
-
-                    <div class="glass-panel p-6 rounded-2xl group cursor-pointer" data-aos="fade-up"
-                        data-aos-delay="200">
-                        <div class="h-56 mb-6 overflow-hidden rounded-xl relative">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-serif font-bold text-slate-800 dark:text-white transition-colors">
-                                Kebaikan Kamu</h3>
-                            <i data-lucide="heart" class="w-5 h-5 text-blue-500 dark:text-brand-blue"></i>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed transition-colors">
-                            Cara kamu peduli sama hal-hal kecil. Itu yang bikin kamu beda dari semua orang yang pernah
-                            aku kenal.
-                        </p>
-                    </div>
-
-                    <div class="glass-panel p-6 rounded-2xl group cursor-pointer" data-aos="fade-up"
-                        data-aos-delay="300">
-                        <div
-                            class="h-56 mb-6 overflow-hidden rounded-xl relative bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition-colors">
-                            <span class="text-6xl text-slate-300 dark:text-slate-600 font-serif">?</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-serif font-bold text-slate-800 dark:text-white transition-colors">
-                                Masa Depan?</h3>
-                            <i data-lucide="sparkles" class="w-5 h-5 text-yellow-500 dark:text-brand-gold"></i>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed transition-colors">
-                            Space kosong ini buat kenangan kita selanjutnya. Kalau kamu ijinin aku buat ngisi lembaran
-                            ini lagi.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="min-h-[80vh] flex flex-col items-center justify-center relative px-6 py-20 overflow-hidden">
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-pink/20 dark:bg-brand-pink/10 rounded-full blur-3xl -z-10 transition-colors">
-            </div>
-
-            <div class="text-center mb-10 reveal w-full max-w-2xl">
-                <h2
-                    class="font-serif text-3xl md:text-5xl font-bold text-slate-800 dark:text-white mb-6 transition-colors">
-                    Untuk Selamanya</h2>
-
-                <div class="glass-card p-2 rounded-3xl transition-transform hover:-translate-y-2 duration-500 cursor-pointer w-full max-w-sm mx-auto group"
-                    onclick="openModal()">
-                    <div
-                        class="bg-white/40 dark:bg-slate-800/50 rounded-[20px] p-10 border border-white/50 dark:border-white/5 flex flex-col items-center gap-6 transition-colors">
-                        <div
-                            class="w-16 h-16 rounded-full bg-brand-pink/20 dark:bg-brand-pink/10 flex items-center justify-center text-brand-accent dark:text-brand-accentLight animate-pulse">
-                            <i data-lucide="mail" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-serif text-xl text-slate-800 dark:text-white">Sebuah Pesan Kecil</h3>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Ketuk untuk membuka...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="hidden-letter"
-                class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 dark:bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
-                <div
-                    class="glass-panel dark:glass-card p-8 md:p-12 rounded-3xl w-full max-w-lg text-center relative shadow-2xl overflow-y-auto max-h-[90vh] transition-colors">
-
-                    <button onclick="closeModal()"
-                        class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition bg-slate-100 dark:bg-slate-800 rounded-full">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-
-                    <div
-                        class="w-12 h-12 bg-pink-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 text-pink-500 dark:text-pink-400">
-                        <i data-lucide="heart-handshake" class="w-6 h-6"></i>
-                    </div>
-
-                    <h3 class="text-2xl md:text-3xl font-serif text-slate-800 dark:text-white mb-6">Hai Anya...</h3>
-
-                    <div
-                        class="prose prose-slate dark:prose-invert mx-auto text-slate-600 dark:text-slate-300 leading-relaxed space-y-4 text-sm md:text-base">
-                        <p>
-                            Aku tau kata-kata nggak akan pernah cukup. Tapi aku harap website ini bisa jadi bukti kecil
-                            kalau aku bener-bener serius.
-                        </p>
-                        <p>
-                            Terima kasih udah kasih ruang buat aku memperbaiki diri. <i>Take your time.</i> Aku bakal
-                            tetep di sini, ngejaga janji ini.
-                        </p>
-                        <p class="font-bold text-brand-accent dark:text-brand-accentLight pt-4 font-serif text-lg">
-                            "I love you, today and forever."
-                        </p>
-                    </div>
-
-                    <div class="flex justify-center gap-4 text-3xl mt-8">
-                        🥰 💝 🌹
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer
-        class="py-8 text-center text-slate-400 text-xs tracking-widest uppercase border-t border-slate-200 dark:border-slate-800 transition-colors">
-        <p>Built with ❤️ for Anya • 2025</p>
-    </footer>
-
-    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40">
-        <button onclick="toggleMusic()" id="musicBtn"
-            class="bg-white/80 dark:bg-slate-800/80 backdrop-blur text-brand-accent dark:text-brand-accentLight p-3 md:p-4 rounded-full border border-pink-100 dark:border-slate-700 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all group">
-            <i data-lucide="music" class="w-5 h-5 md:w-6 md:h-6 group-hover:animate-spin"></i>
-        </button>
-        <audio id="bgMusic" loop>
-            <source src="musik.mp3" type="audio/mpeg">
-        </audio>
+            <span class="text-xs">Your Story</span>
+        </div>
+        <!-- More stories can be added here -->
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="js/script.js"></script>
+    <!-- FEED CONTAINER -->
+    <main id="feed-container" class="max-w-md mx-auto pt-2 min-h-screen">
+        <!-- Posts will be injected here by js/app.js -->
+        <div class="flex flex-col items-center justify-center py-20 text-slate-400">
+            <i data-lucide="loader-2" class="w-8 h-8 animate-spin mb-2"></i>
+            <p class="text-sm">Loading memories...</p>
+        </div>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav id="bottom-nav"
+        class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 z-50 pb-safe">
+        <div class="max-w-md mx-auto flex justify-around items-center h-14">
+            <a href="#" class="p-2 text-slate-900 dark:text-white"><i data-lucide="home"
+                    class="w-6 h-6 fill-current"></i></a>
+            <a href="#" class="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white"><i data-lucide="search"
+                    class="w-6 h-6"></i></a>
+
+            <!-- Add Post Button (Hidden by default) -->
+            <button id="add-post-btn"
+                class="hidden p-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-lg transform -translate-y-2">
+                <i data-lucide="plus-square" class="w-6 h-6"></i>
+            </button>
+
+            <a href="#" class="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white"><i data-lucide="film"
+                    class="w-6 h-6"></i></a>
+            <a href="her.html" class="p-2">
+                <div class="w-6 h-6 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
+                    <img src="https://ui-avatars.com/api/?name=Anya" class="w-full h-full object-cover">
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <!-- POST MODAL -->
+    <div id="post-modal"
+        class="hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl">
+            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                <button id="close-modal-btn" class="text-slate-500">Cancel</button>
+                <h3 class="font-bold">New Post</h3>
+                <button form="post-form" type="submit" class="text-blue-500 font-bold">Share</button>
+            </div>
+            <form id="post-form" class="p-4 space-y-4">
+                <div
+                    class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center relative overflow-hidden group">
+                    <input type="file" id="post-image" accept="image/*"
+                        class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                    <div class="text-center text-slate-400 pointer-events-none">
+                        <i data-lucide="image-plus" class="w-10 h-10 mx-auto mb-2"></i>
+                        <span class="text-xs">Tap to upload photo</span>
+                    </div>
+                    <img id="image-preview"
+                        class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none">
+                </div>
+                <textarea id="post-caption" rows="3"
+                    class="w-full bg-transparent border-none focus:ring-0 resize-none p-0 text-sm"
+                    placeholder="Write a caption..."></textarea>
+            </form>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="hidden fixed inset-0 z-[70] bg-black/90 flex items-center justify-center p-4">
+        <div class="w-full max-w-xs space-y-4 text-center">
+            <h2 class="text-white font-serif text-2xl">Secret Access</h2>
+            <form id="login-form" class="space-y-3">
+                <input type="email" id="login-email" placeholder="Email"
+                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-white/50 outline-none focus:border-white/50">
+                <input type="password" id="login-password" placeholder="Password"
+                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-white/50 outline-none focus:border-white/50">
+                <button type="submit" class="w-full py-3 bg-white text-black font-bold rounded-lg">Unlock</button>
+            </form>
+            <button onclick="document.getElementById('login-modal').classList.add('hidden')"
+                class="text-white/50 text-sm">Cancel</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+    <script>
+        // Simple Image Preview Logic
+        document.getElementById('post-image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.getElementById('image-preview');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 
 </html>

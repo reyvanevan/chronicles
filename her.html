@@ -3,298 +3,228 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Her | The Muse</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>@zalfa.nazhifah | World of Anya</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
-        rel="stylesheet">
-
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+    <script src="js/config.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            pink: '#FCE7F3',
-                            blue: '#E0F2FE',
-                            dark: '#0f172a',
-                            accent: '#db2777',
-                            accentLight: '#f472b6',
-                            gold: '#fbbf24'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'spin-slow': 'spin 8s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
-                }
-            }
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
 
-        // Check theme immediately to prevent flash
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-    </script>
+    </style>
 </head>
 
 <body
-    class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-pink selection:text-brand-accent">
+    class="bg-white dark:bg-slate-950 min-h-screen text-slate-900 dark:text-white pb-16 transition-colors duration-500">
 
-    <!-- NAVBAR HEADER -->
-    <header class="fixed top-0 left-0 w-full z-50 nav-glass transition-all duration-300" id="main-header">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 md:h-20">
-
-                <!-- Logo / Brand -->
-                <a href="/" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-                    <i data-lucide="globe-2"
-                        class="w-6 h-6 text-brand-accent dark:text-brand-accentLight animate-spin-slow"></i>
-                    <span
-                        class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-white tracking-tight">
-                        World of <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Anya</span>
-                    </span>
-                </a>
-
-                <!-- Desktop Menu -->
-                <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="index.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Our
-                        Story</a>
-                    <a href="her.html"
-                        class="text-brand-accent dark:text-brand-accentLight font-bold transition-colors text-sm uppercase tracking-wider">Her</a>
-                    <a href="him.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Him</a>
-                    <a href="us.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Us</a>
-
-                    <!-- Divider -->
-                    <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
-
-                    <!-- Theme Toggle -->
-                    <button onclick="toggleTheme()"
-                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
-                    </button>
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center gap-4">
-                    <button onclick="toggleTheme()"
-                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
-                    </button>
-                    <button onclick="toggleMobileMenu()"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent focus:outline-none">
-                        <i data-lucide="menu" class="w-6 h-6"></i>
-                    </button>
-                </div>
+    <!-- TOP BAR -->
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800">
+        <div class="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-2 font-bold text-lg">
+                <span>zalfa.nazhifah</span>
+                <i data-lucide="badge-check" class="w-4 h-4 text-blue-500 fill-current"></i>
             </div>
-        </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu"
-            class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="index.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Our
-                    Story</a>
-                <a href="her.html"
-                    class="block px-3 py-3 rounded-md text-base font-bold text-brand-accent bg-pink-50 dark:bg-slate-800/50">Her
-                    Moments</a>
-                <a href="him.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Him
-                    Moments</a>
-                <a href="us.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Just
-                    Us</a>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()"><i data-lucide="sun" class="w-6 h-6 dark:hidden"></i><i
+                        data-lucide="moon" class="w-6 h-6 hidden dark:block"></i></button>
+                <button><i data-lucide="menu" class="w-6 h-6"></i></button>
             </div>
         </div>
     </header>
 
-    <main class="pt-24 pb-10 px-4 max-w-4xl mx-auto">
+    <main class="max-w-md mx-auto pt-16 px-4">
 
-        <!-- Profile Header -->
-        <div class="text-center mb-8" data-aos="fade-down">
-            <div
-                class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-brand-accent mb-4 relative group cursor-pointer">
-                <div class="absolute inset-0 rounded-full bg-brand-accent/20 animate-pulse"></div>
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
-                    alt="Anya"
-                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500">
+        <!-- PROFILE HEADER -->
+        <div class="flex items-center justify-between mb-6">
+            <!-- Avatar -->
+            <div class="w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-pink-500 to-purple-500">
+                <div class="w-full h-full rounded-full bg-white dark:bg-slate-950 p-0.5">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                        class="w-full h-full rounded-full object-cover">
+                </div>
             </div>
-            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">Zalfa Nazhifah</h1>
-            <p class="text-brand-accent text-xs uppercase tracking-[0.2em] font-bold mb-4">The Main Character</p>
 
-            <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
-                "She is the poem I never knew how to write, and this life is the paper."
-            </p>
+            <!-- Stats -->
+            <div class="flex-1 flex justify-around text-center ml-4">
+                <div>
+                    <div class="font-bold text-lg">24</div>
+                    <div class="text-xs text-slate-500">Posts</div>
+                </div>
+                <div>
+                    <div class="font-bold text-lg">1.2M</div>
+                    <div class="text-xs text-slate-500">Followers</div>
+                </div>
+                <div>
+                    <div class="font-bold text-lg">1</div>
+                    <div class="text-xs text-slate-500">Following</div>
+                </div>
+            </div>
         </div>
 
-        <!-- NEW: HIGHLIGHTS SECTION -->
-        <div class="flex gap-4 md:gap-8 overflow-x-auto pt-4 pb-4 mb-10 justify-start md:justify-center no-scrollbar px-2"
-            data-aos="fade-up" data-aos-delay="50">
+        <!-- BIO -->
+        <div class="mb-6">
+            <h1 class="font-bold text-sm">Zalfa Nazhifah</h1>
+            <p class="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-line">The Main Character 💅
+                She deserves the world 🌍
+                Blue Soul & Pink Heart 💙🩷</p>
+            <a href="#" class="text-sm text-blue-900 dark:text-blue-100 font-medium">worldofanya.com</a>
+        </div>
 
-            <!-- Highlight Item: Dates -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-brand-accent to-purple-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
+        <!-- ACTION BUTTONS -->
+        <div class="flex gap-2 mb-8">
+            <button
+                class="flex-1 bg-slate-100 dark:bg-slate-800 py-1.5 rounded-lg text-sm font-semibold">Following</button>
+            <button
+                class="flex-1 bg-slate-100 dark:bg-slate-800 py-1.5 rounded-lg text-sm font-semibold">Message</button>
+            <button class="bg-slate-100 dark:bg-slate-800 px-2 rounded-lg"><i data-lucide="user-plus"
+                    class="w-4 h-4"></i></button>
+        </div>
+
+        <!-- HIGHLIGHTS -->
+        <div class="flex gap-4 overflow-x-auto no-scrollbar mb-8">
+            <div class="flex flex-col items-center gap-1 min-w-[64px]">
+                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 p-1">
                     <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="heart" class="w-6 h-6 text-pink-500 fill-pink-50"></i>
+                        class="w-full h-full rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                        <i data-lucide="heart" class="w-6 h-6 text-pink-500"></i>
                     </div>
                 </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Dates</span>
+                <span class="text-xs">Love</span>
             </div>
-
-            <!-- Highlight Item: Trips -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-blue-400 to-cyan-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+            <div class="flex flex-col items-center gap-1 min-w-[64px]">
+                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 p-1">
                     <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                        class="w-full h-full rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
                         <i data-lucide="plane" class="w-6 h-6 text-blue-500"></i>
                     </div>
                 </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Trips</span>
+                <span class="text-xs">Trips</span>
             </div>
-
-            <!-- Highlight Item: Food -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-400 to-orange-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+            <div class="flex flex-col items-center gap-1 min-w-[64px]">
+                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 p-1">
                     <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="coffee" class="w-6 h-6 text-amber-600"></i>
+                        class="w-full h-full rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                        <i data-lucide="music" class="w-6 h-6 text-purple-500"></i>
                     </div>
                 </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Food</span>
-            </div>
-
-            <!-- Highlight Item: Silly -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-emerald-400 to-teal-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="smile" class="w-6 h-6 text-emerald-500"></i>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Silly</span>
-            </div>
-
-            <!-- Highlight Item: 2025 -->
-            <div class="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-slate-200 dark:bg-slate-700 group-hover:scale-110 transition-transform duration-300">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <span class="text-[10px] font-bold text-slate-400">2025</span>
-                    </div>
-                </div>
-                <span class="text-[11px] font-medium tracking-wide text-slate-400">Memories</span>
+                <span class="text-xs">Vibe</span>
             </div>
         </div>
 
-        <!-- UPDATED: Small Details Grid (Hierarki Diturunkan) -->
-        <div class="grid grid-cols-4 gap-2 md:gap-4 mb-12 opacity-70 hover:opacity-100 transition-opacity duration-300"
-            data-aos="fade-up" data-aos-delay="100">
-            <div
-                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
-                <i data-lucide="cake" class="w-4 h-4 mx-auto text-pink-400 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Born</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">July 24</p>
-            </div>
-            <div
-                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
-                <i data-lucide="cup-soda" class="w-4 h-4 mx-auto text-green-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Loves</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Matcha</p>
-            </div>
-            <div
-                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
-                <i data-lucide="music-2" class="w-4 h-4 mx-auto text-purple-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Vibe</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">R&B</p>
-            </div>
-            <div
-                class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
-                <i data-lucide="lock" class="w-4 h-4 mx-auto text-red-400 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Mine</p>
-            </div>
+        <!-- TABS -->
+        <div class="flex border-b border-slate-100 dark:border-slate-800 mb-1">
+            <button class="flex-1 pb-3 border-b-2 border-slate-900 dark:border-white"><i data-lucide="grid-3x3"
+                    class="w-6 h-6 mx-auto"></i></button>
+            <button class="flex-1 pb-3 text-slate-400"><i data-lucide="clapperboard"
+                    class="w-6 h-6 mx-auto"></i></button>
+            <button class="flex-1 pb-3 text-slate-400"><i data-lucide="user-square"
+                    class="w-6 h-6 mx-auto"></i></button>
         </div>
 
-        <!-- Her Gallery (Masonry Style) -->
-        <div class="mb-6 flex items-center gap-4 px-2" data-aos="fade-right">
-            <i data-lucide="grid-3x3" class="w-4 h-4 text-slate-400"></i>
-            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Posts</span>
-            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
-        </div>
-
-        <div class="columns-2 md:columns-3 gap-4 space-y-4">
-            <!-- Foto 1 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-                <div
-                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <i data-lucide="heart" class="w-6 h-6 text-white fill-white"></i>
-                </div>
-            </div>
-            <!-- Foto 2 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="100">
-                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-            </div>
-            <!-- Foto 3 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-            </div>
-            <!-- Foto 4 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="300">
-                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-            </div>
+        <!-- GRID -->
+        <div class="grid grid-cols-3 gap-1">
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800"><img
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80"
+                    class="w-full h-full object-cover"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800"><img
+                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=80"
+                    class="w-full h-full object-cover"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800"><img
+                    src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=500&q=80"
+                    class="w-full h-full object-cover"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800"><img
+                    src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&q=80"
+                    class="w-full h-full object-cover"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800"><img
+                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&q=80"
+                    class="w-full h-full object-cover"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800"><img
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&q=80"
+                    class="w-full h-full object-cover"></div>
         </div>
 
     </main>
 
-    <footer
-        class="py-8 text-center text-slate-400 text-xs tracking-widest uppercase border-t border-slate-200 dark:border-slate-800 transition-colors">
-        <p>Built with ❤️ for Anya • 2025</p>
-    </footer>
+    <!-- BOTTOM NAV -->
+    <nav id="bottom-nav"
+        class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 z-50 pb-safe">
+        <div class="max-w-md mx-auto flex justify-around items-center h-14">
+            <a href="index.html" class="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white"><i
+                    data-lucide="home" class="w-6 h-6"></i></a>
+            <a href="#" class="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white"><i data-lucide="search"
+                    class="w-6 h-6"></i></a>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="js/script.js"></script>
+            <!-- Add Post Button (Hidden by default) -->
+            <button id="add-post-btn"
+                class="hidden p-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-lg transform -translate-y-2">
+                <i data-lucide="plus-square" class="w-6 h-6"></i>
+            </button>
+
+            <a href="#" class="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white"><i data-lucide="film"
+                    class="w-6 h-6"></i></a>
+            <a href="her.html" class="p-2">
+                <div class="w-6 h-6 rounded-full overflow-hidden border-2 border-slate-900 dark:border-white">
+                    <img src="https://ui-avatars.com/api/?name=Anya" class="w-full h-full object-cover">
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <!-- POST MODAL (Reused) -->
+    <div id="post-modal"
+        class="hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl">
+            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                <button id="close-modal-btn" class="text-slate-500">Cancel</button>
+                <h3 class="font-bold">New Post</h3>
+                <button form="post-form" type="submit" class="text-blue-500 font-bold">Share</button>
+            </div>
+            <form id="post-form" class="p-4 space-y-4">
+                <div
+                    class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center relative overflow-hidden group">
+                    <input type="file" id="post-image" accept="image/*"
+                        class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                    <div class="text-center text-slate-400 pointer-events-none">
+                        <i data-lucide="image-plus" class="w-10 h-10 mx-auto mb-2"></i>
+                        <span class="text-xs">Tap to upload photo</span>
+                    </div>
+                    <img id="image-preview"
+                        class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none">
+                </div>
+                <textarea id="post-caption" rows="3"
+                    class="w-full bg-transparent border-none focus:ring-0 resize-none p-0 text-sm"
+                    placeholder="Write a caption..."></textarea>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+    <script>
+        // Simple Image Preview Logic
+        document.getElementById('post-image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.getElementById('image-preview');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 
 </html>
