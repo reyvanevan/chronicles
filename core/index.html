@@ -51,22 +51,181 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 
-    <!-- Firebase Auth -->
+    <!-- Firebase Auth & Firestore -->
     <script type="module">
-        import { auth } from '../js/firebase-config.js';
+        import { auth, db } from '../js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // Check if user is authenticated
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                // Not logged in, redirect to login
                 window.location.href = 'login.html';
             } else {
-                // Store user info for display
                 window.currentUser = user;
+                // Load data from Firestore
+                await loadDashboardData();
                 document.getElementById('loading-screen')?.remove();
             }
         });
+
+        // Load all data from Firestore
+        async function loadDashboardData() {
+            try {
+                // Load Profile
+                const profileDoc = await getDoc(doc(db, "landing", "profile"));
+                if (profileDoc.exists()) {
+                    const profile = profileDoc.data();
+                    document.getElementById('input-name').value = profile.name || '';
+                    document.getElementById('input-bio').value = profile.bio || '';
+                    document.getElementById('profilePreview').src = profile.photo || '';
+                    if (profile.tags) {
+                        document.getElementById('input-tag1').value = profile.tags[0] || '';
+                        document.getElementById('input-tag2').value = profile.tags[1] || '';
+                        document.getElementById('input-tag3').value = profile.tags[2] || '';
+                    }
+                }
+
+                // Load Stats
+                const statsDoc = await getDoc(doc(db, "landing", "stats"));
+                if (statsDoc.exists()) {
+                    const stats = statsDoc.data();
+                    document.getElementById('stat-visits').textContent = stats.totalVisits?.toLocaleString() || '0';
+                    document.getElementById('stat-memories').textContent = stats.memoriesCount || '0';
+                    // Calculate days together
+                    if (stats.startDate) {
+                        const start = stats.startDate.toDate ? stats.startDate.toDate() : new Date(stats.startDate);
+                        const days = Math.floor((new Date() - start) / (1000 * 60 * 60 * 24));
+                        document.getElementById('stat-days').textContent = days.toLocaleString();
+                    }
+                }
+
+                // Load Gallery
+                const galleryDoc = await getDoc(doc(db, "landing", "gallery"));
+                if (galleryDoc.exists()) {
+                    const gallery = galleryDoc.data();
+                    gallery.items?.forEach((item, i) => {
+                        const img = document.getElementById(`gal${i + 1}`);
+                        const caption = document.getElementById(`gal${i + 1}-caption`);
+                        if (img) img.src = item.url;
+                        if (caption) caption.value = item.caption;
+                    });
+                }
+
+                // Load Memories
+                const memoriesDoc = await getDoc(doc(db, "landing", "memories"));
+                if (memoriesDoc.exists()) {
+                    const memories = memoriesDoc.data();
+                    memories.items?.forEach((item, i) => {
+                        const title = document.getElementById(`mem${i + 1}-title`);
+                        const desc = document.getElementById(`mem${i + 1}-desc`);
+                        const img = document.getElementById(`mem${i + 1}`);
+                        if (title) title.value = item.title;
+                        if (desc) desc.value = item.description;
+                        if (img && item.image) img.src = item.image;
+                    });
+                }
+
+                console.log('✅ Dashboard data loaded from Firestore');
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        // Save Profile Data
+        window.saveProfile = async function() {
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Saving...';
+            btn.disabled = true;
+
+            try {
+                await setDoc(doc(db, "landing", "profile"), {
+                    name: document.getElementById('input-name').value,
+                    bio: document.getElementById('input-bio').value,
+                    photo: document.getElementById('profilePreview').src,
+                    tags: [
+                        document.getElementById('input-tag1').value,
+                        document.getElementById('input-tag2').value,
+                        document.getElementById('input-tag3').value
+                    ],
+                    updatedAt: new Date()
+                });
+
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Saved!';
+                btn.classList.remove('bg-brand-accent');
+                btn.classList.add('bg-green-500');
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-green-500');
+                    btn.classList.add('bg-brand-accent');
+                    btn.disabled = false;
+                    lucide.createIcons();
+                }, 2000);
+
+            } catch (error) {
+                console.error('Save error:', error);
+                btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i> Error!';
+                btn.classList.add('bg-red-500');
+                btn.disabled = false;
+                lucide.createIcons();
+            }
+        };
+
+        // Save Gallery Data
+        window.saveGallery = async function() {
+            try {
+                const items = [];
+                for (let i = 1; i <= 4; i++) {
+                    const img = document.getElementById(`gal${i}`);
+                    const caption = document.getElementById(`gal${i}-caption`);
+                    items.push({
+                        id: i,
+                        url: img?.src || '',
+                        caption: caption?.value || '',
+                        order: i
+                    });
+                }
+                await setDoc(doc(db, "landing", "gallery"), { items, updatedAt: new Date() });
+                alert('Gallery saved!');
+            } catch (error) {
+                console.error('Save gallery error:', error);
+                alert('Failed to save gallery');
+            }
+        };
+
+        // Save Memories Data
+        window.saveMemories = async function() {
+            try {
+                const iconColors = ['pink', 'blue', 'yellow'];
+                const icons = ['smile', 'heart', 'sparkles'];
+                const items = [];
+                for (let i = 1; i <= 3; i++) {
+                    const title = document.getElementById(`mem${i}-title`);
+                    const desc = document.getElementById(`mem${i}-desc`);
+                    const img = document.getElementById(`mem${i}`);
+                    items.push({
+                        id: i,
+                        title: title?.value || '',
+                        description: desc?.value || '',
+                        icon: icons[i-1],
+                        iconColor: iconColors[i-1],
+                        image: img?.src || null,
+                        order: i
+                    });
+                }
+                await setDoc(doc(db, "landing", "memories"), { items, updatedAt: new Date() });
+                alert('Memories saved!');
+            } catch (error) {
+                console.error('Save memories error:', error);
+                alert('Failed to save memories');
+            }
+        };
+
+        // Make loadDashboardData available globally for refresh
+        window.loadDashboardData = loadDashboardData;
     </script>
     
     <style>
@@ -224,7 +383,7 @@
                 <div class="glass-card p-4 md:p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="100">
                     <div>
                         <p class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Visits</p>
-                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">1,240</h3>
+                        <h3 id="stat-visits" class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">--</h3>
                         <p class="text-xs text-green-500 flex items-center gap-1 mt-2">
                             <i data-lucide="trending-up" class="w-3 h-3"></i> +12% this week
                         </p>
@@ -237,7 +396,7 @@
                 <div class="glass-card p-4 md:p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="200">
                     <div>
                         <p class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Memories Stored</p>
-                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">42</h3>
+                        <h3 id="stat-memories" class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">--</h3>
                         <p class="text-xs text-pink-500 flex items-center gap-1 mt-2">
                             <i data-lucide="plus" class="w-3 h-3"></i> 3 new today
                         </p>
@@ -250,7 +409,7 @@
                 <div class="glass-card p-4 md:p-6 rounded-2xl flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300 sm:col-span-2 md:col-span-1" data-aos="fade-up" data-aos-delay="300">
                     <div>
                         <p class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Days Together</p>
-                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">186</h3>
+                        <h3 id="stat-days" class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">--</h3>
                         <p class="text-xs text-purple-500 flex items-center gap-1 mt-2">
                             <i data-lucide="calendar" class="w-3 h-3"></i> Forever to go
                         </p>
@@ -270,7 +429,7 @@
                         </div>
                         <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Profile Section</h3>
                     </div>
-                    <button class="px-3 py-2 md:px-4 bg-brand-accent hover:bg-pink-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
+                    <button onclick="saveProfile()" class="px-3 py-2 md:px-4 bg-brand-accent hover:bg-pink-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
                         <i data-lucide="save" class="w-4 h-4"></i> Save Changes
                     </button>
                 </div>
@@ -279,7 +438,7 @@
                     <div class="md:col-span-1">
                         <label class="block text-sm font-bold mb-3 text-slate-700 dark:text-slate-300">Profile Photo</label>
                         <div class="relative group rounded-2xl overflow-hidden aspect-[3/4] border-4 border-white dark:border-slate-700 shadow-xl">
-                            <img id="profilePreview" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            <img id="profilePreview" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                             
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer backdrop-blur-sm">
                                 <button class="bg-white/90 text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg hover:bg-white transition">
@@ -294,12 +453,12 @@
                     <div class="md:col-span-2 space-y-4 md:space-y-6">
                         <div>
                             <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Display Name</label>
-                            <input type="text" value="Zalfa Nazhifah" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm">
+                            <input type="text" id="input-name" value="" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm">
                         </div>
                         
                         <div>
                             <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Bio Description</label>
-                            <textarea rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm resize-none">Dia bukan sekadar nama. Dia adalah Zalfa Nazhifah. Lahir 24 Juli 2005, membawa warna biru dan pink ke dalam hidup seseorang yang pernah kehilangan arah.</textarea>
+                            <textarea id="input-bio" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition backdrop-blur-sm resize-none"></textarea>
                         </div>
                         
                         <div>
@@ -307,15 +466,15 @@
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div class="relative">
                                     <span class="absolute left-3 top-3 text-slate-400">#</span>
-                                    <input type="text" value="BlueSoul" class="w-full pl-7 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent outline-none transition text-sm">
+                                    <input type="text" id="input-tag1" value="" class="w-full pl-7 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent outline-none transition text-sm">
                                 </div>
                                 <div class="relative">
                                     <span class="absolute left-3 top-3 text-slate-400">#</span>
-                                    <input type="text" value="PinkHeart" class="w-full pl-7 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent outline-none transition text-sm">
+                                    <input type="text" id="input-tag2" value="" class="w-full pl-7 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent outline-none transition text-sm">
                                 </div>
                                 <div class="relative">
                                     <span class="absolute left-3 top-3 text-slate-400">#</span>
-                                    <input type="text" value="MyUniverse" class="w-full pl-7 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent outline-none transition text-sm">
+                                    <input type="text" id="input-tag3" value="" class="w-full pl-7 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-brand-accent outline-none transition text-sm">
                                 </div>
                             </div>
                         </div>
@@ -332,57 +491,60 @@
                         </div>
                         <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Landing Gallery</h3>
                     </div>
+                    <button onclick="saveGallery()" class="px-3 py-2 md:px-4 bg-blue-500 hover:bg-blue-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-blue-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
+                        <i data-lucide="save" class="w-4 h-4"></i> Save Gallery
+                    </button>
                 </div>
                 
                 <div class="p-4 md:p-6 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                     <!-- Gallery Item 1 -->
                     <div class="relative group rounded-2xl overflow-hidden aspect-square border border-slate-200 dark:border-slate-700 shadow-md">
-                        <img id="gal1" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <img id="gal1" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center p-4 text-center backdrop-blur-[2px]">
                             <input type="file" class="hidden" id="file-gal1" onchange="updatePreview(this, 'gal1')">
                             <label for="file-gal1" class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition mb-3 backdrop-blur-md">
                                 <i data-lucide="edit-2" class="w-5 h-5"></i>
                             </label>
-                            <input type="text" value="The Smile" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors">
+                            <input type="text" id="gal1-caption" value="" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors" placeholder="Caption...">
                         </div>
                         <span class="absolute top-2 left-2 bg-black/50 text-white text-[10px] font-bold px-2 py-1 rounded-lg backdrop-blur-md border border-white/10">01</span>
                     </div>
 
                     <!-- Gallery Item 2 -->
                     <div class="relative group rounded-2xl overflow-hidden aspect-square border border-slate-200 dark:border-slate-700 shadow-md">
-                        <img id="gal2" src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <img id="gal2" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center p-4 text-center backdrop-blur-[2px]">
                             <input type="file" class="hidden" id="file-gal2" onchange="updatePreview(this, 'gal2')">
                             <label for="file-gal2" class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition mb-3 backdrop-blur-md">
                                 <i data-lucide="edit-2" class="w-5 h-5"></i>
                             </label>
-                            <input type="text" value="Our Fav Place" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors">
+                            <input type="text" id="gal2-caption" value="" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors" placeholder="Caption...">
                         </div>
                         <span class="absolute top-2 left-2 bg-black/50 text-white text-[10px] font-bold px-2 py-1 rounded-lg backdrop-blur-md border border-white/10">02</span>
                     </div>
 
                     <!-- Gallery Item 3 -->
                     <div class="relative group rounded-2xl overflow-hidden aspect-square border border-slate-200 dark:border-slate-700 shadow-md">
-                        <img id="gal3" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <img id="gal3" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center p-4 text-center backdrop-blur-[2px]">
                             <input type="file" class="hidden" id="file-gal3" onchange="updatePreview(this, 'gal3')">
                             <label for="file-gal3" class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition mb-3 backdrop-blur-md">
                                 <i data-lucide="edit-2" class="w-5 h-5"></i>
                             </label>
-                            <input type="text" value="Laughed" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors">
+                            <input type="text" id="gal3-caption" value="" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors" placeholder="Caption...">
                         </div>
                         <span class="absolute top-2 left-2 bg-black/50 text-white text-[10px] font-bold px-2 py-1 rounded-lg backdrop-blur-md border border-white/10">03</span>
                     </div>
 
                     <!-- Gallery Item 4 -->
                     <div class="relative group rounded-2xl overflow-hidden aspect-square border border-slate-200 dark:border-slate-700 shadow-md">
-                        <img id="gal4" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <img id="gal4" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center p-4 text-center backdrop-blur-[2px]">
                             <input type="file" class="hidden" id="file-gal4" onchange="updatePreview(this, 'gal4')">
                             <label for="file-gal4" class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition mb-3 backdrop-blur-md">
                                 <i data-lucide="edit-2" class="w-5 h-5"></i>
                             </label>
-                            <input type="text" value="Cantik Bgt" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors">
+                            <input type="text" id="gal4-caption" value="" class="bg-transparent border-b border-white/30 text-white text-xs text-center w-full focus:outline-none focus:border-brand-accent placeholder-white/50 py-1 transition-colors" placeholder="Caption...">
                         </div>
                         <span class="absolute top-2 left-2 bg-black/50 text-white text-[10px] font-bold px-2 py-1 rounded-lg backdrop-blur-md border border-white/10">04</span>
                     </div>
@@ -398,13 +560,16 @@
                         </div>
                         <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Immortalized Memories</h3>
                     </div>
+                    <button onclick="saveMemories()" class="px-3 py-2 md:px-4 bg-purple-500 hover:bg-purple-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-purple-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
+                        <i data-lucide="save" class="w-4 h-4"></i> Save Memories
+                    </button>
                 </div>
 
                 <div class="p-4 md:p-6 space-y-4 md:space-y-6">
                     <!-- Memory 1 -->
                     <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
                         <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
-                            <img id="mem1" src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            <img id="mem1" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
                                 <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
                                     <i data-lucide="upload" class="w-5 h-5"></i>
@@ -417,16 +582,16 @@
                                 <div class="p-1.5 bg-pink-100 dark:bg-pink-900/30 rounded-lg text-pink-500">
                                     <i data-lucide="smile" class="w-4 h-4"></i>
                                 </div>
-                                <input type="text" value="Senyum Kamu" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white">
+                                <input type="text" id="mem1-title" value="" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white" placeholder="Memory Title...">
                             </div>
-                            <textarea class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2">Momen dimana kamu ketawa lepas. Di detik itu, dunia rasanya berhenti berputar cuma buat ngeliat kamu bahagia.</textarea>
+                            <textarea id="mem1-desc" class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2" placeholder="Describe this memory..."></textarea>
                         </div>
                     </div>
 
                     <!-- Memory 2 -->
                     <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
                         <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
-                            <img id="mem2" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            <img id="mem2" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
                                 <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
                                     <i data-lucide="upload" class="w-5 h-5"></i>
@@ -439,25 +604,32 @@
                                 <div class="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-500">
                                     <i data-lucide="heart" class="w-4 h-4"></i>
                                 </div>
-                                <input type="text" value="Kebaikan Kamu" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white">
+                                <input type="text" id="mem2-title" value="" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white" placeholder="Memory Title...">
                             </div>
-                            <textarea class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2">Cara kamu peduli sama hal-hal kecil. Itu yang bikin kamu beda dari semua orang yang pernah aku kenal.</textarea>
+                            <textarea id="mem2-desc" class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2" placeholder="Describe this memory..."></textarea>
                         </div>
                     </div>
 
                     <!-- Memory 3 (Empty) -->
                     <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
                         <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative group shrink-0 shadow-inner border-2 border-dashed border-slate-300 dark:border-slate-600">
-                            <span class="text-4xl text-slate-300 dark:text-slate-600 font-serif group-hover:scale-110 transition-transform">?</span>
-                             </div>
+                            <img id="mem3" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110 hidden">
+                            <span id="mem3-placeholder" class="text-4xl text-slate-300 dark:text-slate-600 font-serif group-hover:scale-110 transition-transform">?</span>
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
+                                <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
+                                    <i data-lucide="upload" class="w-5 h-5"></i>
+                                    <input type="file" class="hidden" onchange="updatePreview(this, 'mem3')">
+                                </label>
+                            </div>
+                        </div>
                         <div class="flex-1 space-y-4">
                             <div class="flex items-center gap-3">
                                 <div class="p-1.5 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg text-yellow-500">
                                     <i data-lucide="sparkles" class="w-4 h-4"></i>
                                 </div>
-                                <input type="text" value="Masa Depan?" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white">
+                                <input type="text" id="mem3-title" value="" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white" placeholder="Memory Title...">
                             </div>
-                            <textarea class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2">Space kosong ini buat kenangan kita selanjutnya. Kalau kamu ijinin aku buat ngisi lembaran ini lagi.</textarea>
+                            <textarea id="mem3-desc" class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2" placeholder="Describe this memory..."></textarea>
                         </div>
                     </div>
                 </div>

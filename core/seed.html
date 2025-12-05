@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seed Firestore Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-8">
+    <div class="max-w-2xl w-full">
+        <h1 class="text-3xl font-bold mb-6 text-center">🌱 Seed Firestore Data</h1>
+        <p class="text-slate-400 text-center mb-8">Upload initial data for World of Anya dashboard</p>
+        
+        <div id="status" class="space-y-3 mb-8"></div>
+        
+        <button onclick="seedData()" id="seedBtn" class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl font-bold text-lg hover:opacity-90 transition">
+            🚀 Start Seeding
+        </button>
+        
+        <div class="mt-8 p-4 bg-slate-800 rounded-xl">
+            <h3 class="font-bold mb-2">Data Structure:</h3>
+            <pre id="dataPreview" class="text-xs text-slate-400 overflow-auto max-h-96"></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        import { doc, setDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Data structure for World of Anya
+        const seedData = {
+            // Profile/Hero Section
+            profile: {
+                name: "Zalfa Nazhifah",
+                bio: "Dia bukan sekadar nama. Dia adalah Zalfa Nazhifah. Lahir 24 Juli 2005, membawa warna biru dan pink ke dalam hidup seseorang yang pernah kehilangan arah.",
+                photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                tags: ["BlueSoul", "PinkHeart", "MyUniverse"],
+                updatedAt: new Date()
+            },
+
+            // Stats
+            stats: {
+                totalVisits: 1240,
+                memoriesCount: 42,
+                startDate: new Date("2024-06-01"), // Relationship start date
+                updatedAt: new Date()
+            },
+
+            // Gallery Images
+            gallery: [
+                {
+                    id: 1,
+                    url: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                    caption: "The Smile",
+                    order: 1
+                },
+                {
+                    id: 2,
+                    url: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                    caption: "Our Fav Place",
+                    order: 2
+                },
+                {
+                    id: 3,
+                    url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                    caption: "Laughed",
+                    order: 3
+                },
+                {
+                    id: 4,
+                    url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                    caption: "Cantik Bgt",
+                    order: 4
+                }
+            ],
+
+            // Memories Cards
+            memories: [
+                {
+                    id: 1,
+                    title: "Senyum Kamu",
+                    description: "Momen dimana kamu ketawa lepas. Di detik itu, dunia rasanya berhenti berputar cuma buat ngeliat kamu bahagia.",
+                    icon: "smile",
+                    iconColor: "pink",
+                    image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                    order: 1
+                },
+                {
+                    id: 2,
+                    title: "Kebaikan Kamu",
+                    description: "Cara kamu peduli sama hal-hal kecil. Itu yang bikin kamu beda dari semua orang yang pernah aku kenal.",
+                    icon: "heart",
+                    iconColor: "blue",
+                    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                    order: 2
+                },
+                {
+                    id: 3,
+                    title: "Masa Depan?",
+                    description: "Space kosong ini buat kenangan kita selanjutnya. Kalau kamu ijinin aku buat ngisi lembaran ini lagi.",
+                    icon: "sparkles",
+                    iconColor: "yellow",
+                    image: null,
+                    order: 3
+                }
+            ]
+        };
+
+        // Show data preview
+        document.getElementById('dataPreview').textContent = JSON.stringify(seedData, null, 2);
+
+        // Seed function
+        window.seedData = async function() {
+            const btn = document.getElementById('seedBtn');
+            const status = document.getElementById('status');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Uploading...';
+            status.innerHTML = '';
+
+            const addStatus = (message, success = true) => {
+                const div = document.createElement('div');
+                div.className = `p-3 rounded-lg ${success ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`;
+                div.innerHTML = `${success ? '✅' : '❌'} ${message}`;
+                status.appendChild(div);
+            };
+
+            try {
+                // 1. Upload Profile
+                await setDoc(doc(db, "landing", "profile"), seedData.profile);
+                addStatus('Profile data uploaded');
+
+                // 2. Upload Stats
+                await setDoc(doc(db, "landing", "stats"), seedData.stats);
+                addStatus('Stats data uploaded');
+
+                // 3. Upload Gallery
+                await setDoc(doc(db, "landing", "gallery"), { items: seedData.gallery });
+                addStatus('Gallery data uploaded');
+
+                // 4. Upload Memories
+                await setDoc(doc(db, "landing", "memories"), { items: seedData.memories });
+                addStatus('Memories data uploaded');
+
+                btn.className = 'w-full py-4 bg-green-600 rounded-xl font-bold text-lg';
+                btn.textContent = '✅ All Data Seeded Successfully!';
+
+            } catch (error) {
+                console.error('Seed error:', error);
+                addStatus(`Error: ${error.message}`, false);
+                btn.className = 'w-full py-4 bg-red-600 rounded-xl font-bold text-lg';
+                btn.textContent = '❌ Seeding Failed';
+            }
+        };
+    </script>
+</body>
+</html>
