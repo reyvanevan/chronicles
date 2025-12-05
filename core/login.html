@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Core Access | World of Anya</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#FCE7F3',
+                            blue: '#E0F2FE',
+                            accent: '#db2777',
+                            accentLight: '#f472b6',
+                            dark: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Theme Check
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        }
+    </script>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 min-h-screen flex items-center justify-center p-4 overflow-hidden relative selection:bg-brand-accent selection:text-white">
+
+    <!-- Animated Background -->
+    <div class="absolute inset-0 overflow-hidden">
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        
+        <!-- Glowing Orbs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] animate-float"></div>
+    </div>
+
+    <!-- Login Card -->
+    <div id="loginCard" class="relative z-10 w-full max-w-md">
+        
+        <!-- Top Badge -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-md rounded-full border border-slate-700/50 text-slate-400 text-xs font-medium uppercase tracking-widest">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                System Online
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl shadow-black/50 p-8 md:p-10">
+            
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="relative inline-block mb-4">
+                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shadow-lg shadow-pink-500/30 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                        <i data-lucide="shield-check" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-slate-900 rounded-lg flex items-center justify-center border border-slate-700">
+                        <i data-lucide="lock" class="w-3 h-3 text-pink-400"></i>
+                    </div>
+                </div>
+                <h1 class="font-serif text-3xl font-bold text-white mb-2">Core Access</h1>
+                <p class="text-slate-400 text-sm">Administrator authentication required</p>
+            </div>
+
+            <!-- Login Form -->
+            <form onsubmit="handleLogin(event)" class="space-y-5">
+                <!-- Email -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="mail" class="w-3 h-3"></i> Email
+                    </label>
+                    <div class="relative">
+                        <input type="email" id="email"
+                            class="w-full px-4 py-4 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-500 transition-all"
+                            placeholder="admin@worldofanya.com" required>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="key" class="w-3 h-3"></i> Password
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="password"
+                            class="w-full px-4 py-4 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-500 transition-all pr-12"
+                            placeholder="••••••••" required>
+                        <button type="button" onclick="togglePassword()"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition">
+                            <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMsg" class="hidden p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm text-center">
+                    <i data-lucide="alert-circle" class="w-4 h-4 inline mr-1"></i>
+                    <span id="errorText">Invalid credentials</span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="loginBtn"
+                    class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-pink-500/30 transform transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-6">
+                    <span>Access Control Center</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-8 pt-6 border-t border-slate-700/50">
+                <div class="flex items-center justify-between text-xs text-slate-500">
+                    <a href="../index.html" class="flex items-center gap-1 hover:text-white transition">
+                        <i data-lucide="arrow-left" class="w-3 h-3"></i>
+                        Back to Site
+                    </a>
+                    <span class="flex items-center gap-1">
+                        <i data-lucide="shield" class="w-3 h-3"></i>
+                        Protected Access
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Text -->
+        <p class="text-center text-slate-600 text-xs mt-6">
+            World of Anya © 2024 • Control Center v1.0
+        </p>
+    </div>
+
+    <script type="module">
+        import { auth } from '../js/firebase-config.js';
+        import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        lucide.createIcons();
+
+        // Check if already logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Toggle Password Visibility
+        window.togglePassword = function() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        // Handle Login
+        window.handleLogin = async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const errorDiv = document.getElementById('errorMsg');
+            const card = document.getElementById('loginCard');
+            
+            // Hide previous error
+            errorDiv.classList.add('hidden');
+            
+            // Loading state
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="animate-spin w-5 h-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Authenticating...`;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                
+                // Success!
+                btn.classList.remove('from-pink-500', 'to-purple-600');
+                btn.classList.add('bg-green-500');
+                btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i> Access Granted`;
+                lucide.createIcons();
+
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 800);
+
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                // Show error
+                let errorMessage = 'Invalid credentials. Please try again.';
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No account found with this email.';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = 'Incorrect password.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Too many attempts. Please try again later.';
+                }
+                
+                document.getElementById('errorText').textContent = errorMessage;
+                errorDiv.classList.remove('hidden');
+                
+                // Shake animation
+                card.classList.add('animate-shake');
+                setTimeout(() => card.classList.remove('animate-shake'), 500);
+                
+                // Reset button
+                btn.disabled = false;
+                btn.innerHTML = `<span>Access Control Center</span><i data-lucide="arrow-right" class="w-5 h-5"></i>`;
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+
+</html>
