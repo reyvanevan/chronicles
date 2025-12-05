@@ -334,6 +334,54 @@ export async function getAllStories(limitCount = 50) {
     }));
 }
 
+/**
+ * Get archived stories for a specific author (older than 24h)
+ * @param {string} authorId - 'rey' or 'anya'
+ * @param {number} limitCount - Max number of stories
+ * @returns {Promise<Array>} Array of archived stories grouped by month
+ */
+export async function getArchivedStories(authorId, limitCount = 100) {
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    
+    const q = query(
+        collection(db, 'stories'),
+        where('authorId', '==', authorId),
+        where('createdAt', '<', Timestamp.fromDate(yesterday)),
+        orderBy('createdAt', 'desc'),
+        limit(limitCount)
+    );
+    
+    const snapshot = await getDocs(q);
+    const stories = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date()
+    }));
+    
+    return stories;
+}
+
+/**
+ * Group stories by month for archive display
+ * @param {Array} stories - Array of story objects
+ * @returns {Object} Stories grouped by month key (e.g., "December 2025")
+ */
+export function groupStoriesByMonth(stories) {
+    const grouped = {};
+    
+    stories.forEach(story => {
+        const date = story.createdAt;
+        const monthKey = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        
+        if (!grouped[monthKey]) {
+            grouped[monthKey] = [];
+        }
+        grouped[monthKey].push(story);
+    });
+    
+    return grouped;
+}
+
 // ==================== UTILITY FUNCTIONS ====================
 
 /**
