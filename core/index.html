@@ -240,10 +240,10 @@
                 stickers.push(emoji);
                 window.currentReyStickers = stickers;
                 
-                await updateDoc(doc(db, "landing", "profileRey"), {
+                await setDoc(doc(db, "landing", "profileRey"), {
                     stickers: stickers,
                     updatedAt: new Date()
-                });
+                }, { merge: true });
                 
                 renderStickers(stickers);
                 
@@ -265,11 +265,12 @@
             btn.disabled = true;
 
             try {
-                await updateDoc(doc(db, "landing", "profileRey"), {
+                await setDoc(doc(db, "landing", "profileRey"), {
                     name: document.getElementById('input-rey-name').value,
                     title: document.getElementById('input-rey-title').value,
                     bio: document.getElementById('input-rey-bio').value,
                     photo: document.getElementById('reyProfilePreview').src,
+                    stickers: window.currentReyStickers || [],
                     updatedAt: new Date()
                 });
 
