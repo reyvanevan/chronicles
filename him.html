@@ -99,6 +99,21 @@
 
     <main class="pt-24 pb-10 px-4 max-w-4xl mx-auto">
 
+        <!-- Personalized Greeting Banner (hidden by default, shown when logged in) -->
+        <div id="greetingBanner" class="hidden max-w-lg mx-auto mb-6" data-aos="fade-down">
+            <div class="glass-card rounded-2xl p-4 border border-blue-200/50 dark:border-blue-500/20 bg-gradient-to-r from-blue-50/50 to-cyan-50/50 dark:from-blue-900/20 dark:to-cyan-900/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="sparkles" id="greetingIcon" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <p id="greetingText" class="font-serif text-lg text-slate-800 dark:text-white font-semibold"></p>
+                        <p id="greetingSubtext" class="text-xs text-slate-500 dark:text-slate-400"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Profile Header -->
         <div class="text-center mb-8" data-aos="fade-down">
             <div
@@ -242,6 +257,54 @@
     <!-- Load JS Modular (Di bawah biar halaman tampil dulu) -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/script.js"></script>
+    
+    <!-- Personalized Greeting Logic -->
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        onAuthStateChanged(auth, async (user) => {
+            const greetingBanner = document.getElementById('greetingBanner');
+            const greetingText = document.getElementById('greetingText');
+            const greetingSubtext = document.getElementById('greetingSubtext');
+            const greetingIcon = document.getElementById('greetingIcon');
+            
+            if (user) {
+                try {
+                    const userIds = ['rey', 'anya'];
+                    let foundUser = null;
+                    
+                    for (const userId of userIds) {
+                        const userDoc = await getDoc(doc(db, 'users', userId));
+                        if (userDoc.exists() && userDoc.data().email === user.email) {
+                            foundUser = { id: userId, ...userDoc.data() };
+                            break;
+                        }
+                    }
+                    
+                    if (foundUser) {
+                        greetingText.textContent = foundUser.greeting;
+                        
+                        if (foundUser.role === 'guardian') {
+                            greetingSubtext.textContent = 'This is you, Guardian 🛡️';
+                            greetingIcon.setAttribute('data-lucide', 'shield');
+                        } else if (foundUser.role === 'princess') {
+                            greetingSubtext.textContent = 'Viewing his profile 💙';
+                            greetingIcon.setAttribute('data-lucide', 'heart');
+                        }
+                        
+                        greetingBanner.classList.remove('hidden');
+                        lucide.createIcons();
+                    }
+                } catch (error) {
+                    console.error('Failed to load user greeting:', error);
+                }
+            } else {
+                greetingBanner.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 
 </html>

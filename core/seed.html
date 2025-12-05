@@ -111,6 +111,40 @@
                 content: "Aku tau kata-kata nggak akan pernah cukup. Tapi aku harap website ini bisa jadi bukti kecil kalau aku bener-bener serius.\n\nTerima kasih udah kasih ruang buat aku memperbaiki diri. Take your time. Aku bakal tetep di sini, ngejaga janji ini.",
                 quote: "I love you, today and forever.",
                 updatedAt: new Date()
+            },
+
+            // Users with roles
+            users: {
+                rey: {
+                    uid: "rey-guardian",
+                    email: "rey@worldofanya.com",
+                    displayName: "Reyvan",
+                    role: "guardian",
+                    greeting: "Welcome home, Guardian.",
+                    avatar: "https://ui-avatars.com/api/?name=Rey&background=0D8ABC&color=fff",
+                    canEdit: ["profile-anya", "gallery", "memories", "letter", "profile-rey"],
+                    createdAt: new Date()
+                },
+                anya: {
+                    uid: "anya-princess", 
+                    email: "anya@worldofanya.com",
+                    displayName: "Anya",
+                    role: "princess",
+                    greeting: "Hi beautiful, how was your day?",
+                    avatar: "https://ui-avatars.com/api/?name=Anya&background=EC4899&color=fff",
+                    canEdit: ["stickers", "highlights-anya"],
+                    createdAt: new Date()
+                }
+            },
+
+            // Him Profile (Rey's profile for him.html)
+            profileRey: {
+                name: "Reyvan Azhari",
+                bio: "Just a guy who's trying his best to be the person she deserves. Everyday is a chance to be better.",
+                photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                tags: ["HerGuardian", "WorkInProgress", "LovesHer"],
+                stickers: [], // Anya can add stickers here
+                updatedAt: new Date()
             }
         };
 
@@ -153,6 +187,16 @@
                 // 5. Upload Letter
                 await setDoc(doc(db, "landing", "letter"), seedData.letter);
                 addStatus('Letter data uploaded');
+
+                // 6. Upload Users (for role-based personalization)
+                await setDoc(doc(db, "users", "rey"), seedData.users.rey);
+                addStatus('User Rey uploaded');
+                await setDoc(doc(db, "users", "anya"), seedData.users.anya);
+                addStatus('User Anya uploaded');
+
+                // 7. Upload Profile Rey
+                await setDoc(doc(db, "landing", "profileRey"), seedData.profileRey);
+                addStatus('Profile Rey data uploaded');
 
                 btn.className = 'w-full py-4 bg-green-600 rounded-xl font-bold text-lg';
                 btn.textContent = '✅ All Data Seeded Successfully!';
