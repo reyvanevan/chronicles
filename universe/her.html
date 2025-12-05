@@ -30,11 +30,15 @@
                 // Check if current user is the profile owner (Anya)
                 window.isOwner = window.currentUserAuthor === 'anya';
                 
-                // Show archive section only if owner
+                // Show archive section and add highlight button only if owner
                 if (window.isOwner) {
                     document.getElementById('archiveSection').classList.remove('hidden');
+                    document.getElementById('addHighlightBtn')?.classList?.remove('hidden');
                     loadArchive();
                 }
+                
+                // Always load highlights
+                loadHighlights();
             }
         });
 
@@ -139,76 +143,31 @@
         <div class="flex gap-4 overflow-x-auto py-2 mb-6 justify-start no-scrollbar px-2"
             data-aos="fade-up" data-aos-delay="50">
 
-            <!-- Highlight: Archive (hanya muncul jika isOwner) -->
+            <!-- Add Highlight Button (only for owner) -->
+            <div id="addHighlightBtn" class="hidden flex-col items-center gap-2 min-w-[64px] cursor-pointer group" onclick="openCreateHighlightModal()">
+                <div class="w-16 h-16 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center group-hover:border-pink-500 group-hover:scale-110 transition-all duration-300">
+                    <i data-lucide="plus" class="w-6 h-6 text-slate-400 group-hover:text-pink-500"></i>
+                </div>
+                <span class="text-[10px] font-medium tracking-wide text-slate-400 group-hover:text-pink-500">New</span>
+            </div>
+
+            <!-- Highlight: Archive (only for owner) -->
             <div id="archiveHighlight" class="hidden flex-col items-center gap-2 min-w-[64px] cursor-pointer group" onclick="toggleArchiveModal()">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-500 to-slate-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
+                <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-slate-500 to-slate-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <div class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
                         <i data-lucide="archive" class="w-6 h-6 text-slate-500"></i>
                     </div>
                 </div>
                 <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Arsip</span>
             </div>
 
-            <!-- Highlight Item: Dates -->
-            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-brand-accent to-purple-400 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="heart" class="w-6 h-6 text-pink-500 fill-pink-50"></i>
-                    </div>
+            <!-- Dynamic Highlights List -->
+            <div id="highlightsList" class="flex gap-4">
+                <!-- Loading placeholder -->
+                <div class="flex flex-col items-center gap-2 min-w-[64px] animate-pulse">
+                    <div class="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                    <div class="w-12 h-2 rounded bg-slate-200 dark:bg-slate-800"></div>
                 </div>
-                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Dates</span>
-            </div>
-
-            <!-- Highlight Item: Trips -->
-            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-blue-400 to-cyan-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="plane" class="w-6 h-6 text-blue-500"></i>
-                    </div>
-                </div>
-                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Trips</span>
-            </div>
-
-            <!-- Highlight Item: Food -->
-            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-400 to-orange-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="coffee" class="w-6 h-6 text-amber-600"></i>
-                    </div>
-                </div>
-                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Food</span>
-            </div>
-
-            <!-- Highlight Item: Silly -->
-            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-emerald-400 to-teal-300 group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <i data-lucide="smile" class="w-6 h-6 text-emerald-500"></i>
-                    </div>
-                </div>
-                <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">Silly</span>
-            </div>
-
-            <!-- Highlight Item: 2025 -->
-            <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group">
-                <div
-                    class="w-16 h-16 rounded-full p-[2px] bg-slate-200 dark:bg-slate-700 group-hover:scale-110 transition-transform duration-300">
-                    <div
-                        class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center overflow-hidden">
-                        <span class="text-[10px] font-bold text-slate-400">2025</span>
-                    </div>
-                </div>
-                <span class="text-[10px] font-medium tracking-wide text-slate-400">Memories</span>
             </div>
         </div>
 
@@ -402,15 +361,226 @@
         </div>
     </div>
 
+    <!-- Create Highlight Modal -->
+    <div id="createHighlightModal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div onclick="closeCreateHighlightModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute inset-x-4 top-20 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:max-w-sm bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-2xl">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+                <h2 class="font-serif font-bold text-lg">New Highlight</h2>
+                <button onclick="closeCreateHighlightModal()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Form -->
+            <div class="p-4 space-y-4">
+                <!-- Name Input -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Highlight Name</label>
+                    <input type="text" id="highlightNameInput" placeholder="e.g., Travel, Food, Us"
+                        class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-pink-500 focus:border-transparent text-sm">
+                </div>
+                
+                <!-- Icon Picker -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-2">Choose Icon</label>
+                    <div id="iconPicker" class="grid grid-cols-7 gap-2 max-h-32 overflow-y-auto p-1">
+                        <!-- Icons will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Color Picker -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-2">Choose Color</label>
+                    <div id="colorPicker" class="flex gap-2 flex-wrap">
+                        <!-- Colors will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Preview -->
+                <div class="flex justify-center py-2">
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="highlightPreview" class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-pink-400 to-rose-500">
+                            <div class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center">
+                                <i data-lucide="star" class="w-6 h-6 text-pink-500" id="previewIcon"></i>
+                            </div>
+                        </div>
+                        <span id="previewName" class="text-[10px] font-medium text-slate-700 dark:text-slate-300">Preview</span>
+                    </div>
+                </div>
+                
+                <!-- Create Button -->
+                <button onclick="createNewHighlight()" id="createHighlightBtn"
+                    class="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-medium transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    Create Highlight
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Highlight Viewer Modal (like story viewer) -->
+    <div id="highlightViewerModal" class="fixed inset-0 z-[100] hidden bg-black">
+        <!-- Progress Bars -->
+        <div id="highlightProgressBars" class="absolute top-0 left-0 right-0 z-20 flex gap-1 p-2 px-3">
+        </div>
+        
+        <!-- Header -->
+        <div class="absolute top-6 left-0 right-0 z-20 px-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="highlightViewerIcon" class="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-400 to-rose-500 flex items-center justify-center">
+                    <i data-lucide="star" class="w-4 h-4 text-white"></i>
+                </div>
+                <div>
+                    <p id="highlightViewerName" class="text-white text-sm font-semibold"></p>
+                    <p id="highlightViewerDate" class="text-white/60 text-xs"></p>
+                </div>
+            </div>
+            <button onclick="closeHighlightViewer()" class="p-2 text-white/80 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <!-- Story Image -->
+        <div class="absolute inset-0 flex items-center justify-center">
+            <img id="highlightViewerImage" src="" class="max-w-full max-h-full object-contain">
+        </div>
+        
+        <!-- Navigation Touch Areas -->
+        <div class="absolute inset-0 flex z-10">
+            <div onclick="prevHighlightStory()" class="w-1/3 h-full cursor-pointer"></div>
+            <div onclick="toggleHighlightPause()" class="w-1/3 h-full cursor-pointer"></div>
+            <div onclick="nextHighlightStory()" class="w-1/3 h-full cursor-pointer"></div>
+        </div>
+        
+        <!-- Caption -->
+        <div class="absolute bottom-0 left-0 right-0 z-20 p-4 pb-8 bg-gradient-to-t from-black/80 to-transparent">
+            <p id="highlightViewerCaption" class="text-white text-sm text-center"></p>
+        </div>
+    </div>
+
+    <!-- Select Highlight Modal (for adding story to highlight) -->
+    <div id="selectHighlightModal" class="fixed inset-0 z-[120] hidden">
+        <!-- Backdrop -->
+        <div onclick="closeSelectHighlightModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute inset-x-4 bottom-0 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:max-w-sm md:bottom-auto md:top-1/2 md:-translate-y-1/2 bg-white dark:bg-slate-900 rounded-t-2xl md:rounded-2xl overflow-hidden shadow-2xl">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+                <h2 class="font-serif font-bold text-lg">Add to Highlight</h2>
+                <button onclick="closeSelectHighlightModal()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Story Preview -->
+            <div id="selectHighlightPreview" class="p-4 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <img id="selectedStoryThumb" src="" class="w-16 h-16 rounded-lg object-cover">
+                    <div>
+                        <p class="text-sm font-medium">Selected Story</p>
+                        <p id="selectedStoryDate" class="text-xs text-slate-500"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Highlights List -->
+            <div class="p-4 max-h-64 overflow-y-auto">
+                <div id="highlightsForSelection" class="space-y-2">
+                    <!-- Will be populated dynamically -->
+                </div>
+                
+                <!-- Create New Option -->
+                <button onclick="closeSelectHighlightModal(); openCreateHighlightModal();" 
+                    class="w-full mt-3 py-3 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-slate-500 hover:text-pink-500 hover:border-pink-500 transition flex items-center justify-center gap-2">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                    Create New Highlight
+                </button>
+            </div>
+            
+            <!-- Safe Area for Mobile -->
+            <div class="h-6 md:hidden"></div>
+        </div>
+    </div>
+
     <!-- Load Logic -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="../js/script.js"></script>
     
-    <!-- Archive Logic -->
+    <!-- Archive & Highlights Logic -->
     <script type="module">
-        import { getArchivedStories, groupStoriesByMonth, formatDate, USER_PROFILES } from '../js/firestore-service.js';
+        import { 
+            getArchivedStories, groupStoriesByMonth, formatDate, USER_PROFILES,
+            getHighlights, createHighlight, getHighlightStories, addStoryToHighlight,
+            HIGHLIGHT_ICONS, HIGHLIGHT_GRADIENTS
+        } from '../js/firestore-service.js';
         
         let archivedStories = [];
+        let userHighlights = [];
+        
+        // Gradient class mapping
+        const GRADIENT_CLASSES = {
+            'pink': 'from-pink-400 to-rose-500',
+            'purple': 'from-purple-400 to-pink-500',
+            'blue': 'from-blue-400 to-cyan-500',
+            'green': 'from-emerald-400 to-teal-500',
+            'orange': 'from-orange-400 to-amber-500',
+            'red': 'from-red-400 to-rose-600',
+            'slate': 'from-slate-400 to-slate-600',
+            'gold': 'from-yellow-400 to-amber-500'
+        };
+        
+        // Selected values for create form
+        let selectedIcon = 'star';
+        let selectedGradient = 'pink';
+        
+        // Load highlights
+        window.loadHighlights = async function() {
+            try {
+                userHighlights = await getHighlights('anya');
+                renderHighlights();
+            } catch (error) {
+                console.error('Failed to load highlights:', error);
+            }
+        };
+        
+        // Render highlights
+        function renderHighlights() {
+            const container = document.getElementById('highlightsList');
+            
+            if (userHighlights.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center gap-2 min-w-[64px] text-center">
+                        <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                            <i data-lucide="image" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <span class="text-[10px] text-slate-400">No highlights</span>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            container.innerHTML = userHighlights.map(h => `
+                <div class="flex flex-col items-center gap-2 min-w-[64px] cursor-pointer group" onclick="openHighlightViewer('${h.id}')">
+                    <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr ${GRADIENT_CLASSES[h.gradient] || GRADIENT_CLASSES['pink']} group-hover:scale-110 transition-transform duration-300 shadow-md">
+                        ${h.coverImageBase64 
+                            ? `<img src="${h.coverImageBase64}" class="w-full h-full rounded-full border-[3px] border-white dark:border-slate-900 object-cover">`
+                            : `<div class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-[3px] border-white dark:border-slate-900 flex items-center justify-center">
+                                <i data-lucide="${h.icon}" class="w-6 h-6 text-slate-600 dark:text-slate-400"></i>
+                            </div>`
+                        }
+                    </div>
+                    <span class="text-[10px] font-medium tracking-wide text-slate-700 dark:text-slate-300">${h.name}</span>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
         
         // Load archive stories
         window.loadArchive = async function() {
@@ -478,10 +648,16 @@
                         </h3>
                         <div class="grid grid-cols-3 gap-2">
                             ${stories.map((story, idx) => `
-                                <div class="aspect-square rounded-xl overflow-hidden cursor-pointer relative group"
-                                     onclick="openArchiveStory(${archivedStories.indexOf(story)})">
-                                    <img src="${story.imageBase64}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
-                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-end justify-center pb-2 opacity-0 group-hover:opacity-100">
+                                <div class="aspect-square rounded-xl overflow-hidden relative group">
+                                    <img src="${story.imageBase64}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300 cursor-pointer"
+                                         onclick="openArchiveStory(${archivedStories.indexOf(story)})">
+                                    
+                                    <!-- Overlay with actions -->
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                                        <button onclick="event.stopPropagation(); openSelectHighlightModal('${story.id}')"
+                                            class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transform hover:scale-110 transition">
+                                            <i data-lucide="bookmark-plus" class="w-4 h-4 text-slate-700"></i>
+                                        </button>
                                         <span class="text-white text-[10px]">${formatDate(story.createdAt)}</span>
                                     </div>
                                 </div>
@@ -534,11 +710,373 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeArchiveStory();
+                closeCreateHighlightModal();
+                closeHighlightViewer();
+                closeSelectHighlightModal();
                 if (!document.getElementById('archiveModal').classList.contains('hidden')) {
                     toggleArchiveModal();
                 }
             }
         });
+        
+        // ==================== CREATE HIGHLIGHT MODAL ====================
+        
+        // Initialize icon and color pickers
+        window.initCreateHighlightModal = function() {
+            // Icon picker
+            const iconPicker = document.getElementById('iconPicker');
+            iconPicker.innerHTML = HIGHLIGHT_ICONS.map(icon => `
+                <button type="button" onclick="selectIcon('${icon}')" 
+                    class="icon-option p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition ${icon === selectedIcon ? 'bg-pink-100 dark:bg-pink-900 ring-2 ring-pink-500' : ''}"
+                    data-icon="${icon}">
+                    <i data-lucide="${icon}" class="w-5 h-5"></i>
+                </button>
+            `).join('');
+            
+            // Color picker
+            const colorPicker = document.getElementById('colorPicker');
+            colorPicker.innerHTML = HIGHLIGHT_GRADIENTS.map(g => `
+                <button type="button" onclick="selectGradient('${g.id}')"
+                    class="color-option w-8 h-8 rounded-full bg-gradient-to-tr ${GRADIENT_CLASSES[g.id]} transition transform hover:scale-110 ${g.id === selectedGradient ? 'ring-2 ring-offset-2 ring-pink-500' : ''}"
+                    data-gradient="${g.id}">
+                </button>
+            `).join('');
+            
+            lucide.createIcons();
+            updatePreview();
+        };
+        
+        window.selectIcon = function(icon) {
+            selectedIcon = icon;
+            document.querySelectorAll('.icon-option').forEach(btn => {
+                btn.classList.remove('bg-pink-100', 'dark:bg-pink-900', 'ring-2', 'ring-pink-500');
+                if (btn.dataset.icon === icon) {
+                    btn.classList.add('bg-pink-100', 'dark:bg-pink-900', 'ring-2', 'ring-pink-500');
+                }
+            });
+            updatePreview();
+        };
+        
+        window.selectGradient = function(gradient) {
+            selectedGradient = gradient;
+            document.querySelectorAll('.color-option').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-pink-500');
+                if (btn.dataset.gradient === gradient) {
+                    btn.classList.add('ring-2', 'ring-offset-2', 'ring-pink-500');
+                }
+            });
+            updatePreview();
+        };
+        
+        function updatePreview() {
+            const preview = document.getElementById('highlightPreview');
+            const previewIcon = document.getElementById('previewIcon');
+            const previewName = document.getElementById('previewName');
+            const nameInput = document.getElementById('highlightNameInput');
+            
+            // Update gradient
+            preview.className = `w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr ${GRADIENT_CLASSES[selectedGradient]}`;
+            
+            // Update icon
+            previewIcon.setAttribute('data-lucide', selectedIcon);
+            
+            // Update name
+            previewName.textContent = nameInput?.value?.trim() || 'Preview';
+            
+            lucide.createIcons();
+        }
+        
+        window.openCreateHighlightModal = function() {
+            const modal = document.getElementById('createHighlightModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset form
+            document.getElementById('highlightNameInput').value = '';
+            selectedIcon = 'star';
+            selectedGradient = 'pink';
+            
+            initCreateHighlightModal();
+            
+            // Add input listener for preview
+            document.getElementById('highlightNameInput').addEventListener('input', updatePreview);
+        };
+        
+        window.closeCreateHighlightModal = function() {
+            document.getElementById('createHighlightModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+        
+        window.createNewHighlight = async function() {
+            const nameInput = document.getElementById('highlightNameInput');
+            const name = nameInput.value.trim();
+            const btn = document.getElementById('createHighlightBtn');
+            
+            if (!name) {
+                alert('Please enter a highlight name');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+            
+            try {
+                await createHighlight({
+                    name: name,
+                    icon: selectedIcon,
+                    gradient: selectedGradient,
+                    authorId: 'anya'
+                });
+                
+                closeCreateHighlightModal();
+                await loadHighlights();
+                
+            } catch (error) {
+                console.error('Failed to create highlight:', error);
+                alert('Failed to create highlight. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Create Highlight';
+            }
+        };
+        
+        // ==================== HIGHLIGHT VIEWER ====================
+        
+        let currentHighlight = null;
+        let highlightStories = [];
+        let highlightStoryIndex = 0;
+        let highlightProgressInterval = null;
+        let highlightPaused = false;
+        
+        window.openHighlightViewer = async function(highlightId) {
+            const highlight = userHighlights.find(h => h.id === highlightId);
+            if (!highlight) return;
+            
+            currentHighlight = highlight;
+            
+            try {
+                highlightStories = await getHighlightStories(highlightId);
+                
+                if (highlightStories.length === 0) {
+                    alert('No stories in this highlight yet. Add stories from your archive!');
+                    return;
+                }
+                
+                highlightStoryIndex = 0;
+                highlightPaused = false;
+                
+                const modal = document.getElementById('highlightViewerModal');
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                
+                // Build progress bars
+                const progressBars = document.getElementById('highlightProgressBars');
+                progressBars.innerHTML = highlightStories.map((_, i) => `
+                    <div class="flex-1 h-0.5 bg-white/30 rounded-full overflow-hidden">
+                        <div class="highlight-progress h-full bg-white rounded-full" data-index="${i}" style="width: 0%;"></div>
+                    </div>
+                `).join('');
+                
+                showHighlightStory(0);
+                startHighlightProgress();
+                
+            } catch (error) {
+                console.error('Failed to load highlight stories:', error);
+            }
+        };
+        
+        function showHighlightStory(index) {
+            const story = highlightStories[index];
+            if (!story) return;
+            
+            document.getElementById('highlightViewerImage').src = story.imageBase64;
+            document.getElementById('highlightViewerName').textContent = currentHighlight.name;
+            document.getElementById('highlightViewerDate').textContent = formatDate(story.createdAt);
+            document.getElementById('highlightViewerCaption').textContent = story.caption || '';
+            
+            // Update icon
+            const iconContainer = document.getElementById('highlightViewerIcon');
+            iconContainer.className = `w-8 h-8 rounded-full bg-gradient-to-tr ${GRADIENT_CLASSES[currentHighlight.gradient]} flex items-center justify-center`;
+            iconContainer.innerHTML = `<i data-lucide="${currentHighlight.icon}" class="w-4 h-4 text-white"></i>`;
+            
+            // Update progress bars
+            document.querySelectorAll('.highlight-progress').forEach((bar, i) => {
+                if (i < index) bar.style.width = '100%';
+                else if (i === index) bar.style.width = '0%';
+                else bar.style.width = '0%';
+            });
+            
+            lucide.createIcons();
+        }
+        
+        function startHighlightProgress() {
+            stopHighlightProgress();
+            
+            const progressBar = document.querySelector(`.highlight-progress[data-index="${highlightStoryIndex}"]`);
+            if (!progressBar) return;
+            
+            let progress = 0;
+            const duration = 5000;
+            const startTime = Date.now();
+            
+            highlightProgressInterval = setInterval(() => {
+                if (highlightPaused) return;
+                
+                progress = Math.min(((Date.now() - startTime) / duration) * 100, 100);
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    nextHighlightStory();
+                }
+            }, 16);
+        }
+        
+        function stopHighlightProgress() {
+            if (highlightProgressInterval) {
+                clearInterval(highlightProgressInterval);
+                highlightProgressInterval = null;
+            }
+        }
+        
+        window.nextHighlightStory = function() {
+            stopHighlightProgress();
+            
+            const currentBar = document.querySelector(`.highlight-progress[data-index="${highlightStoryIndex}"]`);
+            if (currentBar) currentBar.style.width = '100%';
+            
+            highlightStoryIndex++;
+            
+            if (highlightStoryIndex >= highlightStories.length) {
+                closeHighlightViewer();
+                return;
+            }
+            
+            showHighlightStory(highlightStoryIndex);
+            startHighlightProgress();
+        };
+        
+        window.prevHighlightStory = function() {
+            stopHighlightProgress();
+            highlightStoryIndex = Math.max(0, highlightStoryIndex - 1);
+            showHighlightStory(highlightStoryIndex);
+            startHighlightProgress();
+        };
+        
+        window.toggleHighlightPause = function() {
+            highlightPaused = !highlightPaused;
+        };
+        
+        window.closeHighlightViewer = function() {
+            stopHighlightProgress();
+            document.getElementById('highlightViewerModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+        
+        // ==================== SELECT HIGHLIGHT MODAL (Add Story to Highlight) ====================
+        
+        let selectedStoryForHighlight = null;
+        
+        window.openSelectHighlightModal = function(storyId) {
+            const story = archivedStories.find(s => s.id === storyId);
+            if (!story) return;
+            
+            selectedStoryForHighlight = story;
+            
+            const modal = document.getElementById('selectHighlightModal');
+            
+            // Set preview
+            document.getElementById('selectedStoryThumb').src = story.imageBase64;
+            document.getElementById('selectedStoryDate').textContent = formatDate(story.createdAt);
+            
+            // Render highlights
+            renderHighlightsForSelection();
+            
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        };
+        
+        function renderHighlightsForSelection() {
+            const container = document.getElementById('highlightsForSelection');
+            
+            if (userHighlights.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <p class="text-slate-500 text-sm">No highlights yet</p>
+                        <p class="text-slate-400 text-xs">Create one to add this story</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = userHighlights.map(h => {
+                const isAlreadyAdded = h.storyIds?.includes(selectedStoryForHighlight?.id);
+                return `
+                    <button onclick="addStoryToSelectedHighlight('${h.id}')" 
+                        class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isAlreadyAdded ? 'opacity-50' : ''}"
+                        ${isAlreadyAdded ? 'disabled' : ''}>
+                        <div class="w-12 h-12 rounded-full p-[2px] bg-gradient-to-tr ${GRADIENT_CLASSES[h.gradient] || GRADIENT_CLASSES['pink']}">
+                            ${h.coverImageBase64 
+                                ? `<img src="${h.coverImageBase64}" class="w-full h-full rounded-full border-2 border-white dark:border-slate-900 object-cover">`
+                                : `<div class="w-full h-full rounded-full bg-white dark:bg-slate-900 border-2 border-white dark:border-slate-900 flex items-center justify-center">
+                                    <i data-lucide="${h.icon}" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
+                                </div>`
+                            }
+                        </div>
+                        <div class="flex-1 text-left">
+                            <p class="font-medium">${h.name}</p>
+                            <p class="text-xs text-slate-500">${h.storyIds?.length || 0} stories</p>
+                        </div>
+                        ${isAlreadyAdded 
+                            ? `<span class="text-xs text-green-500 flex items-center gap-1"><i data-lucide="check" class="w-4 h-4"></i> Added</span>`
+                            : `<i data-lucide="plus" class="w-5 h-5 text-slate-400"></i>`
+                        }
+                    </button>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+        }
+        
+        window.addStoryToSelectedHighlight = async function(highlightId) {
+            if (!selectedStoryForHighlight) return;
+            
+            const story = selectedStoryForHighlight;
+            
+            try {
+                await addStoryToHighlight(highlightId, story.id, story.imageBase64);
+                
+                // Refresh highlights
+                await loadHighlights();
+                
+                // Update modal
+                renderHighlightsForSelection();
+                
+                // Show success toast
+                showToast('Story added to highlight!');
+                
+            } catch (error) {
+                console.error('Failed to add story to highlight:', error);
+                alert('Failed to add story. Please try again.');
+            }
+        };
+        
+        window.closeSelectHighlightModal = function() {
+            document.getElementById('selectHighlightModal').classList.add('hidden');
+            selectedStoryForHighlight = null;
+        };
+        
+        // Simple toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-sm shadow-lg z-[200] animate-fade-in';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity');
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
     </script>
 
     <script>

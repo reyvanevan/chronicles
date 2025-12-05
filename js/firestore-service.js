@@ -70,6 +70,26 @@ export const POST_TYPES = {
 // Tags for categorization
 export const TAGS = ['Dates', 'Trips', 'Food', 'Silly', 'Random', 'Music', 'Tech', 'Work'];
 
+// Available icons for highlights (Lucide icon names)
+export const HIGHLIGHT_ICONS = [
+    'heart', 'star', 'camera', 'music', 'plane', 'coffee', 'smile', 'sun',
+    'moon', 'sparkles', 'flame', 'zap', 'gift', 'cake', 'crown', 'diamond',
+    'gamepad-2', 'headphones', 'briefcase', 'book', 'palette', 'film',
+    'utensils', 'shopping-bag', 'home', 'car', 'bike', 'dumbbell'
+];
+
+// Available gradient colors for highlights
+export const HIGHLIGHT_GRADIENTS = [
+    { id: 'pink', from: 'pink-400', to: 'rose-500' },
+    { id: 'purple', from: 'purple-400', to: 'pink-500' },
+    { id: 'blue', from: 'blue-400', to: 'cyan-500' },
+    { id: 'green', from: 'emerald-400', to: 'teal-500' },
+    { id: 'orange', from: 'orange-400', to: 'amber-500' },
+    { id: 'red', from: 'red-400', to: 'rose-600' },
+    { id: 'slate', from: 'slate-400', to: 'slate-600' },
+    { id: 'gold', from: 'yellow-400', to: 'amber-500' }
+];
+
 // Max image size for Base64 (500KB after compression)
 const MAX_IMAGE_SIZE = 500 * 1024;
 
@@ -419,4 +439,187 @@ export function formatDate(date) {
         day: 'numeric',
         year: 'numeric'
     });
+}
+
+// ==================== HIGHLIGHT OPERATIONS ====================
+
+/**
+ * Create a new highlight
+ * @param {Object} highlightData - Highlight data
+ * @returns {Promise<string>} Document ID
+ */
+export async function createHighlight(highlightData) {
+    const { name, icon, gradient, authorId, coverImageBase64 } = highlightData;
+    
+    const highlight = {
+        name: name.trim(),
+        icon: icon || 'star',
+        gradient: gradient || 'pink',
+        authorId: authorId,
+        coverImageBase64: coverImageBase64 || null, // First story image as cover
+        storyIds: [], // Array of story document IDs
+        storyCount: 0,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+    };
+    
+    const docRef = await addDoc(collection(db, 'highlights'), highlight);
+    return docRef.id;
+}
+
+/**
+ * Get highlights for a specific user
+ * @param {string} authorId - 'rey' or 'anya'
+ * @returns {Promise<Array>} Array of highlights
+ */
+export async function getHighlights(authorId) {
+    const q = query(
+        collection(db, 'highlights'),
+        where('authorId', '==', authorId),
+        orderBy('createdAt', 'desc')
+    );
+    
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date(),
+        updatedAt: doc.data().updatedAt?.toDate() || new Date()
+    }));
+}
+
+/**
+ * Get a single highlight by ID
+ * @param {string} highlightId - Document ID
+ * @returns {Promise<Object>} Highlight data
+ */
+export async function getHighlightById(highlightId) {
+    const docRef = doc(db, 'highlights', highlightId);
+    const docSnap = await getDocs(query(collection(db, 'highlights'), where('__name__', '==', highlightId)));
+    
+    if (docSnap.empty) return null;
+    
+    const data = docSnap.docs[0].data();
+    return {
+        id: docSnap.docs[0].id,
+        ...data,
+        createdAt: data.createdAt?.toDate() || new Date(),
+        updatedAt: data.updatedAt?.toDate() || new Date()
+    };
+}
+
+/**
+ * Add story to a highlight
+ * @param {string} highlightId - Highlight document ID
+ * @param {string} storyId - Story document ID
+ * @param {string} storyImageBase64 - Story image for cover (optional, uses first if not set)
+ */
+export async function addStoryToHighlight(highlightId, storyId, storyImageBase64 = null) {
+    const highlightRef = doc(db, 'highlights', highlightId);
+    
+    // Get current highlight data
+    const q = query(collection(db, 'highlights'), where('__name__', '==', highlightId));
+    const snapshot = await getDocs(q);
+    
+    if (snapshot.empty) throw new Error('Highlight not found');
+    
+    const currentData = snapshot.docs[0].data();
+    const currentStoryIds = currentData.storyIds || [];
+    
+    // Don't add duplicate
+    if (currentStoryIds.includes(storyId)) return;
+    
+    const updateData = {
+        storyIds: [...currentStoryIds, storyId],
+        storyCount: currentStoryIds.length + 1,
+        updatedAt: serverTimestamp()
+    };
+    
+    // Set cover image if this is the first story or no cover yet
+    if (!currentData.coverImageBase64 && storyImageBase64) {
+        updateData.coverImageBase64 = storyImageBase64;
+    }
+    
+    await updateDoc(highlightRef, updateData);
+}
+
+/**
+ * Remove story from a highlight
+ * @param {string} highlightId - Highlight document ID
+ * @param {string} storyId - Story document ID
+ */
+export async function removeStoryFromHighlight(highlightId, storyId) {
+    const highlightRef = doc(db, 'highlights', highlightId);
+    
+    const q = query(collection(db, 'highlights'), where('__name__', '==', highlightId));
+    const snapshot = await getDocs(q);
+    
+    if (snapshot.empty) throw new Error('Highlight not found');
+    
+    const currentData = snapshot.docs[0].data();
+    const currentStoryIds = currentData.storyIds || [];
+    const newStoryIds = currentStoryIds.filter(id => id !== storyId);
+    
+    await updateDoc(highlightRef, {
+        storyIds: newStoryIds,
+        storyCount: newStoryIds.length,
+        updatedAt: serverTimestamp()
+    });
+}
+
+/**
+ * Update highlight details
+ * @param {string} highlightId - Document ID
+ * @param {Object} updates - Fields to update
+ */
+export async function updateHighlight(highlightId, updates) {
+    const highlightRef = doc(db, 'highlights', highlightId);
+    await updateDoc(highlightRef, {
+        ...updates,
+        updatedAt: serverTimestamp()
+    });
+}
+
+/**
+ * Delete a highlight
+ * @param {string} highlightId - Document ID
+ */
+export async function deleteHighlight(highlightId) {
+    await deleteDoc(doc(db, 'highlights', highlightId));
+}
+
+/**
+ * Get stories for a highlight
+ * @param {string} highlightId - Highlight document ID
+ * @returns {Promise<Array>} Array of stories in the highlight
+ */
+export async function getHighlightStories(highlightId) {
+    // First get the highlight to get story IDs
+    const q = query(collection(db, 'highlights'), where('__name__', '==', highlightId));
+    const highlightSnap = await getDocs(q);
+    
+    if (highlightSnap.empty) return [];
+    
+    const storyIds = highlightSnap.docs[0].data().storyIds || [];
+    
+    if (storyIds.length === 0) return [];
+    
+    // Fetch all stories by IDs
+    const stories = [];
+    for (const storyId of storyIds) {
+        const storyQ = query(collection(db, 'stories'), where('__name__', '==', storyId));
+        const storySnap = await getDocs(storyQ);
+        
+        if (!storySnap.empty) {
+            const data = storySnap.docs[0].data();
+            stories.push({
+                id: storySnap.docs[0].id,
+                ...data,
+                createdAt: data.createdAt?.toDate() || new Date()
+            });
+        }
+    }
+    
+    // Sort by createdAt desc
+    return stories.sort((a, b) => b.createdAt - a.createdAt);
 }
