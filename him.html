@@ -135,9 +135,10 @@
             <div
                 class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-blue-400 mb-4 relative group cursor-pointer">
                 <div class="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse" id="him-photo-pulse"></div>
-                <img id="him-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                <img id="him-photo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
                     alt="Him"
-                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0">
+                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0 opacity-0"
+                    onload="if(this.src !== 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7') this.classList.remove('opacity-0')">
             </div>
 
             <h1 id="him-name" class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">M Reyvan Purnama</h1>
