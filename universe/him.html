@@ -615,11 +615,14 @@
         let selectedIcon = 'star';
         let selectedGradient = 'pink';
         
-        // Load highlights
+        // Load highlights from profile (no auth needed, public access)
         window.loadHighlights = async function() {
             try {
-                userHighlights = await getHighlights('rey');
-                renderHighlights();
+                const profileDoc = await getDoc(doc(db, 'landing', 'profileRey'));
+                if (profileDoc.exists()) {
+                    userHighlights = profileDoc.data().highlights || [];
+                    renderHighlightsFromProfile(userHighlights);
+                }
             } catch (error) {
                 console.error('Failed to load highlights:', error);
             }
