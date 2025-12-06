@@ -850,9 +850,8 @@
                 if (milestoneText) {
                     milestoneText.textContent = `"${milestone.message}"`;
                 }
-                if (lastUpdateEl && progress.lastUpdateDate) {
-                    const date = progress.lastUpdateDate.toDate ? progress.lastUpdateDate.toDate() : new Date(progress.lastUpdateDate);
-                    lastUpdateEl.textContent = date.toLocaleDateString('id-ID', {
+                if (lastUpdateEl && progress.lastUpdate) {
+                    lastUpdateEl.textContent = progress.lastUpdate.toLocaleDateString('id-ID', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric'
