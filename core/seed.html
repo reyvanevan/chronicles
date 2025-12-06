@@ -13,9 +13,16 @@
         
         <div id="status" class="space-y-3 mb-8"></div>
         
-        <button onclick="seedData()" id="seedBtn" class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl font-bold text-lg hover:opacity-90 transition">
-            🚀 Start Seeding
-        </button>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <button onclick="seedGalleryOnly()" id="seedGalleryBtn" class="py-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl font-bold text-lg hover:opacity-90 transition">
+                🖼️ Seed Gallery Only
+            </button>
+            <button onclick="seedData()" id="seedBtn" class="py-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl font-bold text-lg hover:opacity-90 transition">
+                🚀 Seed All Data
+            </button>
+        </div>
+        
+        <p class="text-amber-400 text-sm text-center mb-4">⚠️ "Seed All Data" akan overwrite semua data. Gunakan "Seed Gallery Only" untuk update gallery tanpa menghapus data lain.</p>
         
         <div class="mt-8 p-4 bg-slate-800 rounded-xl">
             <h3 class="font-bold mb-2">Data Structure:</h3>
@@ -184,7 +191,49 @@
         // Show data preview
         document.getElementById('dataPreview').textContent = JSON.stringify(seedData, null, 2);
 
-        // Seed function
+        // Seed Gallery Only - uses merge to preserve existing data
+        window.seedGalleryOnly = async function() {
+            const btn = document.getElementById('seedGalleryBtn');
+            const status = document.getElementById('status');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Uploading...';
+            status.innerHTML = '';
+
+            const addStatus = (message, success = true) => {
+                const div = document.createElement('div');
+                div.className = `p-3 rounded-lg ${success ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`;
+                div.innerHTML = `${success ? '✅' : '❌'} ${message}`;
+                status.appendChild(div);
+            };
+
+            try {
+                // Update profileHer gallery only (merge: true preserves other fields)
+                await setDoc(doc(db, "landing", "profileHer"), {
+                    gallery: seedData.profileHer.gallery,
+                    updatedAt: new Date()
+                }, { merge: true });
+                addStatus('Princess gallery updated (profileHer)');
+
+                // Update profileRey gallery only (merge: true preserves other fields)
+                await setDoc(doc(db, "landing", "profileRey"), {
+                    gallery: seedData.profileRey.gallery,
+                    updatedAt: new Date()
+                }, { merge: true });
+                addStatus('Guardian gallery updated (profileRey)');
+
+                btn.className = 'py-4 bg-green-600 rounded-xl font-bold text-lg';
+                btn.textContent = '✅ Gallery Seeded!';
+
+            } catch (error) {
+                console.error('Seed gallery error:', error);
+                addStatus(`Error: ${error.message}`, false);
+                btn.className = 'py-4 bg-red-600 rounded-xl font-bold text-lg';
+                btn.textContent = '❌ Failed';
+            }
+        };
+
+        // Seed All function
         window.seedData = async function() {
             const btn = document.getElementById('seedBtn');
             const status = document.getElementById('status');
