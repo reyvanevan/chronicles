@@ -54,8 +54,12 @@
     <!-- Firebase Auth & Firestore -->
     <script type="module">
         import { auth, db } from '../js/firebase-config.js';
+        import { compressImageToBase64 } from '../js/firestore-service.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        
+        // Make compressImageToBase64 available globally
+        window.compressImageToBase64 = compressImageToBase64;
 
         // Check if user is authenticated
         onAuthStateChanged(auth, async (user) => {
@@ -376,35 +380,106 @@
             }
         };
         
-        // Add photo via URL prompt
-        window.addPrincessGalleryPhoto = function() {
-            const url = prompt('Enter image URL:');
-            if (url && url.trim()) {
-                const caption = prompt('Enter caption (optional):') || '';
-                window.princessGallery = window.princessGallery || [];
-                window.princessGallery.push({
-                    id: Date.now(),
-                    url: url.trim(),
-                    caption: caption,
-                    showOnProfile: true
-                });
-                renderPrincessGallery(window.princessGallery);
+        // Gallery Upload Modal Functions
+        window.currentGalleryTarget = null; // 'princess' or 'guardian'
+        
+        window.openGalleryUploadModal = function(target) {
+            window.currentGalleryTarget = target;
+            document.getElementById('gallery-upload-modal').classList.remove('hidden');
+            document.getElementById('gallery-upload-preview').src = '';
+            document.getElementById('gallery-upload-preview').classList.add('hidden');
+            document.getElementById('gallery-upload-placeholder').classList.remove('hidden');
+            document.getElementById('gallery-upload-caption').value = '';
+            document.getElementById('gallery-file-input').value = '';
+            
+            // Update modal title based on target
+            const title = target === 'princess' ? 'Add Photo - Princess Gallery' : 'Add Photo - Guardian Gallery';
+            document.getElementById('gallery-modal-title').textContent = title;
+        };
+        
+        window.closeGalleryUploadModal = function() {
+            document.getElementById('gallery-upload-modal').classList.add('hidden');
+            window.currentGalleryTarget = null;
+        };
+        
+        window.handleGalleryFileSelect = function(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('gallery-upload-preview').src = e.target.result;
+                    document.getElementById('gallery-upload-preview').classList.remove('hidden');
+                    document.getElementById('gallery-upload-placeholder').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
             }
         };
         
-        window.addGuardianGalleryPhoto = function() {
-            const url = prompt('Enter image URL:');
-            if (url && url.trim()) {
-                const caption = prompt('Enter caption (optional):') || '';
-                window.guardianGallery = window.guardianGallery || [];
-                window.guardianGallery.push({
+        window.submitGalleryPhoto = async function() {
+            const fileInput = document.getElementById('gallery-file-input');
+            const caption = document.getElementById('gallery-upload-caption').value.trim();
+            const submitBtn = document.getElementById('gallery-submit-btn');
+            
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('Please select an image first');
+                return;
+            }
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Uploading...';
+                lucide.createIcons();
+                
+                // Compress image to Base64
+                const base64Image = await window.compressImageToBase64(fileInput.files[0], 800, 0.8);
+                
+                const newPhoto = {
                     id: Date.now(),
-                    url: url.trim(),
+                    url: base64Image,
                     caption: caption,
                     showOnProfile: true
-                });
-                renderGuardianGallery(window.guardianGallery);
+                };
+                
+                if (window.currentGalleryTarget === 'princess') {
+                    window.princessGallery = window.princessGallery || [];
+                    window.princessGallery.push(newPhoto);
+                    renderPrincessGallery(window.princessGallery);
+                } else {
+                    window.guardianGallery = window.guardianGallery || [];
+                    window.guardianGallery.push(newPhoto);
+                    renderGuardianGallery(window.guardianGallery);
+                }
+                
+                submitBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Added!';
+                submitBtn.classList.remove('bg-blue-500');
+                submitBtn.classList.add('bg-green-500');
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    closeGalleryUploadModal();
+                    submitBtn.innerHTML = '<i data-lucide="upload" class="w-4 h-4"></i> Add Photo';
+                    submitBtn.classList.remove('bg-green-500');
+                    submitBtn.classList.add('bg-blue-500');
+                    submitBtn.disabled = false;
+                    lucide.createIcons();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Failed to upload image: ' + error.message);
+                submitBtn.innerHTML = '<i data-lucide="upload" class="w-4 h-4"></i> Add Photo';
+                submitBtn.disabled = false;
+                lucide.createIcons();
             }
+        };
+        
+        // Wrapper functions for backward compatibility
+        window.addPrincessGalleryPhoto = function() {
+            openGalleryUploadModal('princess');
+        };
+        
+        window.addGuardianGalleryPhoto = function() {
+            openGalleryUploadModal('guardian');
         };
         
         // Add sticker (for Anya)
@@ -773,6 +848,62 @@
 </head>
 
 <body class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-accent selection:text-white">
+
+    <!-- Gallery Upload Modal -->
+    <div id="gallery-upload-modal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeGalleryUploadModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+                <!-- Modal Header -->
+                <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                    <h3 id="gallery-modal-title" class="font-bold text-lg text-slate-800 dark:text-white">Add Photo</h3>
+                    <button onclick="closeGalleryUploadModal()" class="text-slate-400 hover:text-red-500 transition">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="p-4 space-y-4">
+                    <!-- Image Upload Area -->
+                    <div class="relative">
+                        <input type="file" id="gallery-file-input" accept="image/*" class="hidden" onchange="handleGalleryFileSelect(this)">
+                        <label for="gallery-file-input" class="block cursor-pointer">
+                            <div class="aspect-square rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 transition overflow-hidden relative">
+                                <!-- Placeholder -->
+                                <div id="gallery-upload-placeholder" class="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                                    <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                                        <i data-lucide="image-plus" class="w-8 h-8 text-slate-400"></i>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-slate-600 dark:text-slate-300 font-medium">Click to upload image</p>
+                                        <p class="text-xs text-slate-400">JPG, PNG up to 5MB</p>
+                                    </div>
+                                </div>
+                                <!-- Preview -->
+                                <img id="gallery-upload-preview" src="" class="hidden w-full h-full object-cover">
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <!-- Caption Input -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Caption (optional)</label>
+                        <input type="text" id="gallery-upload-caption" placeholder="Add a caption..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="p-4 border-t border-slate-200 dark:border-slate-700 flex gap-3">
+                    <button onclick="closeGalleryUploadModal()" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                        Cancel
+                    </button>
+                    <button id="gallery-submit-btn" onclick="submitGalleryPhoto()" class="flex-1 px-4 py-3 rounded-xl bg-blue-500 text-white font-medium hover:bg-blue-600 transition flex items-center justify-center gap-2">
+                        <i data-lucide="upload" class="w-4 h-4"></i> Add Photo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Loading Screen -->
     <div id="loading-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center">
