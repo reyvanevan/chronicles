@@ -1240,7 +1240,7 @@
                                 <p class="text-xs text-slate-400">0% marker for Love Progress (landing/sasukeImage)</p>
                             </div>
                         </div>
-                        <button onclick="saveSasukeImage()" id="saveSasukeBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white text-sm font-medium rounded-full shadow-lg transition flex items-center gap-2">
+                        <button onclick="saveSasukeImage()" id="saveSasukeBtn" class="px-4 py-2 bg-brand-accent hover:bg-pink-600 text-white text-sm font-medium rounded-full shadow-lg transition flex items-center gap-2">
                             <i data-lucide="save" class="w-4 h-4"></i> Save Image
                         </button>
                     </div>
@@ -1726,14 +1726,14 @@
                 });
                 
                 saveBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Saved!';
-                saveBtn.classList.remove('bg-slate-700');
+                saveBtn.classList.remove('bg-brand-accent');
                 saveBtn.classList.add('bg-green-600');
                 lucide.createIcons();
                 
                 setTimeout(() => {
                     saveBtn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Image';
                     saveBtn.classList.remove('bg-green-600');
-                    saveBtn.classList.add('bg-slate-700');
+                    saveBtn.classList.add('bg-brand-accent');
                     saveBtn.disabled = false;
                     lucide.createIcons();
                 }, 2000);
