@@ -199,28 +199,11 @@
         </div>
 
         <!-- Gallery (Masonry) -->
-        <div class="columns-2 md:columns-3 gap-4 space-y-4">
-            <!-- Photo 1 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up">
-                <img src="https://images.unsplash.com/photo-1488161628813-99c974c76949?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
-                <div
-                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <span class="text-white font-serif text-xs italic">My View</span>
-                </div>
-            </div>
-            <!-- Photo 2 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="100">
-                <img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
-            </div>
-            <!-- Photo 3 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
-            </div>
+        <div id="gallery-grid" class="columns-2 md:columns-3 gap-4 space-y-4">
+            <!-- Loading placeholder -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-square bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-[3/4] bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-square bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
         </div>
 
     </main>
@@ -253,15 +236,21 @@
                     // Load highlights with fallback
                     renderHighlights(data.highlights || []);
                     
+                    // Load gallery (only photos with showOnProfile: true)
+                    const visiblePhotos = (data.gallery || []).filter(p => p.showOnProfile);
+                    renderGallery(visiblePhotos);
+                    
                     // Hide loading pulse
                     document.getElementById('him-photo-pulse')?.classList.add('hidden');
                 } else {
                     // No data - show fallback
                     renderHighlights([]);
+                    renderGallery([]);
                 }
             } catch (error) {
                 console.error('Failed to load profile:', error);
                 renderHighlights([]);
+                renderGallery([]);
             }
         }
         
@@ -295,6 +284,36 @@
             
             // Re-initialize Lucide icons
             lucide.createIcons();
+        }
+        
+        function renderGallery(photos) {
+            const container = document.getElementById('gallery-grid');
+            if (!container) return;
+            
+            if (!photos || photos.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                            <i data-lucide="aperture" class="w-8 h-8 text-slate-400"></i>
+                        </div>
+                        <p class="text-slate-400 text-sm">No posts yet</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            container.innerHTML = photos.map((photo, idx) => `
+                <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up" data-aos-delay="${idx * 100}">
+                    <img src="${photo.url}" class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center flex-col gap-2">
+                        ${photo.caption ? `<span class="text-white font-serif text-xs italic">${photo.caption}</span>` : '<i data-lucide="eye" class="w-5 h-5 text-white"></i>'}
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+            AOS.refresh();
         }
         
         loadProfile();
