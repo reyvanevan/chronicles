@@ -9,6 +9,7 @@ import {
     collection,
     deleteDoc,
     doc,
+    getDoc,
     getDocs,
     limit,
     orderBy,
@@ -28,7 +29,7 @@ export const EMAIL_TO_AUTHOR = {
     'sayang@anya.com': 'anya'
 };
 
-// User profiles - sesuai UI yang ada
+// User profiles - dynamically updated from Firestore
 export const USER_PROFILES = {
     rey: {
         id: 'rey',
@@ -49,6 +50,47 @@ export const USER_PROFILES = {
         accentColor: 'pink'
     }
 };
+
+/**
+ * Load user avatars from Firestore profiles
+ * Updates USER_PROFILES with latest photos from profileRey and profileHer
+ */
+export async function loadUserAvatarsFromFirestore() {
+    try {
+        const [reyDoc, herDoc] = await Promise.all([
+            getDoc(doc(db, 'landing', 'profileRey')),
+            getDoc(doc(db, 'landing', 'profileHer'))
+        ]);
+        
+        if (reyDoc.exists() && reyDoc.data().photo) {
+            USER_PROFILES.rey.avatarUrl = reyDoc.data().photo;
+            USER_PROFILES.rey.name = reyDoc.data().name || USER_PROFILES.rey.name;
+            USER_PROFILES.rey.displayName = reyDoc.data().name || USER_PROFILES.rey.displayName;
+        }
+        
+        if (herDoc.exists() && herDoc.data().photo) {
+            USER_PROFILES.anya.avatarUrl = herDoc.data().photo;
+            USER_PROFILES.anya.name = herDoc.data().name || USER_PROFILES.anya.name;
+            USER_PROFILES.anya.displayName = herDoc.data().name || USER_PROFILES.anya.displayName;
+        }
+        
+        console.log('[FirestoreService] User avatars loaded from Firestore');
+        return USER_PROFILES;
+    } catch (error) {
+        console.warn('[FirestoreService] Could not load avatars from Firestore:', error);
+        return USER_PROFILES;
+    }
+}
+
+/**
+ * Get fresh avatar URL for an author
+ * Always returns the latest from USER_PROFILES (after loadUserAvatarsFromFirestore)
+ * @param {string} authorId - 'rey' or 'anya'
+ * @returns {string} Avatar URL
+ */
+export function getAuthorAvatar(authorId) {
+    return USER_PROFILES[authorId]?.avatarUrl || USER_PROFILES.rey.avatarUrl;
+}
 
 /**
  * Get current author based on logged in user email

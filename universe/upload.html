@@ -189,13 +189,16 @@
     <script type="module">
         import { auth } from '../js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { createPost, createStory, compressImageToBase64, USER_PROFILES, getCurrentAuthor } from '../js/firestore-service.js';
+        import { createPost, createStory, compressImageToBase64, USER_PROFILES, getCurrentAuthor, loadUserAvatarsFromFirestore, getAuthorAvatar } from '../js/firestore-service.js';
 
         // Check auth and set current user
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = '../index.html';
             } else {
+                // Load fresh avatars from Firestore
+                await loadUserAvatarsFromFirestore();
+                
                 // Auto-detect author from email
                 const author = getCurrentAuthor(user);
                 window.currentAuthor = author;
@@ -211,14 +214,14 @@
                         ? 'px-3 py-1 rounded-full text-xs font-medium bg-blue-500 text-white'
                         : 'px-3 py-1 rounded-full text-xs font-medium bg-pink-500 text-white';
                 }
-                if (avatar && profile) {
-                    avatar.src = profile.avatarUrl;
+                if (avatar) {
+                    avatar.src = getAuthorAvatar(author);
                 }
             }
         });
 
         // Expose functions to window for onclick handlers
-        window.firestoreService = { createPost, createStory, compressImageToBase64, USER_PROFILES, getCurrentAuthor };
+        window.firestoreService = { createPost, createStory, compressImageToBase64, USER_PROFILES, getCurrentAuthor, loadUserAvatarsFromFirestore, getAuthorAvatar };
     </script>
 
     <script>

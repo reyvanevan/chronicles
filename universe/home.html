@@ -315,13 +315,15 @@
         import { auth, db } from '../js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES } from '../js/firestore-service.js';
+        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES, loadUserAvatarsFromFirestore, getAuthorAvatar } from '../js/firestore-service.js';
 
         // Auth check
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = '../index.html';
             } else {
+                // Load fresh avatars from Firestore first
+                await loadUserAvatarsFromFirestore();
                 // User is logged in, load data
                 loadPosts();
                 loadStories();
@@ -424,7 +426,7 @@
                 <article class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden" data-aos="fade-up">
                     <div class="p-4 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <img src="${post.authorAvatar || 'https://ui-avatars.com/api/?name=' + post.authorDisplayName}" 
+                            <img src="${getAuthorAvatar(post.authorId)}" 
                                 class="w-10 h-10 rounded-full object-cover">
                             <div>
                                 <h3 class="font-bold text-sm">${post.authorDisplayName || post.authorName}</h3>
@@ -556,8 +558,8 @@
             // Set image
             document.getElementById('modalImage').src = post.imageBase64;
             
-            // Set author info
-            document.getElementById('modalAuthorAvatar').src = post.authorAvatar || `https://ui-avatars.com/api/?name=${post.authorDisplayName}`;
+            // Set author info - use fresh avatar from profile
+            document.getElementById('modalAuthorAvatar').src = getAuthorAvatar(post.authorId);
             document.getElementById('modalAuthorName').textContent = post.authorDisplayName || post.authorName;
             document.getElementById('modalLocation').textContent = post.location || '';
             
@@ -673,9 +675,8 @@
             // Update image
             document.getElementById('storyImage').src = story.imageBase64;
             
-            // Update author info
-            document.getElementById('storyAuthorAvatar').src = story.authorAvatar || 
-                `https://ui-avatars.com/api/?name=${story.authorDisplayName}&background=ec4899&color=fff`;
+            // Update author info - use fresh avatar from profile
+            document.getElementById('storyAuthorAvatar').src = getAuthorAvatar(story.authorId);
             document.getElementById('storyAuthorName').textContent = story.authorDisplayName || 'User';
             
             // Update time

@@ -258,7 +258,7 @@
     
     <!-- Feed Logic -->
     <script type="module">
-        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES } from './js/firestore-service.js';
+        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES, loadUserAvatarsFromFirestore, getAuthorAvatar } from './js/firestore-service.js';
         
         // Story viewer state
         let allStories = [];
@@ -269,6 +269,8 @@
         
         // Load feed on page load
         document.addEventListener('DOMContentLoaded', async () => {
+            // Load fresh avatars from Firestore first
+            await loadUserAvatarsFromFirestore();
             await loadStories();
             await loadFeed();
         });
@@ -360,8 +362,8 @@
             const story = allStories[index];
             const author = USER_PROFILES[story.authorId] || USER_PROFILES.rey;
             
-            // Update modal content
-            document.getElementById('storyAuthorAvatar').src = author.avatarUrl;
+            // Update modal content - use fresh avatar from profile
+            document.getElementById('storyAuthorAvatar').src = getAuthorAvatar(story.authorId);
             document.getElementById('storyAuthorName').textContent = author.displayName;
             document.getElementById('storyTime').textContent = formatRelativeTime(story.createdAt);
             document.getElementById('storyImage').src = story.imageBase64;
@@ -503,12 +505,12 @@
             const isNote = item.type === 'note' || !hasImage;
             
             if (isNote) {
-                // Note/Quote style
+                // Note/Quote style - use pen icon for notes
                 return `
                     <article class="glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="${delay}">
                         <div class="p-4 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/50">
-                            <div class="w-10 h-10 rounded-full overflow-hidden">
-                                <img src="${author.avatarUrl}" alt="${author.displayName}" class="w-full h-full object-cover">
+                            <div class="w-10 h-10 rounded-full bg-${item.authorId === 'rey' ? 'blue' : 'pink'}-100 dark:bg-${item.authorId === 'rey' ? 'blue' : 'pink'}-900/30 flex items-center justify-center">
+                                <i data-lucide="pen-tool" class="w-5 h-5 text-${item.authorId === 'rey' ? 'blue' : 'pink'}-500"></i>
                             </div>
                             <div class="flex-1">
                                 <h3 class="font-bold text-sm text-slate-800 dark:text-white">${author.displayName}'s Note</h3>
@@ -540,7 +542,7 @@
                         <div class="p-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-full overflow-hidden">
-                                    <img src="${author.avatarUrl}" alt="${author.displayName}" class="w-full h-full object-cover">
+                                    <img src="${getAuthorAvatar(item.authorId)}" alt="${author.displayName}" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-sm text-slate-800 dark:text-white">${author.displayName}</h3>

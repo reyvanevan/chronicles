@@ -250,13 +250,15 @@
     <script type="module">
         import { auth } from '../js/firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getPosts, getPostsByTag, formatDate } from '../js/firestore-service.js';
+        import { getPosts, getPostsByTag, formatDate, loadUserAvatarsFromFirestore, getAuthorAvatar } from '../js/firestore-service.js';
 
         // Auth check
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = '../index.html';
             } else {
+                // Load fresh avatars from Firestore
+                await loadUserAvatarsFromFirestore();
                 loadMemories();
             }
         });
@@ -364,28 +366,15 @@
             console.log('Search:', query);
         };
 
-        // User profiles for modal
-        const USER_PROFILES = {
-            rey: {
-                name: 'Rey',
-                avatar: 'https://i.pinimg.com/736x/4b/4d/0e/4b4d0ef7c9d7ee94e8492a910c907721.jpg'
-            },
-            anya: {
-                name: 'Anya',
-                avatar: 'https://i.pinimg.com/736x/4e/35/21/4e3521f64aac209e08a39091fee0e1f6.jpg'
-            }
-        };
-
-        // Open photo modal
+        // Open photo modal - use fresh avatars from Firestore
         window.openPhotoModal = function(encodedData) {
             const post = JSON.parse(decodeURIComponent(encodedData));
             const modal = document.getElementById('photoModal');
-            const profile = USER_PROFILES[post.author] || USER_PROFILES.rey;
             
-            // Set modal content
+            // Set modal content - use fresh avatar from profile
             document.getElementById('modalImage').src = post.imageBase64;
-            document.getElementById('modalAuthorAvatar').src = profile.avatar;
-            document.getElementById('modalAuthorName').textContent = profile.name;
+            document.getElementById('modalAuthorAvatar').src = getAuthorAvatar(post.author || post.authorId);
+            document.getElementById('modalAuthorName').textContent = post.authorDisplayName || (post.author === 'anya' ? 'Anya' : 'Rey');
             document.getElementById('modalLocation').textContent = post.location || '';
             document.getElementById('modalCaption').textContent = post.caption;
             document.getElementById('modalLikes').textContent = post.likes || 0;
