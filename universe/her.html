@@ -126,15 +126,16 @@
         <div class="text-center mb-8" data-aos="fade-down">
             <div
                 class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-brand-accent mb-4 relative group cursor-pointer">
-                <div class="absolute inset-0 rounded-full bg-brand-accent/20 animate-pulse"></div>
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                <div class="absolute inset-0 rounded-full bg-brand-accent/20 animate-pulse" id="her-photo-pulse"></div>
+                <img id="her-photo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
                     alt="Anya"
-                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500">
+                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 opacity-0"
+                    onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); document.getElementById('her-photo-pulse')?.classList.add('hidden'); }">
             </div>
-            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">Zalfa Nazhifah</h1>
-            <p class="text-brand-accent text-xs uppercase tracking-[0.2em] font-bold mb-4">The Main Character</p>
+            <h1 id="her-name" class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">Zalfa Nazhifah</h1>
+            <p id="her-title" class="text-brand-accent text-xs uppercase tracking-[0.2em] font-bold mb-4">The Main Character</p>
 
-            <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
+            <p id="her-bio" class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
                 "She is the poem I never knew how to write, and this life is the paper."
             </p>
         </div>
@@ -207,34 +208,11 @@
             <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800"></div>
         </div>
 
-        <div class="columns-2 gap-4 space-y-4">
-            <!-- Foto 1 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-                <div
-                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <i data-lucide="heart" class="w-6 h-6 text-white fill-white"></i>
-                </div>
-            </div>
-            <!-- Foto 2 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="100">
-                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-            </div>
-            <!-- Foto 3 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-            </div>
-            <!-- Foto 4 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="300">
-                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&q=80"
-                    class="w-full transform group-hover:scale-110 transition duration-500">
-            </div>
+        <div id="gallery-container" class="columns-2 gap-4 space-y-4">
+            <!-- Loading placeholders -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-square bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-[3/4] bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-square bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
         </div>
 
     </main>
@@ -513,6 +491,8 @@
     
     <!-- Archive & Highlights Logic -->
     <script type="module">
+        import { db } from '../js/firebase-config.js';
+        import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { 
             getArchivedStories, groupStoriesByMonth, formatDate, USER_PROFILES,
             getHighlights, createHighlight, getHighlightStories, addStoryToHighlight,
@@ -521,6 +501,64 @@
         
         let archivedStories = [];
         let userHighlights = [];
+        
+        // Load profile from Firestore
+        async function loadProfile() {
+            try {
+                const profileDoc = await getDoc(doc(db, 'landing', 'profileHer'));
+                if (profileDoc.exists()) {
+                    const data = profileDoc.data();
+                    
+                    if (data.name) document.getElementById('her-name').textContent = data.name;
+                    if (data.bio) document.getElementById('her-bio').textContent = '"' + data.bio + '"';
+                    if (data.photo) document.getElementById('her-photo').src = data.photo;
+                    if (data.title) document.getElementById('her-title').textContent = data.title;
+                    
+                    // Load gallery (only photos with showOnProfile: true)
+                    const visiblePhotos = (data.gallery || []).filter(p => p.showOnProfile);
+                    renderGallery(visiblePhotos);
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+            }
+        }
+        
+        // Render gallery
+        function renderGallery(gallery) {
+            const container = document.getElementById('gallery-container');
+            if (!container) return;
+            
+            if (!gallery || gallery.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
+                            <i data-lucide="image" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <p class="text-slate-400 text-sm">No posts yet</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            container.innerHTML = gallery.map((photo, i) => `
+                <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up" data-aos-delay="${i * 100}">
+                    <img src="${photo.url}" alt="${photo.caption || ''}" class="w-full transform group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                        <i data-lucide="heart" class="w-6 h-6 text-white fill-white"></i>
+                    </div>
+                    ${photo.caption ? `<div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition">
+                        <p class="text-white text-xs">${photo.caption}</p>
+                    </div>` : ''}
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+            AOS.refresh();
+        }
+        
+        // Initialize
+        loadProfile();
         
         // Gradient class mapping
         const GRADIENT_CLASSES = {

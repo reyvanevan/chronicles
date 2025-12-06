@@ -127,16 +127,17 @@
         <div class="text-center mb-8" data-aos="fade-down">
             <div
                 class="w-28 h-28 mx-auto rounded-full p-1 border-2 border-dashed border-blue-400 mb-4 relative group cursor-pointer">
-                <div class="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse"></div>
-                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                <div class="absolute inset-0 rounded-full bg-blue-400/20 animate-pulse" id="him-photo-pulse"></div>
+                <img id="him-photo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
                     alt="Him"
-                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0">
+                    class="w-full h-full rounded-full object-cover relative z-10 group-hover:scale-105 transition duration-500 grayscale hover:grayscale-0 opacity-0"
+                    onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); document.getElementById('him-photo-pulse')?.classList.add('hidden'); }">
             </div>
 
-            <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">M Reyvan Purnama</h1>
-            <p class="text-blue-500 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Observer</p>
+            <h1 id="him-name" class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">M Reyvan Purnama</h1>
+            <p id="him-title" class="text-blue-500 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Observer</p>
 
-            <p class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
+            <p id="him-bio" class="max-w-sm mx-auto text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed">
                 "I see the universe in your eyes, and my only job is to protect it."
             </p>
         </div>
@@ -213,28 +214,11 @@
         </div>
 
         <!-- Gallery (Masonry) -->
-        <div class="columns-2 gap-4 space-y-4">
-            <!-- Photo 1 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up">
-                <img src="https://images.unsplash.com/photo-1488161628813-99c974c76949?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
-                <div
-                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <span class="text-white font-serif text-xs italic">My View</span>
-                </div>
-            </div>
-            <!-- Photo 2 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="100">
-                <img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
-            </div>
-            <!-- Photo 3 -->
-            <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up"
-                data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                    class="w-full grayscale group-hover:grayscale-0 transition duration-500">
-            </div>
+        <div id="gallery-container" class="columns-2 gap-4 space-y-4">
+            <!-- Loading placeholders -->
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-square bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-[3/4] bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+            <div class="break-inside-avoid rounded-xl overflow-hidden aspect-square bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
         </div>
 
     </main>
@@ -513,6 +497,8 @@
     
     <!-- Archive Logic -->
     <script type="module">
+        import { db } from '../js/firebase-config.js';
+        import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { 
             getArchivedStories, groupStoriesByMonth, formatDate, USER_PROFILES,
             getHighlights, createHighlight, getHighlightStories, addStoryToHighlight,
@@ -521,6 +507,61 @@
         
         let archivedStories = [];
         let userHighlights = [];
+        
+        // Load profile from Firestore
+        async function loadProfile() {
+            try {
+                const profileDoc = await getDoc(doc(db, 'landing', 'profileRey'));
+                if (profileDoc.exists()) {
+                    const data = profileDoc.data();
+                    
+                    if (data.name) document.getElementById('him-name').textContent = data.name;
+                    if (data.bio) document.getElementById('him-bio').textContent = '"' + data.bio + '"';
+                    if (data.photo) document.getElementById('him-photo').src = data.photo;
+                    if (data.title) document.getElementById('him-title').textContent = data.title;
+                    
+                    // Load gallery (only photos with showOnProfile: true)
+                    const visiblePhotos = (data.gallery || []).filter(p => p.showOnProfile);
+                    renderGallery(visiblePhotos);
+                }
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+            }
+        }
+        
+        // Render gallery
+        function renderGallery(gallery) {
+            const container = document.getElementById('gallery-container');
+            if (!container) return;
+            
+            if (!gallery || gallery.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
+                            <i data-lucide="image" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <p class="text-slate-400 text-sm">No posts yet</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            container.innerHTML = gallery.map((photo, i) => `
+                <div class="break-inside-avoid rounded-xl overflow-hidden group relative cursor-pointer" data-aos="fade-up" data-aos-delay="${i * 100}">
+                    <img src="${photo.url}" alt="${photo.caption || ''}" class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                        <span class="text-white font-serif text-xs italic">${photo.caption || ''}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+            AOS.refresh();
+        }
+        
+        // Initialize
+        loadProfile();
         
         // Gradient class mapping
         const GRADIENT_CLASSES = {
