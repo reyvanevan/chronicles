@@ -62,6 +62,9 @@
 <body
     class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-pink selection:text-brand-accent">
 
+    <!-- SCROLL PROGRESS BAR -->
+    <div id="scroll-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 z-[60] transition-all duration-100 ease-out shadow-[0_0_10px_rgba(236,72,153,0.5)]" style="width: 0%"></div>
+
     <!-- NAVBAR HEADER -->
     <header class="fixed top-0 left-0 w-full z-50 nav-glass transition-all duration-300" id="main-header">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -744,6 +747,17 @@
         secretModal.addEventListener('click', (e) => {
             if (e.target === secretModal) {
                 closeSecretLogin();
+            }
+        });
+        
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const totalScroll = document.documentElement.scrollTop;
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scroll = totalScroll / windowHeight;
+            const progressBar = document.getElementById('scroll-progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${scroll * 100}%`;
             }
         });
     </script>
