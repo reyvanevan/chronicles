@@ -231,7 +231,7 @@ export function getCurrentUserProfile() {
  * @returns {Promise<string>} Document ID of created post
  */
 export async function createPost(postData) {
-    const { type, caption, imageBase64, location, tags, authorId } = postData;
+    const { type, caption, imageBase64, images, location, tags, authorId } = postData;
     
     const author = USER_PROFILES[authorId] || getCurrentUserProfile();
     if (!author) throw new Error('User not authenticated');
@@ -250,6 +250,11 @@ export async function createPost(postData) {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
     };
+    
+    // Add images array for carousel posts
+    if (images && images.length > 0) {
+        post.images = images;
+    }
     
     const docRef = await addDoc(collection(db, 'posts'), post);
     return docRef.id;
