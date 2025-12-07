@@ -216,6 +216,8 @@
                 }
                 if (avatar) {
                     avatar.src = getAuthorAvatar(author);
+                    // Remove skeleton loading animation after image loads
+                    avatar.classList.remove('animate-pulse', 'bg-slate-200', 'dark:bg-slate-700');
                 }
             }
         });
