@@ -602,7 +602,7 @@
         window.openPhotoModal = function(encodedData) {
             const post = JSON.parse(decodeURIComponent(encodedData));
             modalCurrentPost = post;
-            modal CurrentImageIndex = 0;
+            modalCurrentImageIndex = 0;
             
             const isCarousel = post.type === 'carousel' && post.images && post.images.length > 1;
             const modal = document.getElementById('photoModal');
