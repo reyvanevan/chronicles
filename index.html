@@ -610,8 +610,8 @@
 
     <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40">
         <button onclick="toggleMusic()" id="musicBtn"
-            class="bg-white/80 dark:bg-slate-800/80 backdrop-blur text-brand-accent dark:text-brand-accentLight p-3 md:p-4 rounded-full border border-pink-100 dark:border-slate-700 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all group">
-            <i data-lucide="music" class="w-5 h-5 md:w-6 md:h-6 group-hover:animate-spin"></i>
+            class="bg-white/80 dark:bg-slate-800/80 backdrop-blur text-brand-accent dark:text-brand-accentLight p-3 md:p-4 rounded-full border border-pink-100 dark:border-slate-700 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+            <i data-lucide="music" id="musicIcon" class="w-5 h-5 md:w-6 md:h-6 transition-transform"></i>
         </button>
         <audio id="bgMusic" loop>
             <source src="music/about-you.mp3" type="audio/mpeg">
@@ -942,6 +942,7 @@
         // Music control
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = document.getElementById('musicIcon');
         let isPlaying = false;
         
         // Toggle music function
@@ -949,11 +950,13 @@
             if (isPlaying) {
                 bgMusic.pause();
                 isPlaying = false;
-                musicBtn.classList.remove('animate-pulse');
+                musicIcon.classList.remove('animate-spin');
+                musicBtn.classList.remove('ring-2', 'ring-pink-500/50');
             } else {
                 bgMusic.play().catch(e => console.log('Play error:', e));
                 isPlaying = true;
-                musicBtn.classList.add('animate-pulse');
+                musicIcon.classList.add('animate-spin');
+                musicBtn.classList.add('ring-2', 'ring-pink-500/50');
             }
         };
     </script>
