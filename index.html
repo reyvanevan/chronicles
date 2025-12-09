@@ -614,7 +614,7 @@
             <i data-lucide="music" class="w-5 h-5 md:w-6 md:h-6 group-hover:animate-spin"></i>
         </button>
         <audio id="bgMusic" loop>
-            <source src="music/musik.mp3" type="audio/mpeg">
+            <source src="music/about-you.mp4" type="audio/mpeg">
         </audio>
     </div>
 
@@ -938,6 +938,24 @@
         trackVisit();
         loadLandingData();
         loadLoveProgress();
+        
+        // Music control
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+        
+        // Toggle music function
+        window.toggleMusic = function() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                musicBtn.classList.remove('animate-pulse');
+            } else {
+                bgMusic.play().catch(e => console.log('Play error:', e));
+                isPlaying = true;
+                musicBtn.classList.add('animate-pulse');
+            }
+        };
     </script>
 
     <script type="module">
