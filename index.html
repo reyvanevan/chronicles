@@ -686,7 +686,7 @@
     <script type="module">
         import { db } from './js/firebase-config.js';
         import { doc, getDoc, updateDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getLoveProgress, getMilestoneMessage } from './js/firestore-service.js';
+        import { getLoveProgress, getMilestoneMessage, formatRelativeTime } from './js/firestore-service.js';
 
         // Track visit (session-based to avoid duplicate counting on refresh)
         async function trackVisit() {
