@@ -1118,8 +1118,16 @@
 
             if (logoClicks === 5) {
                 console.log('Triggering redirect...');
-                // Redirect to the dedicated login page
-                window.location.href = 'login.html';
+                
+                // Check if we came from universe pages
+                const referrer = document.referrer;
+                if (referrer && referrer.includes('/universe/')) {
+                    // Redirect to universe login
+                    window.location.href = 'universe/login.html';
+                } else {
+                    // Redirect to universe by default (since login.html removed)
+                    window.location.href = 'universe/';
+                }
                 logoClicks = 0;
             }
         });
