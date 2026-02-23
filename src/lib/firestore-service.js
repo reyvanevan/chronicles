@@ -834,7 +834,7 @@ export async function logout() {
     try {
         await signOut(auth);
         // Redirect to login page
-        window.location.href = '../universe/login.html';
+        window.location.href = '/universe/login';
     } catch (error) {
         console.error('Error signing out:', error);
         throw error;
@@ -860,6 +860,6 @@ export function isAuthenticated() {
 export async function requireAuth() {
     const authenticated = await isAuthenticated();
     if (!authenticated) {
-        window.location.href = '../universe/login.html';
+        window.location.href = '/universe/login';
     }
 }

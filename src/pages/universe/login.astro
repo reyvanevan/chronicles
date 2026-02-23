@@ -49,7 +49,7 @@ import '../../styles/global.css';
     <!-- Login Card (hidden until auth check completes) -->
     <div id="loginCardWrapper" class="hidden relative w-full max-w-md">
         <!-- Back Button -->
-        <a href="../index.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-brand-accent dark:hover:text-brand-accentLight mb-6 transition-colors group">
+        <a href="/" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-brand-accent dark:hover:text-brand-accentLight mb-6 transition-colors group">
             <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
             <span class="text-sm font-medium">Back to Home</span>
         </a>
@@ -145,7 +145,7 @@ import '../../styles/global.css';
             
             if (user) {
                 // User has session, redirect to home
-                window.location.href = 'home.html';
+                window.location.href = '/universe/home';
             } else {
                 // No session, show login form
                 loadingScreen.classList.add('hidden');
@@ -180,7 +180,7 @@ import '../../styles/global.css';
 
                 // Redirect to universe home
                 setTimeout(() => {
-                    window.location.href = 'home.html';
+                    window.location.href = '/universe/home';
                 }, 800);
 
             } catch (error) {

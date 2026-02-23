@@ -35,7 +35,7 @@ import '../../styles/global.css';
         <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
 
             <!-- Logo -->
-            <a href="../index.html" class="flex items-center gap-2">
+            <a href="/" class="flex items-center gap-2">
                 <i data-lucide="globe-2" class="w-5 h-5 text-pink-500"></i>
                 <span class="font-serif font-bold text-lg tracking-tight">World of Anya</span>
             </a>
@@ -92,7 +92,7 @@ import '../../styles/global.css';
         <!-- Stories / Highlights (Horizontal Scroll) -->
         <div class="flex gap-4 overflow-x-auto no-scrollbar py-2" id="storiesContainer">
             <!-- Add New Story -->
-            <a href="upload.html" class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
+            <a href="/universe/upload" class="flex flex-col items-center gap-1 min-w-[64px] cursor-pointer">
                 <div
                     class="w-16 h-16 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center bg-slate-100 dark:bg-slate-800 hover:border-pink-500 transition">
                     <i data-lucide="plus" class="w-6 h-6 text-slate-400"></i>
@@ -140,7 +140,7 @@ import '../../styles/global.css';
                 </div>
                 <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-white mb-2">No Memories Yet</h3>
                 <p class="text-slate-500 text-sm mb-6">Start capturing your moments together!</p>
-                <a href="upload.html" class="inline-flex items-center gap-2 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium transition">
+                <a href="/universe/upload" class="inline-flex items-center gap-2 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium transition">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                     Add First Memory
                 </a>
@@ -158,23 +158,23 @@ import '../../styles/global.css';
             <span class="text-[10px] font-bold mt-0.5">Home</span>
         </a>
 
-        <a href="explore.html" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition group">
+        <a href="/universe/explore" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition group">
             <i data-lucide="search" class="w-6 h-6 transition-transform group-hover:scale-110"></i>
             <span class="text-[10px] font-medium mt-0.5">Memories</span>
         </a>
 
-        <a href="upload.html" class="relative -top-5 group">
+        <a href="/universe/upload" class="relative -top-5 group">
             <div class="w-14 h-14 bg-gradient-to-tr from-pink-500 to-rose-500 text-white rounded-full shadow-lg shadow-pink-500/30 flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform group-hover:scale-105 group-active:scale-95">
                 <i data-lucide="plus" class="w-7 h-7"></i>
             </div>
         </a>
 
-        <a href="him.html" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition group">
+        <a href="/universe/him" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition group">
             <i data-lucide="user" class="w-6 h-6 transition-colors group-hover:text-blue-500"></i>
             <span class="text-[10px] font-medium mt-0.5">Rey</span>
         </a>
 
-        <a href="her.html" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition group">
+        <a href="/universe/her" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition group">
             <i data-lucide="heart" class="w-6 h-6 transition-colors group-hover:text-pink-500"></i>
             <span class="text-[10px] font-medium mt-0.5">Anya</span>
         </a>
@@ -335,7 +335,7 @@ import '../../styles/global.css';
         // Auth check
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                window.location.href = '../index.html';
+                window.location.href = '/';
             } else {
                 // Load fresh avatars from Firestore first
                 await loadUserAvatarsFromFirestore();
@@ -916,7 +916,7 @@ import '../../styles/global.css';
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 // No session, redirect to login
-                window.location.href = 'login.html';
+                window.location.href = '/universe/login';
             } else {
                 // User authenticated, set global user and remove loading screen
                 window.currentUser = user;
