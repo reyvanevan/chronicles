@@ -1,73 +1,24 @@
-# Demo & temp files
-index-emma.html
-index-ada.html
-index-demo.html
-her-demo.html
-/temp
+# build output
+dist/
 
-# Planning documents
-PHOTO_LAYOUT_PLAN.md
+# generated types
+.astro/
 
-# ==================== SENSITIVE FILES ====================
-# JANGAN COMMIT INI! Contains API keys & credentials
-js/firebase-config.js
-
-# Environment files
-.env
-.env.local
-.env.*.local
-
-# ==================== DEPENDENCIES ====================
+# dependencies
 node_modules/
+
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
-yarn.lock
+pnpm-debug.log*
 
-# ==================== SYSTEM FILES ====================
-# MacOS
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
 .DS_Store
-.AppleDouble
-.LSOverride
 
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Linux
-*~
-
-# ==================== IDE / EDITOR ====================
-# VS Code
-.vscode/
-.vscode-test/
-*.code-workspace
-
-# JetBrains (WebStorm, IntelliJ, etc)
+# jetbrains setting folder
 .idea/
-*.iml
-*.iws
-*.ipr
-
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
-
-# ==================== BUILD / DIST ====================
-dist/
-build/
-*.log
-*.cache
-
-# ==================== MISC ====================
-# Backups
-*.bak
-*.swp
-*.swo
-*~
-
-# Test coverage
-coverage/
-.nyc_output/

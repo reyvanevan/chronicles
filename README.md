@@ -1,66 +1,46 @@
-# World of Anya
+# Astro Starter Kit: Basics
 
-Personal timeline & storytelling platform untuk couple documentation.
-
-## ✨ Features
-
-- 📝 **Timeline Posts** - Share moments dengan foto & caption
-- 📖 **Stories** - Cerita panjang dengan multiple images
-- 👥 **Dual Profiles** - Her & Him perspectives
-- 🎨 **Modern UI** - Beautiful gradient design
-- 🔐 **Secure** - Firebase Authentication & Firestore
-- 📱 **Responsive** - Works di semua devices
-
-## 🚀 Quick Setup
-
-```bash
-# 1. Copy Firebase config
-cp js/firebase-config.example.js js/firebase-config.js
-
-# 2. Edit firebase-config.js dengan config kamu dari Firebase Console
-
-# 3. Run local server
-python3 -m http.server 8000
-
-# 4. Open http://localhost:8000
+```sh
+npm create astro@latest -- --template basics
 ```
 
-**📖 Panduan lengkap ada di [SETUP.md](SETUP.md)**
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-## 📋 Prerequisites
+## 🚀 Project Structure
 
-- Firebase Account (gratis)
-- Web Server (Python, Node, atau VS Code Live Server)
-- Modern Browser (Chrome, Firefox, Safari, Edge)
+Inside of your Astro project, you'll see the following folders and files:
 
-## 🔑 Default Config
-
-Edit di `js/firestore-service.js`:
-```javascript
-export const EMAIL_TO_AUTHOR = {
-    'user1@example.com': 'rey',
-    'user2@example.com': 'anya'
-};
+```text
+/
+├── public/
+│   └── favicon.svg
+├── src
+│   ├── assets
+│   │   └── astro.svg
+│   ├── components
+│   │   └── Welcome.astro
+│   ├── layouts
+│   │   └── Layout.astro
+│   └── pages
+│       └── index.astro
+└── package.json
 ```
 
-## 📁 Main Files
+To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
 
-- `universe/home.html` - Main timeline
-- `js/firebase-config.js` - **Your Firebase credentials (JANGAN commit!)**
-- `js/firestore-service.js` - Database operations
-- `SETUP.md` - Detailed setup instructions
+## 🧞 Commands
 
-## 🔒 Security
+All commands are run from the root of the project, from a terminal:
 
-File `firebase-config.js` berisi sensitive data. Pastikan:
-- ✅ File ada di `.gitignore`
-- ✅ Jangan share ke public
-- ✅ Pakai Firestore security rules di production
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 📞 Support
+## 👀 Want to learn more?
 
-Ada masalah? Cek [SETUP.md](SETUP.md) untuk troubleshooting guide.
-
----
-
-Made with 💙 for Anya
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
