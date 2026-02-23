@@ -58,7 +58,7 @@ import Layout from '../layouts/Layout.astro';
 
         <!-- LOVE PROGRESS SECTION -->
         <section id="love-progress-section"
-            class="py-20 px-4 md:px-6 bg-gradient-to-br from-pink-50/50 via-white/30 to-blue-50/50 dark:from-slate-900/80 dark:via-slate-900/50 dark:to-slate-950/80 transition-colors">
+            class="hidden py-20 px-4 md:px-6 bg-gradient-to-br from-pink-50/50 via-white/30 to-blue-50/50 dark:from-slate-900/80 dark:via-slate-900/50 dark:to-slate-950/80 transition-colors">
             <div class="max-w-4xl mx-auto">
                 <!-- Header -->
                 <div class="text-center mb-12" data-aos="fade-up">
@@ -711,6 +711,15 @@ import Layout from '../layouts/Layout.astro';
             try {
                 // Load love progress data
                 const progress = await getLoveProgress();
+                const container = document.getElementById('love-progress-section');
+                
+                if (progress.isVisible === false) {
+                    if (container) container.classList.add('hidden');
+                    return;
+                } else {
+                    if (container) container.classList.remove('hidden');
+                }
+
                 const currentValue = progress.currentProgress || 0;
                 const milestone = getMilestoneMessage(currentValue);
 

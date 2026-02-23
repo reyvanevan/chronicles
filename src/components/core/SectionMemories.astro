@@ -1,0 +1,82 @@
+<section id="section-memories" class="glass-card rounded-3xl overflow-hidden" data-aos="fade-up">
+    <div class="p-6 border-b border-slate-200/50 dark:border-slate-700/50 flex justify-between items-center bg-white/30 dark:bg-slate-800/30">
+        <div class="flex items-center gap-3">
+            <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-500">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Immortalized Memories</h3>
+        </div>
+        <button onclick="saveMemories()" class="px-3 py-2 md:px-4 bg-purple-500 hover:bg-purple-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-purple-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
+            <i data-lucide="save" class="w-4 h-4"></i> Save Memories
+        </button>
+    </div>
+
+    <div class="p-4 md:p-6 space-y-4 md:space-y-6">
+        <!-- Memory 1 -->
+        <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
+            <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
+                <img id="mem1" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
+                    <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
+                        <i data-lucide="upload" class="w-5 h-5"></i>
+                        <input type="file" class="hidden" onchange="updatePreview(this, 'mem1')">
+                    </label>
+                </div>
+            </div>
+            <div class="flex-1 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-1.5 bg-pink-100 dark:bg-pink-900/30 rounded-lg text-pink-500">
+                        <i data-lucide="smile" class="w-4 h-4"></i>
+                    </div>
+                    <input type="text" id="mem1-title" value="" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white" placeholder="Memory Title...">
+                </div>
+                <textarea id="mem1-desc" class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2" placeholder="Describe this memory..."></textarea>
+            </div>
+        </div>
+
+        <!-- Memory 2 -->
+        <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
+            <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-200 relative group shrink-0 shadow-md">
+                <img id="mem2" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
+                    <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
+                        <i data-lucide="upload" class="w-5 h-5"></i>
+                        <input type="file" class="hidden" onchange="updatePreview(this, 'mem2')">
+                    </label>
+                </div>
+            </div>
+            <div class="flex-1 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-500">
+                        <i data-lucide="heart" class="w-4 h-4"></i>
+                    </div>
+                    <input type="text" id="mem2-title" value="" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white" placeholder="Memory Title...">
+                </div>
+                <textarea id="mem2-desc" class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2" placeholder="Describe this memory..."></textarea>
+            </div>
+        </div>
+
+        <!-- Memory 3 (Empty placeholder) -->
+        <div class="flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-4 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl bg-white/40 dark:bg-slate-900/40 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors">
+            <div class="w-full md:w-40 h-40 md:h-32 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative group shrink-0 shadow-inner border-2 border-dashed border-slate-300 dark:border-slate-600">
+                <img id="mem3" src="" class="w-full h-full object-cover transition duration-500 group-hover:scale-110 hidden">
+                <span id="mem3-placeholder" class="text-4xl text-slate-300 dark:text-slate-600 font-serif group-hover:scale-110 transition-transform">?</span>
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center backdrop-blur-[1px]">
+                    <label class="cursor-pointer w-10 h-10 rounded-full bg-white/20 hover:bg-brand-accent flex items-center justify-center text-white transition backdrop-blur-md">
+                        <i data-lucide="upload" class="w-5 h-5"></i>
+                        <input type="file" class="hidden" onchange="updatePreview(this, 'mem3')">
+                    </label>
+                </div>
+            </div>
+            <div class="flex-1 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-1.5 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg text-yellow-500">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    </div>
+                    <input type="text" id="mem3-title" value="" class="w-full font-bold text-lg bg-transparent border-b border-transparent hover:border-slate-300 focus:border-brand-accent outline-none transition-colors text-slate-800 dark:text-white" placeholder="Memory Title...">
+                </div>
+                <textarea id="mem3-desc" class="w-full text-sm text-slate-600 dark:text-slate-400 bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-brand-accent outline-none transition resize-none" rows="2" placeholder="Describe this memory..."></textarea>
+            </div>
+        </div>
+    </div>
+</section>

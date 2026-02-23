@@ -18,6 +18,7 @@ import {
     serverTimestamp,
     Timestamp,
     updateDoc,
+    setDoc,
     where
 } from "firebase/firestore";
 import { auth, db } from './firebase-config.js';
@@ -733,6 +734,7 @@ export async function getLoveProgress() {
                 currentProgress: data.currentProgress || 0,
                 lastUpdate: data.lastUpdate?.toDate() || null,
                 lastUpdatedBy: data.lastUpdatedBy || 'anya',
+                isVisible: data.isVisible !== undefined ? data.isVisible : true,
                 history: (data.history || []).map(h => ({
                     ...h,
                     date: h.date?.toDate() || new Date()
@@ -745,6 +747,7 @@ export async function getLoveProgress() {
             currentProgress: 0,
             lastUpdate: null,
             lastUpdatedBy: 'anya',
+            isVisible: true,
             history: [],
             visitorCount: 0
         };
@@ -788,6 +791,26 @@ export async function updateLoveProgress(newProgress, note = '') {
         return { success: true };
     } catch (error) {
         console.error('Error updating love progress:', error);
+        throw error;
+    }
+}
+
+/**
+ * Toggle love progress visibility (CMS only)
+ */
+export async function toggleLoveProgressVisibility(isVisible) {
+    try {
+        const docRef = doc(db, 'landing', 'loveProgress');
+        // Ensure doc exists before updating
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists()) {
+            await setDoc(docRef, { isVisible: isVisible, currentProgress: 0, history: [] });
+        } else {
+            await updateDoc(docRef, { isVisible: isVisible });
+        }
+        return { success: true };
+    } catch (error) {
+        console.error('Error toggling visibility:', error);
         throw error;
     }
 }

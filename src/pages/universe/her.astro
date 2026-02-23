@@ -614,7 +614,7 @@ import '../../styles/global.css';
     </div>
 
     <!-- Load Logic -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script is:inline src='/js/script.js'></script>
     
     <!-- Archive & Highlights Logic -->
@@ -697,6 +697,11 @@ import '../../styles/global.css';
                 
                 // Get love progress data
                 const progressData = await getLoveProgress();
+                
+                if (progressData.isVisible === false) {
+                    document.getElementById('loveProgressSection')?.classList?.add('hidden');
+                    return; // Skip rendering the progress UI
+                }
                 
                 // Update UI
                 updateLoveProgressUI(progressData.currentProgress);
