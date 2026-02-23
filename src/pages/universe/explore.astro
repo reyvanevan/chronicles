@@ -32,7 +32,7 @@ import '../../styles/global.css';
     <header
         class="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
-            <a href="home.html" class="flex items-center gap-2">
+            <a href="/universe/home" class="flex items-center gap-2">
                 <i data-lucide="globe-2" class="w-5 h-5 text-pink-500"></i>
                 <span class="font-serif font-bold text-lg tracking-tight">World of Anya</span>
             </a>
@@ -119,7 +119,7 @@ import '../../styles/global.css';
     <nav
         class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50 pb-safe transition-colors duration-300">
         <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
-            <a href="home.html"
+            <a href="/universe/home"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
                 <i data-lucide="home" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Home</span>
@@ -130,7 +130,7 @@ import '../../styles/global.css';
                 <span class="text-[10px] font-medium mt-0.5">Memories</span>
             </a>
 
-            <a href="upload.html" class="relative -top-5">
+            <a href="/universe/upload" class="relative -top-5">
                 <div
                     class="w-14 h-14 bg-gradient-to-tr from-pink-500 to-pink-600 hover:scale-105 text-white rounded-full shadow-lg shadow-pink-500/40 flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform">
                     <i data-lucide="plus" class="w-7 h-7"></i>
@@ -138,14 +138,14 @@ import '../../styles/global.css';
             </a>
 
             <!-- Him -->
-            <a href="him.html"
+            <a href="/universe/him"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition">
                 <i data-lucide="user" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Rey</span>
             </a>
 
             <!-- Her -->
-            <a href="her.html"
+            <a href="/universe/her"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition">
                 <i data-lucide="heart" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Anya</span>
@@ -234,7 +234,7 @@ import '../../styles/global.css';
         // Auth check
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                window.location.href = '../index.html';
+                window.location.href = '/';
             } else {
                 // Load fresh avatars from Firestore
                 await loadUserAvatarsFromFirestore();
@@ -417,7 +417,7 @@ import '../../styles/global.css';
 
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                window.location.href = 'login.html';
+                window.location.href = '/universe/login';
             } else {
                 window.currentUser = user;
                 const loadingScreen = document.getElementById('loading-screen');

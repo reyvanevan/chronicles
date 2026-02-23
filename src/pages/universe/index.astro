@@ -54,10 +54,10 @@ import '../../styles/global.css';
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 // No session, redirect to login
-                window.location.href = 'login.html';
+                window.location.href = '/universe/login';
             } else {
                 // User authenticated, redirect to home
-                window.location.href = 'home.html';
+                window.location.href = '/universe/home';
             }
         });
     </script>

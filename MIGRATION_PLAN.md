@@ -50,14 +50,14 @@ This document outlines the systematic plan to refactor the "World of Anya" proje
 - [x] **Her Page**: Migrate `her.html` to `src/pages/her.astro`.
 - [x] **Him Page**: Migrate `him.html` to `src/pages/him.astro`.
 - [x] **Us Page**: Migrate `us.html` to `src/pages/us.astro`.
-- [ ] **Login**: Migrate `login2.html` and secret login logic.
-- [ ] **Universe/Sub-pages**: Handle dynamic routing or static files in `universe/`.
+- [x] **Login**: Migrate `login2.html` and secret login logic (into universe/login).
+- [x] **Universe/Sub-pages**: Handle dynamic routing or static files in `universe/` and `core/`.
 
 ### Phase 5: Asset Optimization & Polish ✨
-- [ ] Move images from `universe/` to `public/` or `src/assets/`.
-- [ ] Use `<Image />` component from `astro:assets` for automatic optimization.
-- [ ] Final testing of all interactive elements (Love progress, Firebase updates).
-- [ ] Cleanup unused files (`us-old.html`, etc).
+- [x] Check for unused local assets from `universe/` & move them to Astro (None found, system uses Base64 via Firestore).
+- [x] Remove `.html` extensions from internal `href` and scripted redirects for native Astro paths.
+- [x] Final testing of all interactive elements (Love progress, Firebase updates).
+- [x] Cleanup unused files (`us-old.html`, leftover flat HTML fragments).
 
 ## 📊 Progress Tracking
 | Phase | Status | Task |
@@ -66,7 +66,7 @@ This document outlines the systematic plan to refactor the "World of Anya" proje
 | 2 | ✅ Done | Layouts & Components |
 | 3 | ✅ Done | Firebase Integration |
 | 4 | ✅ Done | Pages Migration |
-| 5 | ⏳ Pending | Optimization |
+| 5 | ✅ Done | Optimization |
 
 ---
 *Created on: 2026-02-23*

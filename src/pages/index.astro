@@ -34,7 +34,7 @@ import Layout from '../layouts/Layout.astro';
                 </p>
                 <!-- CTA Button -->
                 <div class="mt-8 md:mt-10" data-aos="fade-up" data-aos-delay="200">
-                    <a href="us.html"
+                    <a href="/us"
                         class="group relative inline-flex items-center gap-3 px-8 py-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-brand-pink/50 dark:border-brand-accent/30 rounded-full text-slate-800 dark:text-white font-serif font-medium tracking-wide shadow-lg shadow-brand-pink/20 dark:shadow-brand-accent/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-brand-accent dark:hover:border-brand-accentLight overflow-hidden">
                         <span class="relative z-10">Enter Our Universe</span>
                         <div
@@ -991,7 +991,7 @@ import Layout from '../layouts/Layout.astro';
                 const referrer = document.referrer;
                 if (referrer && referrer.includes('/universe/')) {
                     // Redirect to universe login
-                    window.location.href = 'universe/login.html';
+                    window.location.href = '/universe/login';
                 } else {
                     // Redirect to universe by default (since login.html removed)
                     window.location.href = 'universe/';
@@ -1047,7 +1047,7 @@ import Layout from '../layouts/Layout.astro';
                 lucide.createIcons();
 
                 setTimeout(() => {
-                    window.location.href = 'universe/home.html';
+                    window.location.href = '/universe/home';
                 }, 1000);
 
             } catch (error) {

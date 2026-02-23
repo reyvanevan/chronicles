@@ -34,7 +34,7 @@ import '../../styles/global.css';
         <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
 
             <div class="flex items-center gap-2">
-                <a href="home.html" class="p-2 text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
+                <a href="/universe/home" class="p-2 text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </a>
                 <button onclick="handleLogout()" 
@@ -182,13 +182,13 @@ import '../../styles/global.css';
     <nav
         class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50 pb-safe transition-colors duration-300">
         <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
-            <a href="home.html"
+            <a href="/universe/home"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
                 <i data-lucide="home" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Home</span>
             </a>
 
-            <a href="explore.html"
+            <a href="/universe/explore"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
                 <i data-lucide="search" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Memories</span>
@@ -202,13 +202,13 @@ import '../../styles/global.css';
                 </button>
             </div>
 
-            <a href="him.html"
+            <a href="/universe/him"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition">
                 <i data-lucide="user" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Rey</span>
             </a>
 
-            <a href="her.html"
+            <a href="/universe/her"
                 class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition">
                 <i data-lucide="heart" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium mt-0.5">Anya</span>
@@ -236,7 +236,7 @@ import '../../styles/global.css';
         // Check auth and set current user
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                window.location.href = '../index.html';
+                window.location.href = '/';
             } else {
                 // Load fresh avatars from Firestore
                 await loadUserAvatarsFromFirestore();
@@ -535,7 +535,7 @@ import '../../styles/global.css';
                 btn.classList.add('text-green-500');
                 
                 setTimeout(() => {
-                    window.location.href = 'home.html';
+                    window.location.href = '/universe/home';
                 }, 800);
                 
             } catch (error) {
@@ -570,7 +570,7 @@ import '../../styles/global.css';
 
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                window.location.href = 'login.html';
+                window.location.href = '/universe/login';
             } else {
                 window.currentUser = user;
                 const loadingScreen = document.getElementById('loading-screen');
