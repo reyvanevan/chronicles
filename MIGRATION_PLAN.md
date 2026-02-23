@@ -40,16 +40,16 @@ This document outlines the systematic plan to refactor the "World of Anya" proje
 - [ ] Create `AnyaCard.astro` or similar reusable UI components (Will do as part of pages).
 
 ### Phase 3: Data & Logic Migration 🔐
-- [ ] Move Firebase config to `src/lib/firebase.js`.
-- [ ] Refactor `firestore-service.js` to modern ESM modules compatible with Astro.
-- [ ] Implement environment variables for Firebase keys (`.env`).
-- [ ] Migrate `script.js` global logic to appropriate components or a global script.
+- [x] Move Firebase config to `src/lib/firebase-config.js`.
+- [x] Refactor `firestore-service.js` to modern ESM modules using NPM versions.
+- [x] Implement environment variables for Firebase keys (`.env`).
+- [x] Migrate `script.js` global logic to appropriate components or a global script.
 
 ### Phase 4: Pages Migration 📄
-- [ ] **Home Page**: Migrate `index.html` to `src/pages/index.astro`.
-- [ ] **Her Page**: Migrate `her.html` to `src/pages/her.astro`.
-- [ ] **Him Page**: Migrate `him.html` to `src/pages/him.astro`.
-- [ ] **Us Page**: Migrate `us.html` to `src/pages/us.astro`.
+- [x] **Home Page**: Migrate `index.html` to `src/pages/index.astro`.
+- [x] **Her Page**: Migrate `her.html` to `src/pages/her.astro`.
+- [x] **Him Page**: Migrate `him.html` to `src/pages/him.astro`.
+- [x] **Us Page**: Migrate `us.html` to `src/pages/us.astro`.
 - [ ] **Login**: Migrate `login2.html` and secret login logic.
 - [ ] **Universe/Sub-pages**: Handle dynamic routing or static files in `universe/`.
 
@@ -64,8 +64,8 @@ This document outlines the systematic plan to refactor the "World of Anya" proje
 | :--- | :--- | :--- |
 | 1 | ✅ Done | Project Init |
 | 2 | ✅ Done | Layouts & Components |
-| 3 | ⏳ Pending | Firebase Integration |
-| 4 | ⏳ Pending | Pages Migration |
+| 3 | ✅ Done | Firebase Integration |
+| 4 | ✅ Done | Pages Migration |
 | 5 | ⏳ Pending | Optimization |
 
 ---
