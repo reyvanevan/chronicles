@@ -1,28 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-pink: #FCE7F3;
-  --color-brand-blue: #E0F2FE;
-  --color-brand-dark: #0f172a;
-  --color-brand-accent: #db2777;
-  --color-brand-accent-light: #f472b6;
-  --color-brand-gold: #fbbf24;
+    --color-brand-pink: #FCE7F3;
+    --color-brand-blue: #E0F2FE;
+    --color-brand-dark: #0f172a;
+    --color-brand-accent: #db2777;
+    --color-brand-accent-light: #f472b6;
+    --color-brand-gold: #fbbf24;
 
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Playfair Display', serif;
 
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-spin-slow: spin 8s linear infinite;
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-spin-slow: spin 8s linear infinite;
 
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
     }
-    50% {
-      transform: translateY(-20px);
-    }
-  }
 }
+
+/* Enable class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 
 /* Custom Scrollbar - Desktop Only */
 @media (min-width: 768px) {
@@ -50,8 +57,10 @@
 }
 
 .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 /* Glassmorphism Utilities */
@@ -115,6 +124,7 @@
         transform: translateY(0) rotate(0deg);
         opacity: 1;
     }
+
     100% {
         transform: translateY(100vh) rotate(720deg);
         opacity: 0;
@@ -126,13 +136,14 @@
     0% {
         background-position: -200% 0;
     }
+
     100% {
         background-position: 200% 0;
     }
 }
 
 .love-progress-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
 }
