@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY || "AIzaSyBNlRbW_S34r4m3RGOhutNW1p8GAoB7YeA",
-    authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || "zalfauniverse-50531.firebaseapp.com",
-    projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || "zalfauniverse-50531",
-    storageBucket: "zalfauniverse-50531.firebasestorage.app",
-    messagingSenderId: "187990396550",
-    appId: "1:187990396550:web:bd3eee6011b3c5a33d8b07",
-    measurementId: "G-GMGBCHLN9Z"
+    apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
+    authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.PUBLIC_FIREBASE_APP_ID,
+    measurementId: import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
