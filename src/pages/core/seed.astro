@@ -1,12 +1,33 @@
+---
+import '../../styles/global.css';
+
+// To keep the CMS and Universe layout separate from the public landing layout
+---
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seed Firestore Data</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Core Universe System</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Icons & Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script is:inline src="https://unpkg.com/lucide@latest"></script>
+    
+    <script is:inline>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-8">
+<body class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 selection:bg-brand-pink selection:text-brand-accent overflow-hidden">
+    
     <div class="max-w-2xl w-full">
         <h1 class="text-3xl font-bold mb-6 text-center">🌱 Seed Firestore Data</h1>
         <p class="text-slate-400 text-center mb-8">Upload initial data for World of Anya dashboard</p>
@@ -43,9 +64,9 @@
         </div>
     </div>
 
-    <script type="module">
-        import { db } from '../js/firebase-config.js';
-        import { doc, setDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <script>
+        import { db } from '../../lib/firebase-config.js';
+        import { doc, setDoc, collection } from "firebase/firestore";
 
         // Data structure for World of Anya
         const seedData = {
@@ -394,6 +415,23 @@
                 btn.textContent = '❌ Seeding Failed';
             }
         };
+    </script>
+
+    
+    <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script is:inline>
+        AOS.init({ once: true, offset: 50, duration: 800 });
+        if(window.lucide) { lucide.createIcons(); }
+        
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
     </script>
 </body>
 </html>
