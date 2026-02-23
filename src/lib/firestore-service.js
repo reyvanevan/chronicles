@@ -4,7 +4,7 @@
  * Uses Base64 encoding for images (no Firebase Storage needed!)
  */
 
-import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { signOut } from "firebase/auth";
 import {
     addDoc,
     collection,
@@ -19,7 +19,7 @@ import {
     Timestamp,
     updateDoc,
     where
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+} from "firebase/firestore";
 import { auth, db } from './firebase-config.js';
 
 // ==================== CONSTANTS ====================
@@ -62,19 +62,19 @@ export async function loadUserAvatarsFromFirestore() {
             getDoc(doc(db, 'landing', 'profileRey')),
             getDoc(doc(db, 'landing', 'profileHer'))
         ]);
-        
+
         if (reyDoc.exists() && reyDoc.data().photo) {
             USER_PROFILES.rey.avatarUrl = reyDoc.data().photo;
             USER_PROFILES.rey.name = reyDoc.data().name || USER_PROFILES.rey.name;
             USER_PROFILES.rey.displayName = reyDoc.data().name || USER_PROFILES.rey.displayName;
         }
-        
+
         if (herDoc.exists() && herDoc.data().photo) {
             USER_PROFILES.anya.avatarUrl = herDoc.data().photo;
             USER_PROFILES.anya.name = herDoc.data().name || USER_PROFILES.anya.name;
             USER_PROFILES.anya.displayName = herDoc.data().name || USER_PROFILES.anya.displayName;
         }
-        
+
         console.log('[FirestoreService] User avatars loaded from Firestore');
         return USER_PROFILES;
     } catch (error) {
@@ -148,37 +148,37 @@ const MAX_IMAGE_SIZE = 500 * 1024;
 export async function compressImageToBase64(file, maxWidth = 800, quality = 0.7) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        
+
         reader.onload = (e) => {
             const img = new Image();
-            
+
             img.onload = () => {
                 // Create canvas for compression
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
-                
+
                 // Resize if too large
                 if (width > maxWidth) {
                     height = (height * maxWidth) / width;
                     width = maxWidth;
                 }
-                
+
                 canvas.width = width;
                 canvas.height = height;
-                
+
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                
+
                 // Convert to Base64 (JPEG for smaller size)
                 let base64 = canvas.toDataURL('image/jpeg', quality);
-                
+
                 // Check size and reduce quality if needed
                 while (base64.length > MAX_IMAGE_SIZE && quality > 0.3) {
                     quality -= 0.1;
                     base64 = canvas.toDataURL('image/jpeg', quality);
                 }
-                
+
                 // If still too large, reduce dimensions
                 if (base64.length > MAX_IMAGE_SIZE) {
                     const scale = Math.sqrt(MAX_IMAGE_SIZE / base64.length);
@@ -187,14 +187,14 @@ export async function compressImageToBase64(file, maxWidth = 800, quality = 0.7)
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     base64 = canvas.toDataURL('image/jpeg', 0.6);
                 }
-                
+
                 resolve(base64);
             };
-            
+
             img.onerror = () => reject(new Error('Failed to load image'));
             img.src = e.target.result;
         };
-        
+
         reader.onerror = () => reject(new Error('Failed to read file'));
         reader.readAsDataURL(file);
     });
@@ -207,11 +207,11 @@ export async function compressImageToBase64(file, maxWidth = 800, quality = 0.7)
 export function getCurrentUserProfile() {
     const user = auth.currentUser;
     if (!user) return null;
-    
+
     // Map email to user profile (you can customize this logic)
     // For now: if email contains 'rey' or 'reyvan' -> rey, else -> anya
     const email = user.email?.toLowerCase() || '';
-    
+
     if (email.includes('rey') || email.includes('reyvan')) {
         return USER_PROFILES.rey;
     }
@@ -233,10 +233,10 @@ export function getCurrentUserProfile() {
  */
 export async function createPost(postData) {
     const { type, caption, imageBase64, images, location, tags, authorId } = postData;
-    
+
     const author = USER_PROFILES[authorId] || getCurrentUserProfile();
     if (!author) throw new Error('User not authenticated');
-    
+
     const post = {
         type: type || POST_TYPES.PHOTO,
         caption: caption || '',
@@ -251,12 +251,12 @@ export async function createPost(postData) {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
     };
-    
+
     // Add images array for carousel posts
     if (images && images.length > 0) {
         post.images = images;
     }
-    
+
     const docRef = await addDoc(collection(db, 'posts'), post);
     return docRef.id;
 }
@@ -269,7 +269,7 @@ export async function createPost(postData) {
  */
 export async function getPosts(limitCount = 20, authorId = null) {
     let q;
-    
+
     if (authorId) {
         q = query(
             collection(db, 'posts'),
@@ -284,7 +284,7 @@ export async function getPosts(limitCount = 20, authorId = null) {
             limit(limitCount)
         );
     }
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
@@ -306,7 +306,7 @@ export async function getPostsByTag(tag, limitCount = 20) {
         orderBy('createdAt', 'desc'),
         limit(limitCount)
     );
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
@@ -343,10 +343,10 @@ export async function toggleLike(postId, currentLikes) {
  */
 export async function createStory(storyData) {
     const { imageBase64, caption, authorId } = storyData;
-    
+
     const author = USER_PROFILES[authorId] || getCurrentUserProfile();
     if (!author) throw new Error('User not authenticated');
-    
+
     const story = {
         type: POST_TYPES.STORY,
         imageBase64: imageBase64,
@@ -359,7 +359,7 @@ export async function createStory(storyData) {
         // Story "expires" after 24h (we use this for UI, not deletion)
         expiresAt: Timestamp.fromDate(new Date(Date.now() + 24 * 60 * 60 * 1000))
     };
-    
+
     const docRef = await addDoc(collection(db, 'stories'), story);
     return docRef.id;
 }
@@ -369,13 +369,13 @@ export async function createStory(storyData) {
  */
 export async function getActiveStories() {
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    
+
     const q = query(
         collection(db, 'stories'),
         where('createdAt', '>=', Timestamp.fromDate(yesterday)),
         orderBy('createdAt', 'desc')
     );
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
@@ -393,7 +393,7 @@ export async function getAllStories(limitCount = 50) {
         orderBy('createdAt', 'desc'),
         limit(limitCount)
     );
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
@@ -410,7 +410,7 @@ export async function getAllStories(limitCount = 50) {
  */
 export async function getArchivedStories(authorId, limitCount = 100) {
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    
+
     const q = query(
         collection(db, 'stories'),
         where('authorId', '==', authorId),
@@ -418,14 +418,14 @@ export async function getArchivedStories(authorId, limitCount = 100) {
         orderBy('createdAt', 'desc'),
         limit(limitCount)
     );
-    
+
     const snapshot = await getDocs(q);
     const stories = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
         createdAt: doc.data().createdAt?.toDate() || new Date()
     }));
-    
+
     return stories;
 }
 
@@ -436,17 +436,17 @@ export async function getArchivedStories(authorId, limitCount = 100) {
  */
 export function groupStoriesByMonth(stories) {
     const grouped = {};
-    
+
     stories.forEach(story => {
         const date = story.createdAt;
         const monthKey = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-        
+
         if (!grouped[monthKey]) {
             grouped[monthKey] = [];
         }
         grouped[monthKey].push(story);
     });
-    
+
     return grouped;
 }
 
@@ -460,14 +460,14 @@ export function groupStoriesByMonth(stories) {
 export function formatRelativeTime(date) {
     const now = new Date();
     const diff = now - date;
-    
+
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     const weeks = Math.floor(days / 7);
     const months = Math.floor(days / 30);
-    
+
     if (months > 0) return `${months} month${months > 1 ? 's' : ''} ago`;
     if (weeks > 0) return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
     if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
@@ -498,7 +498,7 @@ export function formatDate(date) {
  */
 export async function createHighlight(highlightData) {
     const { name, icon, gradient, authorId, coverImageBase64 } = highlightData;
-    
+
     const highlight = {
         name: name.trim(),
         icon: icon || 'star',
@@ -510,7 +510,7 @@ export async function createHighlight(highlightData) {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
     };
-    
+
     const docRef = await addDoc(collection(db, 'highlights'), highlight);
     return docRef.id;
 }
@@ -526,7 +526,7 @@ export async function getHighlights(authorId) {
         where('authorId', '==', authorId),
         orderBy('createdAt', 'desc')
     );
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
@@ -544,9 +544,9 @@ export async function getHighlights(authorId) {
 export async function getHighlightById(highlightId) {
     const docRef = doc(db, 'highlights', highlightId);
     const docSnap = await getDocs(query(collection(db, 'highlights'), where('__name__', '==', highlightId)));
-    
+
     if (docSnap.empty) return null;
-    
+
     const data = docSnap.docs[0].data();
     return {
         id: docSnap.docs[0].id,
@@ -564,30 +564,30 @@ export async function getHighlightById(highlightId) {
  */
 export async function addStoryToHighlight(highlightId, storyId, storyImageBase64 = null) {
     const highlightRef = doc(db, 'highlights', highlightId);
-    
+
     // Get current highlight data
     const q = query(collection(db, 'highlights'), where('__name__', '==', highlightId));
     const snapshot = await getDocs(q);
-    
+
     if (snapshot.empty) throw new Error('Highlight not found');
-    
+
     const currentData = snapshot.docs[0].data();
     const currentStoryIds = currentData.storyIds || [];
-    
+
     // Don't add duplicate
     if (currentStoryIds.includes(storyId)) return;
-    
+
     const updateData = {
         storyIds: [...currentStoryIds, storyId],
         storyCount: currentStoryIds.length + 1,
         updatedAt: serverTimestamp()
     };
-    
+
     // Set cover image if this is the first story or no cover yet
     if (!currentData.coverImageBase64 && storyImageBase64) {
         updateData.coverImageBase64 = storyImageBase64;
     }
-    
+
     await updateDoc(highlightRef, updateData);
 }
 
@@ -598,16 +598,16 @@ export async function addStoryToHighlight(highlightId, storyId, storyImageBase64
  */
 export async function removeStoryFromHighlight(highlightId, storyId) {
     const highlightRef = doc(db, 'highlights', highlightId);
-    
+
     const q = query(collection(db, 'highlights'), where('__name__', '==', highlightId));
     const snapshot = await getDocs(q);
-    
+
     if (snapshot.empty) throw new Error('Highlight not found');
-    
+
     const currentData = snapshot.docs[0].data();
     const currentStoryIds = currentData.storyIds || [];
     const newStoryIds = currentStoryIds.filter(id => id !== storyId);
-    
+
     await updateDoc(highlightRef, {
         storyIds: newStoryIds,
         storyCount: newStoryIds.length,
@@ -645,19 +645,19 @@ export async function getHighlightStories(highlightId) {
     // First get the highlight to get story IDs
     const q = query(collection(db, 'highlights'), where('__name__', '==', highlightId));
     const highlightSnap = await getDocs(q);
-    
+
     if (highlightSnap.empty) return [];
-    
+
     const storyIds = highlightSnap.docs[0].data().storyIds || [];
-    
+
     if (storyIds.length === 0) return [];
-    
+
     // Fetch all stories by IDs
     const stories = [];
     for (const storyId of storyIds) {
         const storyQ = query(collection(db, 'stories'), where('__name__', '==', storyId));
         const storySnap = await getDocs(storyQ);
-        
+
         if (!storySnap.empty) {
             const data = storySnap.docs[0].data();
             stories.push({
@@ -667,7 +667,7 @@ export async function getHighlightStories(highlightId) {
             });
         }
     }
-    
+
     // Sort by createdAt desc
     return stories.sort((a, b) => b.createdAt - a.createdAt);
 }
@@ -726,7 +726,7 @@ export async function getLoveProgress() {
     try {
         const docRef = doc(db, 'landing', 'loveProgress');
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
             const data = docSnap.data();
             return {
@@ -740,7 +740,7 @@ export async function getLoveProgress() {
                 visitorCount: data.visitorCount || 0
             };
         }
-        
+
         return {
             currentProgress: 0,
             lastUpdate: null,
@@ -761,30 +761,30 @@ export async function updateLoveProgress(newProgress, note = '') {
     try {
         const user = auth.currentUser;
         if (!user) throw new Error('Must be logged in');
-        
+
         const author = getCurrentAuthor(user);
         if (author !== 'anya') throw new Error('Only Princess can update this');
-        
+
         const docRef = doc(db, 'landing', 'loveProgress');
         const docSnap = await getDoc(docRef);
-        
+
         const currentData = docSnap.exists() ? docSnap.data() : { history: [], visitorCount: 0 };
         const history = currentData.history || [];
-        
+
         // Add to history - use Date instead of serverTimestamp for arrays
         history.push({
             date: new Date(),
             value: newProgress,
             note: note || getMilestone(newProgress).message
         });
-        
+
         await updateDoc(docRef, {
             currentProgress: newProgress,
             lastUpdate: serverTimestamp(),
             lastUpdatedBy: 'anya',
             history: history
         });
-        
+
         return { success: true };
     } catch (error) {
         console.error('Error updating love progress:', error);
@@ -799,7 +799,7 @@ export async function incrementVisitorCount() {
     try {
         const docRef = doc(db, 'landing', 'loveProgress');
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
             const currentCount = docSnap.data().visitorCount || 0;
             await updateDoc(docRef, {

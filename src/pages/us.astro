@@ -1,113 +1,10 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+---
+import Layout from '../layouts/Layout.astro';
+---
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Us | Our Journey</title>
-
-    <!-- Load CSS Modular -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Fonts & AOS CSS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
-        rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Scripts Pre-Load -->
-    <script src="js/config.js"></script> <!-- Config Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <script>
-        // Theme Check (Prevent Flash)
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
-</head>
-
-<body
-    class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-hidden selection:bg-brand-accent selection:text-white">
-
-    <!-- NAVBAR HEADER -->
-    <header class="fixed top-0 left-0 w-full z-50 nav-glass transition-all duration-300" id="main-header">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 md:h-20">
-
-                <!-- Logo / Brand -->
-                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-                    <i data-lucide="globe-2"
-                        class="w-6 h-6 text-brand-accent dark:text-brand-accentLight animate-spin-slow"></i>
-                    <span
-                        class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-white tracking-tight">
-                        World of <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Anya</span>
-                    </span>
-                </a>
-
-                <!-- Desktop Menu -->
-                <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="index.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Our
-                        Story</a>
-                    <a href="her.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Her</a>
-                    <a href="him.html"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accentLight font-medium transition-colors text-sm uppercase tracking-wider">Him</a>
-                    <a href="us.html"
-                        class="text-brand-accent dark:text-brand-accentLight font-bold transition-colors text-sm uppercase tracking-wider">Us</a>
-
-                    <!-- Divider -->
-                    <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
-
-                    <!-- Theme Toggle -->
-                    <button onclick="toggleTheme()"
-                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
-                    </button>
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center gap-4">
-                    <button onclick="toggleTheme()"
-                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        <i data-lucide="sun" class="w-5 h-5 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
-                    </button>
-                    <button onclick="toggleMobileMenu()"
-                        class="text-slate-600 dark:text-slate-300 hover:text-brand-accent focus:outline-none">
-                        <i data-lucide="menu" class="w-6 h-6"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu"
-            class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <a href="index.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Our
-                    Story</a>
-                <a href="her.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Her
-                    Moments</a>
-                <a href="him.html"
-                    class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-brand-accent hover:bg-pink-50 dark:hover:bg-slate-800">Him
-                    Moments</a>
-                <a href="us.html"
-                    class="block px-3 py-3 rounded-md text-base font-bold text-brand-accent bg-pink-50 dark:bg-slate-800/50">Just
-                    Us</a>
-            </div>
-        </div>
-    </header>
-
-    <main class="pt-24 pb-20 px-4">
+<Layout title="Just Us">
+    <main class="pt-24 pb-10 px-4 max-w-4xl mx-auto">
+        
 
         <!-- Page Header -->
         <div class="max-w-xl mx-auto text-center mb-6" data-aos="fade-down">
@@ -176,67 +73,12 @@
 
         </div>
 
-    </main>
-
-    <!-- Story Viewer Modal -->
-    <div id="storyModal" class="fixed inset-0 z-[100] hidden bg-black">
-        <!-- Progress Bars -->
-        <div id="storyProgressBars" class="absolute top-0 left-0 right-0 z-20 flex gap-1 p-2 px-3">
-        </div>
-        
-        <!-- Header -->
-        <div class="absolute top-6 left-0 right-0 z-20 px-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img id="storyAuthorAvatar" src="" class="w-10 h-10 rounded-full object-cover border-2 border-white/30">
-                <div>
-                    <p id="storyAuthorName" class="text-white text-sm font-semibold"></p>
-                    <p id="storyTime" class="text-white/60 text-xs"></p>
-                </div>
-            </div>
-            <button onclick="closeStoryModal()" class="p-2 text-white/80 hover:text-white">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-        </div>
-        
-        <!-- Story Image -->
-        <div class="absolute inset-0 flex items-center justify-center">
-            <img id="storyImage" src="" class="max-w-full max-h-full object-contain">
-        </div>
-        
-        <!-- Navigation Touch Areas -->
-        <div class="absolute inset-0 flex z-10">
-            <div onclick="prevStory()" class="w-1/3 h-full cursor-pointer"></div>
-            <div onclick="toggleStoryPause()" class="w-1/3 h-full cursor-pointer"></div>
-            <div onclick="nextStory()" class="w-1/3 h-full cursor-pointer"></div>
-        </div>
-        
-        <!-- Caption -->
-        <div class="absolute bottom-0 left-0 right-0 z-20 p-4 pb-8 bg-gradient-to-t from-black/80 to-transparent">
-            <p id="storyCaption" class="text-white text-sm text-center"></p>
-        </div>
-    </div>
-
-    <footer
-        class="py-8 text-center text-slate-400 text-xs tracking-widest uppercase border-t border-slate-200 dark:border-slate-800 transition-colors">
-        <p>Built with ❤️ for Anya • 2025</p>
-    </footer>
-
-    <!-- Floating Action Button (Optional: For adding new post later) -->
-    <div class="fixed bottom-6 right-6 z-40">
-        <button
-            class="bg-brand-accent hover:bg-pink-600 text-white p-4 rounded-full shadow-lg shadow-pink-500/30 transition-transform hover:scale-105 group"
-            title="New Memory">
-            <i data-lucide="plus" class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300"></i>
-        </button>
-    </div>
-
-    <!-- Load JS Modular -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="js/script.js"></script>
     
-    <!-- Feed Logic -->
-    <script type="module">
-        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES } from './js/firestore-service.js';
+    </main>
+    
+<script>
+
+        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES, loadUserAvatarsFromFirestore, getAuthorAvatar } from '../lib/firestore-service.js';
         
         // Story viewer state
         let allStories = [];
@@ -245,8 +87,15 @@
         let storyPaused = false;
         const STORY_DURATION = 5000;
         
+        // Photo modal state
+        let allPosts = [];
+        let currentModalPost = null;
+        let modalCurrentImageIndex = 0;
+        
         // Load feed on page load
         document.addEventListener('DOMContentLoaded', async () => {
+            // Load fresh avatars from Firestore first
+            await loadUserAvatarsFromFirestore();
             await loadStories();
             await loadFeed();
         });
@@ -338,8 +187,8 @@
             const story = allStories[index];
             const author = USER_PROFILES[story.authorId] || USER_PROFILES.rey;
             
-            // Update modal content
-            document.getElementById('storyAuthorAvatar').src = author.avatarUrl;
+            // Update modal content - use fresh avatar from profile
+            document.getElementById('storyAuthorAvatar').src = getAuthorAvatar(story.authorId);
             document.getElementById('storyAuthorName').textContent = author.displayName;
             document.getElementById('storyTime').textContent = formatRelativeTime(story.createdAt);
             document.getElementById('storyImage').src = story.imageBase64;
@@ -439,6 +288,7 @@
             try {
                 // Get posts only (stories are shown as bubbles above)
                 const posts = await getPosts(50);
+                allPosts = posts; // Store for modal access
                 
                 // Hide loading
                 loadingState.classList.add('hidden');
@@ -477,16 +327,17 @@
             const delay = Math.min(index * 50, 300); // AOS delay
             
             // Post card
-            const hasImage = item.imageBase64 && item.imageBase64.length > 0;
+            const isCarouselPost = item.type === 'carousel' && item.images && item.images.length > 0;
+            const hasImage = (item.imageBase64 && item.imageBase64.length > 0) || isCarouselPost;
             const isNote = item.type === 'note' || !hasImage;
             
             if (isNote) {
-                // Note/Quote style
+                // Note/Quote style - use pen icon for notes
                 return `
                     <article class="glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="${delay}">
                         <div class="p-4 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/50">
-                            <div class="w-10 h-10 rounded-full overflow-hidden">
-                                <img src="${author.avatarUrl}" alt="${author.displayName}" class="w-full h-full object-cover">
+                            <div class="w-10 h-10 rounded-full bg-${item.authorId === 'rey' ? 'blue' : 'pink'}-100 dark:bg-${item.authorId === 'rey' ? 'blue' : 'pink'}-900/30 flex items-center justify-center">
+                                <i data-lucide="pen-tool" class="w-5 h-5 text-${item.authorId === 'rey' ? 'blue' : 'pink'}-500"></i>
                             </div>
                             <div class="flex-1">
                                 <h3 class="font-bold text-sm text-slate-800 dark:text-white">${author.displayName}'s Note</h3>
@@ -512,13 +363,17 @@
                 `;
             } else {
                 // Photo post
+                const isCarousel = item.type === 'carousel' && item.images && item.images.length > 1;
+                const imageToShow = isCarousel ? item.images[0].url : item.imageBase64;
+                const imageCount = isCarousel ? item.images.length : 1;
+                
                 return `
                     <article class="glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="${delay}">
                         <!-- Post Header -->
                         <div class="p-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-full overflow-hidden">
-                                    <img src="${author.avatarUrl}" alt="${author.displayName}" class="w-full h-full object-cover">
+                                    <img src="${getAuthorAvatar(item.authorId) || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%23e2e8f0'/%3E%3C/svg%3E`}" alt="${author.displayName}" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-sm text-slate-800 dark:text-white">${author.displayName}</h3>
@@ -534,8 +389,23 @@
                         </div>
                         
                         <!-- Post Image -->
-                        <div class="relative aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden group cursor-pointer" onclick="openPhotoModal('${item.id}', '${item.imageBase64.replace(/'/g, "\\'")}')">
-                            <img src="${item.imageBase64}" alt="Post" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                        <div class="relative aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden group cursor-pointer" onclick="openPhotoModal('${item.id}', ${isCarousel ? 'null' : `'${imageToShow.replace(/'/g, "\\'")}'`}, ${isCarousel})">
+                            <img src="${imageToShow}" alt="Post" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                            
+                            ${isCarousel ? `
+                            <!-- Carousel Indicator -->
+                            <div class="absolute top-3 right-3 bg-black/50 text-white px-2 py-1 rounded-full text-[10px] font-medium flex items-center gap-1">
+                                <i data-lucide="layers" class="w-3 h-3"></i>
+                                ${imageCount}
+                            </div>
+                            
+                            <!-- Carousel Dots -->
+                            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1">
+                                ${item.images.map((_, idx) => `
+                                    <div class="w-1.5 h-1.5 rounded-full ${idx === 0 ? 'bg-white' : 'bg-white/50'}"></div>
+                                `).join('')}
+                            </div>
+                            ` : ''}
                         </div>
                         
                         <!-- Post Footer -->
@@ -569,7 +439,16 @@
         }
         
         // Photo modal (simple)
-        window.openPhotoModal = function(id, imageBase64) {
+        window.openPhotoModal = function(postId, singleImageBase64, isCarousel) {
+            // Find the post
+            currentModalPost = allPosts.find(p => p.id === postId);
+            if (!currentModalPost) return;
+            
+            modalCurrentImageIndex = 0;
+            
+            const isCarouselPost = currentModalPost.type === 'carousel' && currentModalPost.images && currentModalPost.images.length > 1;
+            const imageToShow = isCarouselPost ? currentModalPost.images[0].url : (currentModalPost.imageBase64 || singleImageBase64);
+            
             // Create modal
             const modal = document.createElement('div');
             modal.id = 'photoModal';
@@ -578,7 +457,36 @@
                 <button onclick="closePhotoModal()" class="absolute top-4 right-4 text-white/80 hover:text-white z-10">
                     <i data-lucide="x" class="w-8 h-8"></i>
                 </button>
-                <img src="${imageBase64}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+                
+                ${isCarouselPost ? `
+                <!-- Carousel Navigation -->
+                <button onclick="prevModalImage(); event.stopPropagation();" 
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-black/30 rounded-full p-3 z-10" 
+                        id="modalPrevBtn">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <button onclick="nextModalImage(); event.stopPropagation();" 
+                        class="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-black/30 rounded-full p-3 z-10"
+                        id="modalNextBtn">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+                
+                <!-- Image Counter -->
+                <div class="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm z-10" id="modalImageCounter">
+                    1 / ${currentModalPost.images.length}
+                </div>
+                ` : ''}
+                
+                <img id="modalImage" src="${imageToShow}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+                
+                ${isCarouselPost ? `
+                <!-- Carousel Dots -->
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10" id="modalDots">
+                    ${currentModalPost.images.map((_, idx) => `
+                        <div class="w-2 h-2 rounded-full transition-all ${idx === 0 ? 'bg-white w-6' : 'bg-white/50'}" data-dot="${idx}"></div>
+                    `).join('')}
+                </div>
+                ` : ''}
             `;
             modal.onclick = () => closePhotoModal();
             document.body.appendChild(modal);
@@ -586,12 +494,51 @@
             lucide.createIcons();
         };
         
+        window.nextModalImage = function() {
+            if (!currentModalPost || !currentModalPost.images) return;
+            
+            modalCurrentImageIndex = (modalCurrentImageIndex + 1) % currentModalPost.images.length;
+            updateModalImage();
+        };
+        
+        window.prevModalImage = function() {
+            if (!currentModalPost || !currentModalPost.images) return;
+            
+            modalCurrentImageIndex = (modalCurrentImageIndex - 1 + currentModalPost.images.length) % currentModalPost.images.length;
+            updateModalImage();
+        };
+        
+        function updateModalImage() {
+            const modalImage = document.getElementById('modalImage');
+            const modalCounter = document.getElementById('modalImageCounter');
+            const dots = document.querySelectorAll('#modalDots [data-dot]');
+            
+            if (modalImage && currentModalPost && currentModalPost.images) {
+                modalImage.src = currentModalPost.images[modalCurrentImageIndex].url;
+            }
+            
+            if (modalCounter) {
+                modalCounter.textContent = `${modalCurrentImageIndex + 1} / ${currentModalPost.images.length}`;
+            }
+            
+            // Update dots
+            dots.forEach((dot, idx) => {
+                if (idx === modalCurrentImageIndex) {
+                    dot.className = 'w-6 h-2 rounded-full bg-white transition-all';
+                } else {
+                    dot.className = 'w-2 h-2 rounded-full bg-white/50 transition-all';
+                }
+            });
+        }
+        
         window.closePhotoModal = function() {
             const modal = document.getElementById('photoModal');
             if (modal) {
                 modal.remove();
                 document.body.style.overflow = '';
             }
+            currentModalPost = null;
+            modalCurrentImageIndex = 0;
         };
         
         // Close modals on ESC
@@ -601,7 +548,7 @@
                 closeStoryModal();
             }
         });
-    </script>
-</body>
+    
+</script>
 
-</html>
+</Layout>
