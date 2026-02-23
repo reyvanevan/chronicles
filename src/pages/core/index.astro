@@ -8,6 +8,7 @@ import SectionReyProfile from '../../components/core/SectionReyProfile.astro';
 import SectionGallery from '../../components/core/SectionGallery.astro';
 import SectionMemories from '../../components/core/SectionMemories.astro';
 import SectionLetter from '../../components/core/SectionLetter.astro';
+import SectionSiteConfig from '../../components/core/SectionSiteConfig.astro';
 ---
 
 <!DOCTYPE html>
@@ -67,7 +68,7 @@ import SectionLetter from '../../components/core/SectionLetter.astro';
             <!-- Desktop Header -->
             <div class="hidden md:flex justify-between items-end" data-aos="fade-down">
                 <div>
-                    <h1 class="text-3xl font-serif font-bold text-slate-800 dark:text-white mb-1">Welcome back, Rey! 👋</h1>
+                    <h1 id="cms-welcome-header" class="text-3xl font-serif font-bold text-slate-800 dark:text-white mb-1">Welcome back, Rey! 👋</h1>
                     <p class="text-slate-500 dark:text-slate-400">Here's what's happening in your universe today.</p>
                 </div>
                 <div class="flex gap-4">
@@ -129,6 +130,7 @@ import SectionLetter from '../../components/core/SectionLetter.astro';
             <SectionGallery />
             <SectionMemories />
             <SectionLetter />
+            <SectionSiteConfig />
 
         </main>
     </div>
@@ -138,12 +140,18 @@ import SectionLetter from '../../components/core/SectionLetter.astro';
         import { initAuth } from '../../lib/cms/auth.js';
         import { loadDashboardData } from '../../lib/cms/dashboard.js';
         import { loadSasukeImage } from '../../lib/cms/content.js';
+        import { loadSiteConfig } from '../../lib/cms/config.js';
         import '../../lib/cms/gallery.js';
         import '../../lib/cms/profiles.js';
         import '../../lib/cms/content.js';
 
-        initAuth(() => {
-            loadDashboardData();
+        initAuth(async () => {
+            const config = await loadSiteConfig();
+            if (!config.isSetupComplete) {
+                window.location.href = '/core/setup';
+                return;
+            }
+            await loadDashboardData();
             loadSasukeImage();
         });
 

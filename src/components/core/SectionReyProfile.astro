@@ -5,8 +5,8 @@
                 <i data-lucide="shield" class="w-5 h-5"></i>
             </div>
             <div>
-                <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Guardian Profile</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Rey's Profile Section</p>
+                <h3 id="section-partnerB-heading" class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Guardian Profile</h3>
+                <p id="section-partnerB-subtitle" class="text-xs text-slate-500 dark:text-slate-400">Rey's Profile Section</p>
             </div>
         </div>
         <button id="btn-save-rey-profile" onclick="saveReyProfile()" class="px-3 py-2 md:px-4 bg-blue-500 hover:bg-blue-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-blue-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
@@ -37,13 +37,13 @@
             <div class="mt-6">
                 <label class="block text-sm font-bold mb-3 text-slate-700 dark:text-slate-300 flex items-center gap-2">
                     <i data-lucide="sparkles" class="w-4 h-4 text-pink-500"></i>
-                    Stickers from Anya
+                    <span id="section-partnerB-stickers-label">Stickers from Anya</span>
                 </label>
                 <div id="rey-stickers-display" class="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl min-h-[60px] items-center justify-center">
                     <span class="text-slate-400 text-xs" id="no-stickers-msg">No stickers yet 💕</span>
                 </div>
                 <div id="sticker-picker" class="hidden mt-3">
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Add a sticker for Rey:</p>
+                    <p id="section-partnerB-sticker-prompt" class="text-xs text-slate-500 dark:text-slate-400 mb-2">Add a sticker for Rey:</p>
                     <div class="flex flex-wrap gap-2">
                         {['❤️','💕','✨','🌟','🥰','😘','💖','🦋'].map(s => (
                             <button onclick={`addSticker('${s}')`} class="text-2xl hover:scale-125 transition">{s}</button>
@@ -73,7 +73,7 @@
                         <i data-lucide="shield" class="w-5 h-5 text-white"></i>
                     </div>
                     <div>
-                        <p class="font-bold text-sm text-slate-800 dark:text-white">The Guardian</p>
+                        <p id="section-partnerB-badge-role" class="font-bold text-sm text-slate-800 dark:text-white">The Guardian</p>
                         <p class="text-xs text-slate-500 dark:text-slate-400">Protector of this universe</p>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
             <div class="flex items-center gap-3">
                 <i data-lucide="grid-3x3" class="w-5 h-5 text-blue-500"></i>
                 <h4 class="font-bold text-slate-800 dark:text-white">Profile Gallery</h4>
-                <span class="text-xs text-slate-400">Photos shown on him.html</span>
+                <span id="section-partnerB-gallery-subtitle" class="text-xs text-slate-400">Photos shown on him.html</span>
             </div>
             <button onclick="addGuardianGalleryPhoto()" class="px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-medium rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition flex items-center gap-1">
                 <i data-lucide="plus" class="w-3 h-3"></i> Add Photo

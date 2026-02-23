@@ -1,0 +1,187 @@
+<section id="section-site-config" class="glass-card rounded-3xl overflow-hidden" data-aos="fade-up">
+    <div class="p-6 border-b border-slate-200/50 dark:border-slate-700/50 flex justify-between items-center bg-white/30 dark:bg-slate-800/30">
+        <div class="flex items-center gap-3">
+            <div class="p-2 bg-violet-100 dark:bg-violet-900/30 rounded-lg text-violet-500">
+                <i data-lucide="settings-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-base md:text-lg text-slate-800 dark:text-white">Site Configuration</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Customize names, labels & default text</p>
+            </div>
+        </div>
+        <button id="btn-save-site-config" onclick="saveSiteConfigForm()" class="px-3 py-2 md:px-4 bg-violet-500 hover:bg-violet-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-violet-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
+            <i data-lucide="save" class="w-4 h-4"></i> Save Config
+        </button>
+    </div>
+
+    <div class="p-4 md:p-8 space-y-8">
+
+        <!-- ── Site Identity ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-1 h-5 bg-violet-500 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">Site Identity</h4>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Site Name</label>
+                    <input type="text" id="config-siteName" placeholder="World of Anya"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-violet-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">Shows in sidebar header</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Tagline</label>
+                    <input type="text" id="config-siteTagline" placeholder="Control Center"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-violet-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">Sub-text under site name</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Start Date</label>
+                    <input type="date" id="config-startDate"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-violet-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">Used for "Days Together" counter</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Partner A ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="w-1 h-5 bg-pink-500 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">Partner A</h4>
+            </div>
+            <p class="text-xs text-slate-400 mb-4 ml-3">The one the site is dedicated to (her.html / Princess Profile)</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nickname</label>
+                    <input type="text" id="config-pA-nickname" placeholder="Anya"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">Short name — used in greeting, letter, sticker prompt</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Full Name</label>
+                    <input type="text" id="config-pA-displayName" placeholder="Zalfa Nazhifah"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Role Label</label>
+                    <input type="text" id="config-pA-roleLabel" placeholder="Princess"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">e.g. Princess, Sayang, Cinta, Waifu</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Page Slug</label>
+                    <input type="text" id="config-pA-pageSlug" placeholder="her"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">URL path — e.g. "her" → /her, "layla" → /layla</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Profile Title</label>
+                    <input type="text" id="config-pA-defaultTitle" placeholder="The Main Character"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Quote</label>
+                    <textarea id="config-pA-defaultBio" rows="2" placeholder="She is the poem I never knew how to write..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-pink-500 outline-none transition resize-none"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Partner B ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="w-1 h-5 bg-blue-500 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">Partner B</h4>
+            </div>
+            <p class="text-xs text-slate-400 mb-4 ml-3">The one managing the site (him.html / Guardian Profile)</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nickname</label>
+                    <input type="text" id="config-pB-nickname" placeholder="Rey"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">Used in "Welcome back, Rey!" dashboard header</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Full Name</label>
+                    <input type="text" id="config-pB-displayName" placeholder="M Reyvan Purnama"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Role Label</label>
+                    <input type="text" id="config-pB-roleLabel" placeholder="Guardian"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">e.g. Guardian, Abang, Pacar, Mas</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Page Slug</label>
+                    <input type="text" id="config-pB-pageSlug" placeholder="him"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">URL path — e.g. "him" → /him, "dika" → /dika</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Profile Title</label>
+                    <input type="text" id="config-pB-defaultTitle" placeholder="The Observer"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Quote</label>
+                    <textarea id="config-pB-defaultBio" rows="2" placeholder="I see the universe in your eyes..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Zero Marker ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="w-1 h-5 bg-slate-500 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">Love Progress — 0% Marker</h4>
+            </div>
+            <p class="text-xs text-slate-400 mb-4 ml-3">Character yang mewakili titik awal / friendzone di Love Progress</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Character Name</label>
+                    <input type="text" id="config-zeroMarker-name" placeholder="Sasuke Uchiha"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
+                    <p class="text-xs text-slate-400 mt-1">Siapa yang mewakili "friendzone" dalam cerita kalian?</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Description</label>
+                    <input type="text" id="config-zeroMarker-desc" placeholder="0% - Stranger/Friendzone marker"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Letter Defaults ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="w-1 h-5 bg-red-400 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">Letter Defaults</h4>
+            </div>
+            <p class="text-xs text-slate-400 mb-4 ml-3">Teks default saat letter belum diisi</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Greeting</label>
+                    <input type="text" id="config-letter-greeting" placeholder="Hai Anya..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-red-400 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Closing Quote</label>
+                    <input type="text" id="config-letter-closing" placeholder="I love you, today and forever."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-red-400 outline-none transition">
+                </div>
+            </div>
+        </div>
+
+        <!-- Info banner -->
+        <div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200/50 dark:border-amber-500/20 flex gap-3">
+            <i data-lucide="info" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+            <p class="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">
+                Perubahan config akan langsung update label di dashboard ini. Tapi untuk mengupdate teks di <strong>public pages</strong> (index, her, him) diperlukan re-deploy atau update data Firestore yang dibaca public pages.
+            </p>
+        </div>
+
+    </div>
+</section>

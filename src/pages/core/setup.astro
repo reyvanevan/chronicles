@@ -1,0 +1,358 @@
+---
+import '../../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup — Universe CMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script is:inline src="https://unpkg.com/lucide@latest"></script>
+    <script is:inline>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen flex items-center justify-center p-4 text-slate-700 dark:text-slate-300">
+
+    <!-- Background orbs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px] animate-pulse"></div>
+    </div>
+
+    <div id="setup-card" class="relative z-10 w-full max-w-2xl">
+
+        <!-- Progress bar -->
+        <div class="flex items-center gap-2 mb-6 justify-center">
+            {[1, 2, 3, 4].map((n) => (
+                <div class="flex items-center gap-2">
+                    <div id={`step-dot-${n}`} class={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${n === 1 ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/30' : 'bg-slate-200 dark:bg-slate-700 text-slate-400'}`}>
+                        {n}
+                    </div>
+                    {n < 4 && <div id={`step-line-${n}`} class="w-12 h-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-all duration-300"></div>}
+                </div>
+            ))}
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 rounded-3xl shadow-2xl shadow-black/10 overflow-hidden">
+
+            <!-- Steps -->
+            <!-- Step 1: Site Identity -->
+            <div id="step-1" class="p-8">
+                <div class="mb-8 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-violet-500 to-pink-500 flex items-center justify-center shadow-lg shadow-violet-500/30">
+                        <i data-lucide="globe" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-white mb-2">Kasih nama universe kalian</h2>
+                    <p class="text-slate-500 text-sm">Ini akan muncul di sidebar dashboard dan tab browser.</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Site <span class="text-red-400">*</span></label>
+                        <input type="text" id="setup-siteName" placeholder="World of Layla, Universe of Us, dll..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition text-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Tagline <span class="text-slate-400 font-normal">(opsional)</span></label>
+                        <input type="text" id="setup-siteTagline" placeholder="Control Center" value="Control Center"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Tanggal Mulai Bersama <span class="text-slate-400 font-normal">(opsional)</span></label>
+                        <input type="date" id="setup-startDate"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition">
+                        <p class="text-xs text-slate-400 mt-1">Dipakai untuk counter "Days Together" di dashboard</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Partner A -->
+            <div id="step-2" class="p-8 hidden">
+                <div class="mb-8 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center shadow-lg shadow-pink-500/30">
+                        <i data-lucide="heart" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-white mb-2">Siapa dia?</h2>
+                    <p class="text-slate-500 text-sm">Partner A — yang dibuatkan site ini. Profilnya ada di halaman <code class="text-pink-500">/her</code>.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Panggilan <span class="text-red-400">*</span></label>
+                        <input type="text" id="setup-pA-nickname" placeholder="Anya, Layla, Cinta..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                        <p class="text-xs text-slate-400 mt-1">Muncul di greeting letter ("Hai Anya...")</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Lengkap</label>
+                        <input type="text" id="setup-pA-displayName" placeholder="Zalfa Nazhifah"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Sebutan Peran</label>
+                        <input type="text" id="setup-pA-roleLabel" placeholder="Princess" value="Princess"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                        <p class="text-xs text-slate-400 mt-1">Princess, Sayang, Cinta, Waifu...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">URL Slug Halaman</label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-400 text-sm">/</span>
+                            <input type="text" id="setup-pA-pageSlug" placeholder="her" value="her"
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Jadi URL "/her", "/layla", dll</p>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Kutipan</label>
+                        <textarea id="setup-pA-defaultBio" rows="2" placeholder="She is the poem I never knew how to write..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Partner B -->
+            <div id="step-3" class="p-8 hidden">
+                <div class="mb-8 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <i data-lucide="shield" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-white mb-2">Siapa kamu?</h2>
+                    <p class="text-slate-500 text-sm">Partner B — yang manage site ini. Profilnya ada di halaman <code class="text-blue-500">/him</code>.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Panggilan <span class="text-red-400">*</span></label>
+                        <input type="text" id="setup-pB-nickname" placeholder="Rey, Dika, Mas..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <p class="text-xs text-slate-400 mt-1">Muncul di dashboard ("Welcome back, Rey!")</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Lengkap</label>
+                        <input type="text" id="setup-pB-displayName" placeholder="M Reyvan Purnama"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Sebutan Peran</label>
+                        <input type="text" id="setup-pB-roleLabel" placeholder="Guardian" value="Guardian"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <p class="text-xs text-slate-400 mt-1">Guardian, Abang, Pacar, Mas...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">URL Slug Halaman</label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-400 text-sm">/</span>
+                            <input type="text" id="setup-pB-pageSlug" placeholder="him" value="him"
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Kutipan</label>
+                        <textarea id="setup-pB-defaultBio" rows="2" placeholder="I see the universe in your eyes..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Extras -->
+            <div id="step-4" class="p-8 hidden">
+                <div class="mb-8 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-slate-600 to-slate-800 flex items-center justify-center shadow-lg">
+                        <i data-lucide="sparkles" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h2 class="font-serif text-2xl font-bold text-slate-800 dark:text-white mb-2">Detail terakhir</h2>
+                    <p class="text-slate-500 text-sm">Bisa dikosongkan dan diubah nanti dari dashboard.</p>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-3 flex items-center gap-2">
+                            <span>🖤</span> Love Progress — 0% Marker
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold mb-2 text-slate-500">Nama Karakter</label>
+                                <input type="text" id="setup-zeroMarker-name" placeholder="Sasuke Uchiha"
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold mb-2 text-slate-500">Deskripsi</label>
+                                <input type="text" id="setup-zeroMarker-desc" placeholder="0% - Friendzone marker"
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-3 flex items-center gap-2">
+                            <span>✉️</span> Default Letter Text
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold mb-2 text-slate-500">Default Greeting</label>
+                                <input type="text" id="setup-letter-greeting" placeholder="Hai Anya..."
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-red-400 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold mb-2 text-slate-500">Default Closing</label>
+                                <input type="text" id="setup-letter-closing" placeholder="I love you, today and forever."
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-red-400 outline-none transition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer nav -->
+            <div class="px-8 py-5 border-t border-slate-200/50 dark:border-slate-700/50 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
+                <button id="btn-back" onclick="prevStep()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition invisible flex items-center gap-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+                </button>
+                <p id="step-label" class="text-xs text-slate-400 font-medium">Step 1 of 4</p>
+                <button id="btn-next" onclick="nextStep()" class="px-6 py-2.5 rounded-xl bg-violet-500 hover:bg-violet-600 text-white font-medium shadow-lg shadow-violet-500/30 transition-transform hover:scale-105 flex items-center gap-2">
+                    Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Skip link -->
+        <p class="text-center mt-4 text-xs text-slate-400">
+            Already configured? <a href="/core" class="text-violet-500 hover:underline">Go to dashboard →</a>
+        </p>
+    </div>
+
+    <script>
+        import { auth } from '../../lib/firebase-config.js';
+        import { onAuthStateChanged } from 'firebase/auth';
+        import { saveSiteConfig, DEFAULT_CONFIG } from '../../lib/cms/config.js';
+        import { getDoc, doc } from 'firebase/firestore';
+        import { db } from '../../lib/firebase-config.js';
+
+        // Auth guard
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = '/core/login';
+                return;
+            }
+            // If already set up, go to dashboard
+            const snap = await getDoc(doc(db, 'config', 'site'));
+            if (snap.exists() && snap.data().isSetupComplete) {
+                window.location.href = '/core';
+            }
+        });
+
+        // ── Step logic ────────────────────────────────────────────────────────
+        let currentStep = 1;
+        const TOTAL = 4;
+
+        function showStep(n: number) {
+            for (let i = 1; i <= TOTAL; i++) {
+                document.getElementById(`step-${i}`)!.classList.toggle('hidden', i !== n);
+                const dot = document.getElementById(`step-dot-${i}`)!;
+                dot.className = `w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                    i < n  ? 'bg-green-500 text-white' :
+                    i === n ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/30' :
+                               'bg-slate-200 dark:bg-slate-700 text-slate-400'
+                }`;
+                if (i < TOTAL) {
+                    const line = document.getElementById(`step-line-${i}`)!;
+                    line.className = `w-12 h-1 rounded-full transition-all duration-300 ${i < n ? 'bg-green-500' : 'bg-slate-200 dark:bg-slate-700'}`;
+                }
+            }
+            (document.getElementById('step-label') as HTMLElement).textContent = `Step ${n} of ${TOTAL}`;
+            const backBtn = document.getElementById('btn-back') as HTMLButtonElement;
+            backBtn.classList.toggle('invisible', n === 1);
+            const nextBtn = document.getElementById('btn-next') as HTMLButtonElement;
+            nextBtn.innerHTML = n === TOTAL
+                ? '<i data-lucide="check" class="w-4 h-4"></i> Complete Setup'
+                : 'Next <i data-lucide="arrow-right" class="w-4 h-4"></i>';
+            if (window.lucide) (window as any).lucide.createIcons();
+        }
+
+        function validate(step: number): string | null {
+            const v = (id: string) => (document.getElementById(id) as HTMLInputElement | null)?.value?.trim() ?? '';
+            if (step === 1 && !v('setup-siteName')) return 'Nama site wajib diisi.';
+            if (step === 2 && !v('setup-pA-nickname')) return 'Nama panggilan Partner A wajib diisi.';
+            if (step === 3 && !v('setup-pB-nickname')) return 'Nama panggilan Partner B wajib diisi.';
+            return null;
+        }
+
+        (window as any).nextStep = async function () {
+            const err = validate(currentStep);
+            if (err) { alert(err); return; }
+            if (currentStep < TOTAL) {
+                currentStep++;
+                showStep(currentStep);
+            } else {
+                await completeSetup();
+            }
+        };
+
+        (window as any).prevStep = function () {
+            if (currentStep > 1) { currentStep--; showStep(currentStep); }
+        };
+
+        async function completeSetup() {
+            const btn = document.getElementById('btn-next') as HTMLButtonElement;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="animate-spin">⏳</span> Saving...';
+
+            const g = (id: string) => (document.getElementById(id) as HTMLInputElement | null)?.value?.trim() ?? '';
+
+            try {
+                await saveSiteConfig({
+                    siteName:    g('setup-siteName')    || DEFAULT_CONFIG.siteName,
+                    siteTagline: g('setup-siteTagline') || DEFAULT_CONFIG.siteTagline,
+                    startDate:   g('setup-startDate'),
+                    partnerA: {
+                        nickname:     g('setup-pA-nickname')    || DEFAULT_CONFIG.partnerA.nickname,
+                        displayName:  g('setup-pA-displayName') || '',
+                        roleLabel:    g('setup-pA-roleLabel')   || DEFAULT_CONFIG.partnerA.roleLabel,
+                        defaultTitle: DEFAULT_CONFIG.partnerA.defaultTitle,
+                        defaultBio:   g('setup-pA-defaultBio')  || DEFAULT_CONFIG.partnerA.defaultBio,
+                        pageSlug:     g('setup-pA-pageSlug')    || DEFAULT_CONFIG.partnerA.pageSlug,
+                        colorTheme:   'pink',
+                    },
+                    partnerB: {
+                        nickname:     g('setup-pB-nickname')    || DEFAULT_CONFIG.partnerB.nickname,
+                        displayName:  g('setup-pB-displayName') || '',
+                        roleLabel:    g('setup-pB-roleLabel')   || DEFAULT_CONFIG.partnerB.roleLabel,
+                        defaultTitle: DEFAULT_CONFIG.partnerB.defaultTitle,
+                        defaultBio:   g('setup-pB-defaultBio')  || DEFAULT_CONFIG.partnerB.defaultBio,
+                        pageSlug:     g('setup-pB-pageSlug')    || DEFAULT_CONFIG.partnerB.pageSlug,
+                        colorTheme:   'blue',
+                    },
+                    zeroMarker: {
+                        name:        g('setup-zeroMarker-name') || DEFAULT_CONFIG.zeroMarker.name,
+                        description: g('setup-zeroMarker-desc') || DEFAULT_CONFIG.zeroMarker.description,
+                    },
+                    letter: {
+                        defaultGreeting: g('setup-letter-greeting') || `Hai ${g('setup-pA-nickname') || DEFAULT_CONFIG.partnerA.nickname}...`,
+                        defaultClosing:  g('setup-letter-closing')  || DEFAULT_CONFIG.letter.defaultClosing,
+                    },
+                });
+
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Done!';
+                if (window.lucide) (window as any).lucide.createIcons();
+                setTimeout(() => { window.location.href = '/core'; }, 800);
+            } catch (err: any) {
+                console.error(err);
+                alert('Setup failed: ' + err.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Complete Setup';
+                if (window.lucide) (window as any).lucide.createIcons();
+            }
+        }
+
+        showStep(1);
+    </script>
+
+    <script is:inline>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>
