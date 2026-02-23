@@ -115,15 +115,16 @@ win.saveLetter = async function () {
 
 export async function loadSasukeImage(): Promise<void> {
     try {
+        const cfg       = (window as any).siteConfig;
         const sasukeDoc = await getDoc(doc(db, 'landing', 'sasukeImage'));
         if (sasukeDoc.exists()) {
             const d = sasukeDoc.data();
-            const preview  = document.getElementById('sasukePreview')      as HTMLImageElement;
-            const nameEl   = document.getElementById('sasukeName')         as HTMLInputElement;
-            const descEl   = document.getElementById('sasukeDescription')  as HTMLInputElement;
-            if (preview) preview.src   = d.url || '';
-            if (nameEl)  nameEl.value  = d.name || 'Sasuke Uchiha';
-            if (descEl)  descEl.value  = d.description || '0% - Stranger/Friendzone marker';
+            const preview = document.getElementById('sasukePreview')     as HTMLImageElement;
+            const nameEl  = document.getElementById('sasukeName')        as HTMLInputElement;
+            const descEl  = document.getElementById('sasukeDescription') as HTMLInputElement;
+            if (preview) preview.src  = d.url || '';
+            if (nameEl)  nameEl.value = d.name        || cfg?.zeroMarker?.name        || 'Sasuke Uchiha';
+            if (descEl)  descEl.value = d.description || cfg?.zeroMarker?.description || '0% - Stranger/Friendzone marker';
         }
         const progressDoc = await getDoc(doc(db, 'landing', 'loveProgress'));
         const isVisible   = progressDoc.exists() ? (progressDoc.data().isVisible ?? true) : true;
