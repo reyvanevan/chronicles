@@ -1,214 +1,178 @@
-# World of Anya - Setup Guide
+# World of Anya — Setup Guide
 
-Panduan setup project untuk developer baru.
+Panduan setup project untuk fresh install / Firebase project baru.
+
+---
 
 ## 🚀 Quick Start
 
-### 1. Clone/Download Project
+### 1. Install Dependencies
+
 ```bash
-git clone <repository-url>
-cd worldofanya
+npm install
 ```
 
-### 2. Setup Firebase
+### 2. Setup Firebase Project Baru
 
 #### A. Buat Firebase Project
 1. Buka [Firebase Console](https://console.firebase.google.com/)
-2. Klik **"Add project"** atau **"Create a project"**
-3. Masukkan nama project (contoh: `my-worldofanya`)
+2. Klik **"Add project"**
+3. Masukkan nama project (contoh: `worldofanya`)
 4. Enable/disable Google Analytics (optional)
 5. Klik **"Create project"**
 
-#### B. Setup Firestore Database
-1. Di Firebase Console, buka **Firestore Database**
+#### B. Daftarkan Web App
+1. Di dashboard project, klik ikon **`</>`** (Web)
+2. Kasih nama app (contoh: `worldofanya-web`)
+3. Jangan centang Firebase Hosting
+4. **Copy** firebaseConfig object yang muncul
+
+#### C. Setup Firestore Database
+1. Sidebar kiri → **Build > Firestore Database**
 2. Klik **"Create database"**
-3. Pilih **"Start in test mode"** (untuk development)
-4. Pilih lokasi server (pilih yang terdekat, contoh: `asia-southeast1`)
+3. Pilih **"Start in test mode"** (bisa di-lock nanti)
+4. Pilih region: **`asia-southeast1`** (Singapore)
 5. Klik **"Enable"**
 
-#### C. Setup Authentication
-1. Di Firebase Console, buka **Authentication**
+#### D. Setup Authentication
+1. Sidebar kiri → **Build > Authentication**
 2. Klik **"Get started"**
-3. Pilih tab **"Sign-in method"**
-4. Enable **"Email/Password"**
-5. Klik **"Save"**
+3. Tab **"Sign-in method"** → **Email/Password** → Enable → Save
 
-#### D. Buat User Accounts
-1. Di Authentication → **Users** tab
+#### E. Buat User Accounts
+1. Authentication → tab **"Users"**
 2. Klik **"Add user"**
-3. Buat 2 user:
-   - Email: `reyvan@ganteng.com` (atau email custom kamu)
-   - Email: `sayang@anya.com` (atau email custom kamu)
-4. Set password untuk masing-masing
+3. Buat akun untuk Rey (admin/observer) dan akun untuk Anya (atau sesuaikan)
 
-### 3. Setup Firebase Config
+---
 
-#### A. Dapatkan Firebase Config
-1. Di Firebase Console, klik **⚙️ (Settings)** → **Project settings**
-2. Scroll ke bawah ke bagian **"Your apps"**
-3. Klik icon **</>** (Web)
-4. Register app dengan nama (contoh: `worldofanya-web`)
-5. Copy kode **firebaseConfig** object
+### 3. Konfigurasi `.env`
 
-#### B. Setup File Config
 ```bash
-# Copy file example
-cp js/firebase-config.example.js js/firebase-config.js
+cp .env.example .env
 ```
 
-Buka `js/firebase-config.js` dan ganti dengan config kamu:
-```javascript
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY_HERE",
-    authDomain: "your-project.firebaseapp.com",
-    projectId: "your-project-id",
-    storageBucket: "your-project.firebasestorage.app",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef",
-    measurementId: "G-XXXXXXXXX"
-};
+Buka `.env` dan isi dengan config dari Firebase Console:
+
+```env
+PUBLIC_FIREBASE_API_KEY=AIzaSy...
+PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
+PUBLIC_FIREBASE_APP_ID=1:123456789:web:abcdef
+PUBLIC_FIREBASE_MEASUREMENT_ID=G-XXXXXXXX
 ```
 
-### 4. Setup Firestore Service (Custom Data)
+> ⚠️ Jangan commit file `.env` ke git! Sudah ada di `.gitignore`.
 
-Edit `js/firestore-service.js` - ganti email mapping sesuai user kamu:
+---
 
-```javascript
-export const EMAIL_TO_AUTHOR = {
-    'reyvan@ganteng.com': 'rey',      // Ganti dengan email user 1 kamu
-    'sayang@anya.com': 'anya'         // Ganti dengan email user 2 kamu
-};
-```
+### 4. Jalankan Project
 
-Optional: Ganti user profiles juga (nama, avatar, dll):
-```javascript
-export const USER_PROFILES = {
-    rey: {
-        name: 'Nama Kamu',
-        email: 'email-kamu@domain.com',
-        // ... dst
-    },
-    anya: {
-        name: 'Nama Pasangan',
-        email: 'email-pasangan@domain.com',
-        // ... dst
-    }
-};
-```
-
-### 5. Run Project
-
-**⚠️ PENTING:** Jangan buka file HTML langsung! Harus pakai web server.
-
-**Pilihan 1: Python (Recommended)**
 ```bash
-python3 -m http.server 8000
-```
-Buka: http://localhost:8000
-
-**Pilihan 2: Node.js**
-```bash
-npx http-server -p 8000
+npm run dev
+# Buka http://localhost:4321
 ```
 
-**Pilihan 3: VS Code Live Server**
-- Install extension "Live Server"
-- Right-click `index.html` → "Open with Live Server"
+---
 
-### 6. First Login
-1. Buka http://localhost:8000
-2. Login dengan salah satu user yang kamu buat tadi
-3. Mulai posting! 🎉
+### 5. First-Time Setup di CMS
 
-## 📁 File Structure
+1. Buka `http://localhost:4321`
+2. Klik logo Navbar 5x cepat untuk trigger secret login
+3. Login dengan akun admin yang sudah dibuat
+4. Akan diredirect ke `/core/setup` — isi semua konfigurasi awal:
+   - Nama site & tagline
+   - Nama Partner A & B, role, slug halaman
+   - Salam pembuka/penutup surat
+   - Tanggal mulai bersama
+5. Setelah setup selesai, masuk ke `/core` untuk CMS dashboard
 
-```
-worldofanya/
-├── index.html              # Landing page
-├── universe/
-│   ├── home.html          # Main timeline
-│   ├── explore.html       # Explore posts
-│   ├── her.html           # Her profile
-│   ├── him.html           # His profile
-│   └── upload.html        # Upload post
-├── js/
-│   ├── firebase-config.example.js  # Template config (DON'T EDIT!)
-│   ├── firebase-config.js          # Your actual config (EDIT THIS!)
-│   └── firestore-service.js        # Database service
-└── css/
-    └── style.css
-```
+---
 
-## 🔒 Security
+## 🗄️ Initial Firestore Data
 
-### Firestore Rules (Production)
-Setelah testing, ganti Firestore rules untuk security:
+Setelah login pertama kali, Firestore masih kosong. Beberapa collection akan dibuat otomatis saat pertama kali dipakai:
+
+| Collection | Dibuat saat... |
+|---|---|
+| `config/site` | Setup wizard selesai |
+| `landing/stats` | Visitor pertama masuk |
+| `loveProgress/current` | Progress pertama di-update dari CMS |
+| `landing/profile` | Data profil di-save dari CMS |
+| `landing/gallery` | Foto pertama di-upload dari CMS |
+| `landing/memories` | Memory pertama di-save dari CMS |
+| `landing/letter` | Surat pertama di-publish dari CMS |
+
+---
+
+## 🔒 Firestore Security Rules (Production)
+
+Setelah selesai testing, ganti rules di Firebase Console → Firestore → Rules:
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users collection
-    match /users/{userId} {
+
+    // Public read for landing data
+    match /landing/{doc} {
       allow read: if true;
-      allow write: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null;
     }
-    
-    // Posts collection
-    match /posts/{postId} {
+
+    // Public read for love progress
+    match /loveProgress/{doc} {
       allow read: if true;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null && 
-        request.auth.uid == resource.data.authorId;
+      allow write: if request.auth != null;
     }
-    
-    // Stories collection
-    match /stories/{storyId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null && 
-        request.auth.uid == resource.data.authorId;
+
+    // Auth-only for site config
+    match /config/{doc} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Auth-only for universe posts
+    match /posts/{doc} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
     }
   }
 }
 ```
 
-## ⚠️ IMPORTANT: `.gitignore`
+---
 
-**JANGAN COMMIT `firebase-config.js` KE GIT!**
+## 🔧 Update EMAIL_TO_AUTHOR Mapping
 
-Buat file `.gitignore`:
+Di `src/lib/firestore-service.js`, ganti email mapping sesuai akun yang dibuat:
+
+```javascript
+export const EMAIL_TO_AUTHOR = {
+    'email-kamu@domain.com': 'rey',
+    'email-pasangan@domain.com': 'anya'
+};
 ```
-js/firebase-config.js
-node_modules/
-.DS_Store
-```
+
+---
 
 ## 🆘 Troubleshooting
 
-### CORS Error / Module not allowed
-- ❌ Jangan buka file:/// langsung
-- ✅ Harus pakai web server (lihat step 5)
+### App loading tapi data kosong
+- Normal untuk fresh Firebase. Data akan muncul setelah di-seed via CMS.
+- Buka browser console untuk melihat error Firestore.
 
 ### Login tidak bisa
-- Cek email/password di Firebase Console → Authentication
-- Pastikan Email/Password authentication sudah enabled
-- Cek console browser untuk error
+- Pastikan email/password sesuai yang dibuat di Firebase Authentication.
+- Pastikan Email/Password sign-in method sudah di-enable.
 
-### Post tidak muncul
-- Cek Firestore Database apakah ada collection `posts`
-- Cek `EMAIL_TO_AUTHOR` mapping sesuai dengan email user kamu
-- Cek console browser untuk error
+### Firebase config error / `app/no-app`
+- Pastikan semua 7 variabel di `.env` sudah diisi benar.
+- Restart dev server setelah mengubah `.env`: `npm run dev`.
 
-### Firebase config error
-- Pastikan semua field di `firebase-config.js` sudah diisi dengan benar
-- Jangan ada `YOUR_API_KEY` atau placeholder lainnya
-
-## 📞 Need Help?
-
-Contact original developer atau cek Firebase docs:
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [Firestore Get Started](https://firebase.google.com/docs/firestore/quickstart)
+### Firestore permission denied
+- Cek rules — pastikan masih dalam test mode atau sudah dikonfigurasi.
 
 ---
 

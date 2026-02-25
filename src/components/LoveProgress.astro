@@ -1,0 +1,165 @@
+<!-- LOVE PROGRESS SECTION -->
+<section id="love-progress-section"
+    class="hidden py-20 px-6 md:px-12 transition-colors relative">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header (Sticky Pill) -->
+        <div class="sticky top-8 md:top-12 z-30 text-center mb-12 pointer-events-none" data-aos="fade-up">
+             <div class="inline-block bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl px-6 py-2 rounded-full shadow-lg shadow-pink-500/5 border border-white/20 dark:border-white/5 pointer-events-auto transition-all hover:scale-105">
+                <div
+                    class="inline-flex items-center gap-2 mb-1 justify-center w-full">
+                    <i data-lucide="heart" class="w-3 h-3 text-pink-500"></i>
+                    <span
+                        class="text-[10px] font-bold tracking-widest uppercase text-pink-600 dark:text-pink-400">Perjalanan
+                        Pulang</span>
+                </div>
+                <h2 class="font-serif text-xl md:text-2xl font-bold text-slate-800 dark:text-white">
+                    Dia bilang <span id="progress-display"
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">0%</span>
+                </h2>
+             </div>
+        </div>
+
+        <!-- Progress Content Wrapper -->
+        <div>
+           <div class="text-center mb-8 px-4">
+                <p class="text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed text-xs md:text-sm bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm p-3 rounded-2xl inline-block">
+                    Angka ini bukan buatan. Bukan editan. Ini jawaban jujur dari dia, untuk pertanyaan yang sama:
+                    <br/><span class="italic font-medium text-pink-600 dark:text-pink-400">"Sudah berapa persen hatimu
+                        kembali?"</span>
+                </p>
+           </div>
+
+            <!-- Progress Card -->
+            <div class="glass-card rounded-3xl p-6 md:p-8 border border-pink-200/50 dark:border-pink-800/30 shadow-xl shadow-pink-500/5"
+                data-aos="fade-up" data-aos-delay="100">
+
+            <!-- Main Progress Display -->
+            <div class="flex items-center gap-4 md:gap-6 mb-6">
+                <!-- Sasuke (0%) -->
+                <div class="flex flex-col items-center gap-2">
+                    <div class="relative">
+                        <div
+                            class="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-700 shadow-lg">
+                            <img src="https://i.pinimg.com/736x/f8/6b/e3/f86be38f3971dfd29ae5bee32019bbdc.jpg"
+                                alt="Sasuke" class="w-full h-full object-cover">
+                        </div>
+                        <div
+                            class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-slate-500 flex items-center justify-center text-white text-[10px] font-bold shadow">
+                            🖤</div>
+                    </div>
+                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wide">0%</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="flex-1">
+                    <div class="relative">
+                        <!-- Background -->
+                        <div
+                            class="h-3 md:h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
+                            <!-- Progress Fill -->
+                            <div id="landing-progress-bar"
+                                class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-1000 ease-out relative"
+                                style="width: 0%">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Progress Indicator -->
+                        <div id="landing-progress-indicator"
+                            class="absolute -top-6 transform -translate-x-1/2 transition-all duration-1000 ease-out"
+                            style="left: 0%">
+                            <div
+                                class="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-lg shadow-pink-500/30">
+                                <span id="landing-progress-value">0</span>%
+                            </div>
+                            <div
+                                class="w-0 h-0 border-l-3 border-r-3 border-t-3 border-l-transparent border-r-transparent border-t-pink-500 mx-auto">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Milestone Message -->
+                    <div class="mt-4 text-center">
+                        <span id="landing-milestone-emoji" class="text-2xl mb-1 block">💙</span>
+                        <p id="landing-milestone-text"
+                            class="text-slate-600 dark:text-slate-300 text-xs font-medium italic">"Starting from
+                            zero..."</p>
+                    </div>
+                </div>
+
+                <!-- Rey (100%) -->
+                <div class="flex flex-col items-center gap-2">
+                    <div class="relative">
+                        <div
+                            class="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-pink-400 dark:border-pink-500 bg-pink-100 dark:bg-pink-900/30 shadow-lg shadow-pink-500/30 ring-2 ring-pink-200/50 dark:ring-pink-800/30">
+                            <img id="landing-rey-photo"
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                alt="Rey" class="w-full h-full object-cover">
+                        </div>
+                        <div
+                            class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-pink-500 flex items-center justify-center text-white text-[10px] font-bold shadow animate-pulse">
+                            💕</div>
+                    </div>
+                    <span class="text-[10px] font-bold text-pink-500 dark:text-pink-400 tracking-wide">100%</span>
+                </div>
+            </div>
+
+            <!-- Footer Info -->
+            <div
+                class="flex flex-col md:flex-row items-center justify-between gap-3 pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+                <!-- Last Update -->
+                <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    <span>Update terakhir: <span id="landing-last-update" class="font-medium">-</span></span>
+                </div>
+
+                <!-- Visitor Counter -->
+                <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <i data-lucide="users" class="w-3 h-3"></i>
+                    <span><span id="visitor-count" class="font-bold text-pink-500">0</span> orang ikut
+                        mendoakan</span>
+                </div>
+
+                <!-- Share Button -->
+                <button onclick="shareLoveProgress()"
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white text-xs font-medium rounded-full shadow-lg shadow-pink-500/30 transition-all hover:scale-105">
+                    <i data-lucide="share-2" class="w-3 h-3"></i>
+                    Share
+                </button>
+            </div>
+        </div>
+
+            <!-- History Timeline Section -->
+            <div class="mt-8" data-aos="fade-up" data-aos-delay="200">
+                <!-- Toggle Button -->
+                <button onclick="toggleHistory()" id="historyToggleBtn"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-slate-100/50 dark:bg-slate-800/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium transition-all group">
+                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                    <span>View Journey History</span>
+                    <i data-lucide="chevron-down" id="historyChevron" class="w-4 h-4 transition-transform group-hover:translate-y-0.5"></i>
+                </button>
+
+                <!-- History Timeline (Hidden by default) -->
+                <div id="historyTimeline" class="hidden mt-6 overflow-hidden">
+                    <div class="glass-card rounded-2xl p-6 max-h-96 overflow-y-auto">
+                        <!-- Timeline Container -->
+                        <div id="historyList" class="space-y-6 relative">
+                            <!-- Timeline items will be inserted here by JS -->
+                            <div class="text-center py-8 text-slate-400 dark:text-slate-500">
+                                <i data-lucide="loader-2" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
+                                <p class="text-sm">Loading history...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extra Note -->
+            <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-6 italic" data-aos="fade-up"
+                data-aos-delay="200">
+                Progress ini dia yang update. Aku cuma bisa nunggu... dan berharap. 🥺
+            </p>
+        </div>
+    </div>
+</section>
