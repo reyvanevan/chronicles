@@ -8,23 +8,7 @@ AOS.init({
     duration: 800,
 });
 
-// Check LocalStorage for Theme
-if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark')
-} else {
-    document.documentElement.classList.remove('dark')
-}
-
-// Toggle Theme Logic
-function toggleTheme() {
-    if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        localStorage.theme = 'light';
-    } else {
-        document.documentElement.classList.add('dark');
-        localStorage.theme = 'dark';
-    }
-}
+// Theme Logic is handled in Layout.astro to prevent FOUC
 
 // Mobile Menu Logic
 function toggleMobileMenu() {
