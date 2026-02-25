@@ -30,7 +30,7 @@ import '../../styles/global.css';
     
     <div class="max-w-2xl w-full">
         <h1 class="text-3xl font-bold mb-6 text-center">🌱 Seed Firestore Data</h1>
-        <p class="text-slate-400 text-center mb-8">Upload initial data for World of Anya dashboard</p>
+        <p class="text-slate-400 text-center mb-8">Upload initial data for Chronicles dashboard</p>
         
         <div id="status" class="space-y-3 mb-8"></div>
         
@@ -68,12 +68,12 @@ import '../../styles/global.css';
         import { db } from '../../lib/firebase-config.js';
         import { doc, setDoc, collection } from "firebase/firestore";
 
-        // Data structure for World of Anya
+        // Data structure for Chronicles
         const seedData = {
             // Profile/Hero Section
             profile: {
-                name: "Zalfa Nazhifah",
-                bio: "Dia bukan sekadar nama. Dia adalah Zalfa Nazhifah. Lahir 24 Juli 2005, membawa warna biru dan pink ke dalam hidup seseorang yang pernah kehilangan arah.",
+                name: "Her Name",
+                bio: "She is the poem I never knew how to write, and this life is the paper.",
                 photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 tags: ["BlueSoul", "PinkHeart", "MyUniverse"],
                 updatedAt: new Date()
@@ -158,8 +158,8 @@ import '../../styles/global.css';
             users: {
                 rey: {
                     uid: "rey-guardian",
-                    email: "reyvan@ganteng.com",
-                    displayName: "M Reyvan Purnama",
+                    email: "partner@example.com",
+                    displayName: "Partner B",
                     role: "guardian",
                     greeting: "Welcome home, Guardian.",
                     avatar: "https://ui-avatars.com/api/?name=Rey&background=0D8ABC&color=fff",
@@ -168,8 +168,8 @@ import '../../styles/global.css';
                 },
                 anya: {
                     uid: "anya-princess", 
-                    email: "sayang@anya.com",
-                    displayName: "Zalfa Nazhifah",
+                    email: "her@example.com",
+                    displayName: "Partner A",
                     role: "princess",
                     greeting: "Hi beautiful, how was your day?",
                     avatar: "https://ui-avatars.com/api/?name=Anya&background=EC4899&color=fff",
@@ -180,7 +180,7 @@ import '../../styles/global.css';
 
             // Him Profile (Rey's profile for him.html)
             profileRey: {
-                name: "Reyvan Azhari",
+                name: "Partner B",
                 title: "The Observer",
                 bio: "Just a guy who's trying his best to be the person she deserves. Everyday is a chance to be better.",
                 photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
@@ -202,7 +202,7 @@ import '../../styles/global.css';
 
             // Her Profile (Princess profile for her.html)
             profileHer: {
-                name: "Zalfa Nazhifah",
+                name: "Her Name",
                 title: "The Main Character",
                 bio: "She is the poem I never knew how to write, and this life is the paper.",
                 photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
