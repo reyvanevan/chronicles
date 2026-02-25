@@ -8,7 +8,7 @@ const win = window as any;
 
 export interface PartnerConfig {
     nickname: string;       // short name, e.g. "Anya"
-    displayName: string;    // full name, e.g. "Zalfa Nazhifah"
+    displayName: string;    // full name, e.g. "Partner Full Name"
     roleLabel: string;      // role label, e.g. "Princess"
     defaultTitle: string;   // default profile title
     defaultBio: string;     // default bio/quote
@@ -30,11 +30,11 @@ export interface SiteConfig {
 // ─── Defaults ─────────────────────────────────────────────────────────────────
 
 export const DEFAULT_CONFIG: SiteConfig = {
-    siteName: 'World of Anya',
+    siteName: 'Chronicles',
     siteTagline: 'Control Center',
     partnerA: {
-        nickname: 'Anya',
-        displayName: 'Zalfa Nazhifah',
+        nickname: 'Her',
+        displayName: 'Partner Name',
         roleLabel: 'Princess',
         defaultTitle: 'The Main Character',
         defaultBio: 'She is the poem I never knew how to write, and this life is the paper.',
@@ -43,7 +43,7 @@ export const DEFAULT_CONFIG: SiteConfig = {
     },
     partnerB: {
         nickname: 'Rey',
-        displayName: 'M Reyvan Purnama',
+        displayName: 'Your Name',
         roleLabel: 'Guardian',
         defaultTitle: 'The Observer',
         defaultBio: 'I see the universe in your eyes...',

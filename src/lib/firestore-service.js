@@ -1,5 +1,5 @@
 /**
- * Firestore Service - World of Anya
+ * Firestore Service - Chronicles
  * Handles all database operations for posts, stories, and user data
  * Uses Base64 encoding for images (no Firebase Storage needed!)
  */
@@ -25,28 +25,28 @@ import { auth, db } from './firebase-config.js';
 
 // ==================== CONSTANTS ====================
 
-// Email to author mapping
+// Email to author mapping — UPDATE these with your actual Firebase Auth emails!
 export const EMAIL_TO_AUTHOR = {
-    'reyvan@ganteng.com': 'rey',
-    'sayang@anya.com': 'anya'
+    'partner@example.com': 'rey',
+    'her@example.com': 'anya'
 };
 
 // User profiles - dynamically updated from Firestore
 export const USER_PROFILES = {
     rey: {
         id: 'rey',
-        name: 'M Reyvan Purnama',
+        name: 'Partner B',
         displayName: 'Rey',
-        email: 'reyvan@ganteng.com',
+        email: 'partner@example.com',
         role: 'The Observer',
         avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
         accentColor: 'blue'
     },
     anya: {
         id: 'anya',
-        name: 'Anya',
-        displayName: 'Anya',
-        email: 'sayang@anya.com',
+        name: 'Partner A',
+        displayName: 'Her',
+        email: 'her@example.com',
         role: 'The Main Character',
         avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
         accentColor: 'pink'
