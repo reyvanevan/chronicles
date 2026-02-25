@@ -1,5 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import LoveProgress from '../components/LoveProgress.astro';
+import AboutSection from '../components/AboutSection.astro';
+import GallerySection from '../components/GallerySection.astro';
+import MemoriesSection from '../components/MemoriesSection.astro';
+import ForeverSection from '../components/ForeverSection.astro';
+import MusicPlayer from '../components/MusicPlayer.astro';
+import SecretLoginModal from '../components/SecretLoginModal.astro';
 ---
 
 <Layout title="Home">
@@ -16,624 +24,16 @@ import Layout from '../layouts/Layout.astro';
     </div>
 
     <main class="pt-16 relative">
-        
-
-        <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
-            <!-- Removed local static blobs, using global living background instead -->
-
-            <div data-aos="fade-up" data-aos-duration="1000" class="max-w-5xl mx-auto z-10 relative">
-                <!-- Adjusted margin for centering -->
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-sm transition-all hover:scale-105 cursor-default">
-                    <span class="relative flex h-2 w-2">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
-                    </span>
-                    <span
-                        class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-slate-400">The Eternal Page</span>
-                </div>
-
-                <h1 id="hero-name"
-                    class="font-sans font-bold text-6xl md:text-8xl lg:text-9xl text-slate-900 dark:text-white mb-8 tracking-tighter leading-[0.9] transition-colors drop-shadow-sm">
-                    Zalfa <br class="hidden md:block" />
-                    <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 dark:from-pink-300 dark:via-purple-300 dark:to-blue-300">Nazhifah</span>
-                </h1>
-                
-                <p
-                    class="max-w-xl mx-auto text-lg md:text-xl text-slate-600 dark:text-slate-300 font-medium leading-relaxed px-4 transition-colors mb-10">
-                    Sebuah ruang kecil di internet untuk mengabadikan apa yang seharusnya dunia tahu tentang kamu.
-                    Tentang kebaikanmu, hatimu, dan kesempurnaanmu.
-                </p>
-
-                <!-- CTA Button Apple Properties -->
-                <div class="flex flex-col md:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
-                    <a href="/us"
-                        class="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-medium tracking-wide transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-brand-pink/20 overflow-hidden min-w-[200px]">
-                        <span class="relative z-10">Enter Our Universe</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"></i>
-                    </a>
-                    
-                    <button onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})" 
-                        class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-full font-medium transition-all hover:bg-white/80 dark:hover:bg-slate-800 hover:scale-[1.02] min-w-[200px]">
-                        Learn More
-                    </button>
-                </div>
-            </div>
-
-            <div
-                class="absolute bottom-8 left-0 w-full animate-bounce text-slate-400 dark:text-slate-500 z-10 text-center opacity-50">
-                <i data-lucide="chevron-down" class="w-6 h-6 mx-auto"></i>
-            </div>
-        </section>
-
-        <!-- LOVE PROGRESS SECTION -->
-        <section id="love-progress-section"
-            class="hidden py-20 px-4 md:px-6 transition-colors relative">
-            <div class="max-w-4xl mx-auto">
-                <!-- Header (Sticky Pill) -->
-                <div class="sticky top-20 z-30 text-center mb-12 pointer-events-none" data-aos="fade-up">
-                     <div class="inline-block bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl px-8 py-3 rounded-full shadow-lg shadow-pink-500/5 border border-white/20 dark:border-white/5 pointer-events-auto transition-all hover:scale-105">
-                        <div
-                            class="inline-flex items-center gap-2 mb-1 justify-center w-full">
-                            <i data-lucide="heart" class="w-4 h-4 text-pink-500"></i>
-                            <span
-                                class="text-xs font-bold tracking-widest uppercase text-pink-600 dark:text-pink-400">Perjalanan
-                                Pulang</span>
-                        </div>
-                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">
-                            Dia bilang <span id="progress-display"
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">0%</span>
-                        </h2>
-                     </div>
-                </div>
-
-                <!-- Progress Content Wrapper -->
-                <div>
-                   <div class="text-center mb-8 px-4">
-                        <p class="text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed text-sm md:text-base bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm p-4 rounded-2xl inline-block">
-                            Angka ini bukan buatan. Bukan editan. Ini jawaban jujur dari dia, untuk pertanyaan yang sama:
-                            <br/><span class="italic font-medium text-pink-600 dark:text-pink-400">"Sudah berapa persen hatimu
-                                kembali?"</span>
-                        </p>
-                   </div>
-
-                    <!-- Progress Card -->
-                    <div class="glass-card rounded-3xl p-6 md:p-10 border border-pink-200/50 dark:border-pink-800/30 shadow-xl shadow-pink-500/5"
-                        data-aos="fade-up" data-aos-delay="100">
-
-                    <!-- Main Progress Display -->
-                    <div class="flex items-center gap-4 md:gap-8 mb-8">
-                        <!-- Sasuke (0%) -->
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="relative">
-                                <div
-                                    class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-700 shadow-lg">
-                                    <img src="https://i.pinimg.com/736x/f8/6b/e3/f86be38f3971dfd29ae5bee32019bbdc.jpg"
-                                        alt="Sasuke" class="w-full h-full object-cover">
-                                </div>
-                                <div
-                                    class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-slate-500 flex items-center justify-center text-white text-xs font-bold shadow">
-                                    🖤</div>
-                            </div>
-                            <span class="text-xs font-bold text-slate-400 dark:text-slate-500 tracking-wide">0%</span>
-                            <span
-                                class="text-[10px] text-slate-400 dark:text-slate-600 italic hidden md:block">Stranger</span>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div class="flex-1">
-                            <div class="relative">
-                                <!-- Background -->
-                                <div
-                                    class="h-4 md:h-5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
-                                    <!-- Progress Fill -->
-                                    <div id="landing-progress-bar"
-                                        class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-1000 ease-out relative"
-                                        style="width: 0%">
-                                        <div
-                                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Progress Indicator -->
-                                <div id="landing-progress-indicator"
-                                    class="absolute -top-8 transform -translate-x-1/2 transition-all duration-1000 ease-out"
-                                    style="left: 0%">
-                                    <div
-                                        class="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg shadow-pink-500/30">
-                                        <span id="landing-progress-value">0</span>%
-                                    </div>
-                                    <div
-                                        class="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-pink-500 mx-auto">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Milestone Message -->
-                            <div class="mt-6 text-center">
-                                <span id="landing-milestone-emoji" class="text-3xl mb-2 block">💙</span>
-                                <p id="landing-milestone-text"
-                                    class="text-slate-600 dark:text-slate-300 font-medium italic">"Starting from
-                                    zero..."</p>
-                            </div>
-                        </div>
-
-                        <!-- Rey (100%) -->
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="relative">
-                                <div
-                                    class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-pink-400 dark:border-pink-500 bg-pink-100 dark:bg-pink-900/30 shadow-lg shadow-pink-500/30 ring-4 ring-pink-200/50 dark:ring-pink-800/30">
-                                    <img id="landing-rey-photo"
-                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                        alt="Rey" class="w-full h-full object-cover">
-                                </div>
-                                <div
-                                    class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs font-bold shadow animate-pulse">
-                                    💕</div>
-                            </div>
-                            <span class="text-xs font-bold text-pink-500 dark:text-pink-400 tracking-wide">100%</span>
-                            <span
-                                class="text-[10px] text-pink-400 dark:text-pink-500 italic hidden md:block">Together</span>
-                        </div>
-                    </div>
-
-                    <!-- Footer Info -->
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 mt-6">
-                        <!-- Last Update -->
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                            <i data-lucide="clock" class="w-4 h-4"></i>
-                            <span>Update terakhir: <span id="landing-last-update" class="font-medium">-</span></span>
-                        </div>
-
-                        <!-- Visitor Counter -->
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                            <i data-lucide="users" class="w-4 h-4"></i>
-                            <span><span id="visitor-count" class="font-bold text-pink-500">0</span> orang ikut
-                                mendoakan</span>
-                        </div>
-
-                        <!-- Share Button -->
-                        <button onclick="shareLoveProgress()"
-                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white text-sm font-medium rounded-full shadow-lg shadow-pink-500/30 transition-all hover:scale-105">
-                            <i data-lucide="share-2" class="w-4 h-4"></i>
-                            Share
-                        </button>
-                    </div>
-                </div>
-
-                <!-- History Timeline Section -->
-                <div class="mt-8" data-aos="fade-up" data-aos-delay="200">
-                    <!-- Toggle Button -->
-                    <button onclick="toggleHistory()" id="historyToggleBtn"
-                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-slate-100/50 dark:bg-slate-800/50 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-sm font-medium transition-all group">
-                        <i data-lucide="calendar" class="w-4 h-4"></i>
-                        <span>View Journey History</span>
-                        <i data-lucide="chevron-down" id="historyChevron" class="w-4 h-4 transition-transform group-hover:translate-y-0.5"></i>
-                    </button>
-
-                    <!-- History Timeline (Hidden by default) -->
-                    <div id="historyTimeline" class="hidden mt-6 overflow-hidden">
-                        <div class="glass-card rounded-2xl p-6 max-h-96 overflow-y-auto">
-                            <!-- Timeline Container -->
-                            <div id="historyList" class="space-y-6 relative">
-                                <!-- Timeline items will be inserted here by JS -->
-                                <div class="text-center py-8 text-slate-400 dark:text-slate-500">
-                                    <i data-lucide="loader-2" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
-                                    <p class="text-sm">Loading history...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Extra Note -->
-                <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-6 italic" data-aos="fade-up"
-                    data-aos-delay="200">
-                    Progress ini dia yang update. Aku cuma bisa nunggu... dan berharap. 🥺
-                </p>
-            </div>
-        </section>
-
-        <section id="about" class="py-20 md:py-32 px-4 md:px-8 max-w-7xl mx-auto scroll-mt-20 relative">
-            
-            <div class="flex flex-col md:flex-row gap-12 md:gap-20 items-start relative">
-                <!-- Sticky Header (Left on Desktop, Top on Mobile) -->
-                <div class="md:w-1/3 md:sticky md:top-32 flex flex-col justify-center z-20 md:h-[calc(100vh-200px)]">
-                    <div class="space-y-6 text-center md:text-left">
-                         <div class="inline-block bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl px-4 py-1.5 rounded-full border border-pink-200 dark:border-pink-900/30">
-                            <span class="text-pink-500 font-bold tracking-widest uppercase text-[10px]">THE MUSE</span>
-                        </div>
-                        <h2 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
-                            Who is <br class="hidden md:block" /> <span class="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">Anya?</span>
-                        </h2>
-                        <p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed max-w-md mx-auto md:mx-0">
-                            Setiap orang punya cerita. Tapi cerita tentang dia adalah favoritku. Scroll pelan-pelan untuk kenalan lebih jauh.
-                        </p>
-                        
-                        <!-- Scroll Indicator (Desktop Only) -->
-                        <div class="hidden md:flex items-center gap-2 text-sm text-slate-400 mt-8 animate-pulse">
-                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
-                            <span>Scroll to explore</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Scrolling Content (Right on Desktop) -->
-                <div class="md:w-2/3 space-y-16 md:space-y-32 pb-20 md:pb-32 w-full">
-                    
-                    <!-- Card 1: Profile -->
-                    <div class="group relative overflow-hidden rounded-[40px] shadow-2xl shadow-slate-200/50 dark:shadow-black/50 aspect-[4/5] md:aspect-square max-w-md mx-auto md:mx-0 rotate-1 hover:rotate-0 transition-transform duration-500" data-aos="fade-up">
-                        <div class="absolute inset-0 bg-slate-200 dark:bg-slate-800 animate-pulse" id="profile-img-skeleton"></div>
-                        <img id="profile-img"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                            alt="Anya Profile"
-                            class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-0"
-                            onload="if(this.src !== 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7') { this.classList.remove('opacity-0'); document.getElementById('profile-img-skeleton')?.classList.add('hidden'); }">
-                        
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"></div>
-                        <div class="absolute bottom-8 left-8 text-white max-w-xs">
-                            <p class="text-sm font-medium opacity-80 uppercase tracking-widest mb-2 border-l-2 border-pink-500 pl-3">Special Day</p>
-                            <h3 class="text-5xl font-bold mb-2">24.07</h3>
-                            <p class="text-slate-300 font-light">Lahir di bulan Juli. Bulan dimana bintang paling terang bersinar.</p>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Bio -->
-                    <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-8 md:p-12 rounded-[40px] shadow-lg -rotate-1 hover:rotate-0 transition-transform duration-500" data-aos="fade-up">
-                       <div class="w-16 h-16 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mb-8">
-                            <i data-lucide="sparkles" class="w-8 h-8 text-pink-500"></i>
-                       </div>
-                       <h3 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-6">The Definition</h3>
-                       <p id="profile-bio" class="text-xl md:text-2xl text-slate-600 dark:text-slate-300 font-serif leading-relaxed italic">
-                            "Zalfa Nazhifah. Bukan sekadar nama, tapi definisi dari rumah yang selama ini aku cari. Dia punya tawa yang bisa ngerubah hari buruk jadi baik lagi."
-                        </p>
-                    </div>
-
-                    <!-- Card 3: Traits -->
-                    <div class="bg-blue-50/80 dark:bg-slate-800/80 backdrop-blur-md border border-blue-100 dark:border-slate-700 p-8 md:p-12 rounded-[40px] rotate-1 hover:rotate-0 transition-transform duration-500" data-aos="fade-up">
-                        <div class="flex items-center justify-between mb-8">
-                            <h4 class="text-2xl font-bold text-slate-800 dark:text-white">Personality</h4>
-                            <i data-lucide="fingerprint" class="w-8 h-8 text-blue-500"></i>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl flex items-center gap-4 shadow-sm">
-                                <span class="text-2xl">💙</span>
-                                <div>
-                                    <h5 class="font-bold text-slate-800 dark:text-white">Blue Soul</h5>
-                                    <p class="text-sm text-slate-500">Tenang kayak lautan, dalem banget.</p>
-                                </div>
-                            </div>
-                            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl flex items-center gap-4 shadow-sm">
-                                <span class="text-2xl">💖</span>
-                                <div>
-                                    <h5 class="font-bold text-slate-800 dark:text-white">Pink Heart</h5>
-                                    <p class="text-sm text-slate-500">Lembut, penyayang, penuh kasih.</p>
-                                </div>
-                            </div>
-                            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl flex items-center gap-4 shadow-sm">
-                                <span class="text-2xl">✨</span>
-                                <div>
-                                    <h5 class="font-bold text-slate-800 dark:text-white">Main Character</h5>
-                                    <p class="text-sm text-slate-500">Pusat perhatian tanpa perlu usaha.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Quote -->
-                    <div class="bg-gradient-to-br from-pink-500 to-rose-600 p-8 md:p-14 rounded-[40px] text-white shadow-2xl shadow-pink-500/30 -rotate-1 hover:rotate-0 transition-transform duration-500 flex flex-col justify-center min-h-[400px] relative overflow-hidden" data-aos="fade-up">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-                        <div class="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-                        
-                        <i data-lucide="quote" class="w-12 h-12 text-pink-200 mb-8 opacity-50 relative z-10"></i>
-                        <p class="text-3xl md:text-5xl font-serif italic font-medium leading-tight relative z-10">
-                            "She is the poem I never knew how to write."
-                        </p>
-                        <div class="mt-10 flex items-center gap-4 relative z-10">
-                            <div class="h-px bg-white/30 flex-1"></div>
-                            <p class="text-pink-100 text-sm tracking-[0.2em] uppercase font-bold">The Observer</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section
-            class="py-32 px-4 md:px-6 transition-colors relative">
-            <div class="max-w-7xl mx-auto">
-                <!-- Sticky Header -->
-                <div class="sticky top-8 md:top-12 z-30 mb-24 text-center pointer-events-none" data-aos="fade-down" data-aos-offset="0">
-                     <div class="inline-flex flex-col items-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl px-8 py-6 md:px-12 md:py-8 rounded-[2rem] shadow-2xl shadow-blue-500/5 border border-white/40 dark:border-white/10 pointer-events-auto transition-all hover:scale-105 duration-500">
-                        <span class="text-blue-500 font-bold tracking-widest uppercase text-[10px] mb-2 block">VISUALS</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight mb-3">Our Gallery</h2>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm md:text-base font-medium max-w-md mx-auto">
-                            Momen kita mungkin berlalu, tapi di sini mereka abadi.
-                        </p>
-                     </div>
-                </div>
-
-                <!-- Scattered Scrapbook Effect -->
-                <div class="space-y-24 md:space-y-32 pb-32">
-                    
-                    <!-- Photo 1 (Left) -->
-                    <div class="sticky top-48 md:top-56 group rounded-[32px] overflow-hidden shadow-2xl h-[300px] md:h-[400px] max-w-md mr-auto transition-transform duration-500 origin-center bg-white dark:bg-slate-800 border-[12px] border-white dark:border-slate-800 -rotate-2 hover:rotate-0 hover:z-40" data-aos="fade-up">
-                        <div class="absolute inset-0 bg-black/10 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
-                        <img id="gallery-img-1"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                            class="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition duration-700"
-                            onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); }">
-                        
-                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                            <span class="text-white/80 uppercase tracking-widest text-[10px] font-bold mb-1 block">Memory #01</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-white font-serif">The Smile</h3>
-                        </div>
-                    </div>
-
-                     <!-- Photo 2 (Right) -->
-                    <div class="sticky top-56 md:top-64 group rounded-[32px] overflow-hidden shadow-2xl h-[300px] md:h-[400px] max-w-md ml-auto transition-transform duration-500 origin-center bg-white dark:bg-slate-800 border-[12px] border-white dark:border-slate-800 rotate-3 hover:rotate-0 hover:z-40" data-aos="fade-up">
-                        <div class="absolute inset-0 bg-black/10 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
-                        <img id="gallery-img-2"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                            class="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition duration-700"
-                             onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); }">
-                         
-                         <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                            <span class="text-white/80 uppercase tracking-widest text-[10px] font-bold mb-1 block">Memory #02</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-white font-serif">Favorite Place</h3>
-                        </div>
-                    </div>
-                    
-                    <!-- Photo 3 (Center) -->
-                    <div class="sticky top-64 md:top-72 group rounded-[32px] overflow-hidden shadow-2xl h-[300px] md:h-[400px] max-w-md mx-auto transition-transform duration-500 origin-center bg-white dark:bg-slate-800 border-[12px] border-white dark:border-slate-800 -rotate-1 hover:rotate-0 hover:z-40" data-aos="fade-up">
-                        <div class="absolute inset-0 bg-black/10 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
-                        <img id="gallery-img-3"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                             class="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition duration-700"
-                             onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); }">
-                        
-                         <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                             <span class="text-white/80 uppercase tracking-widest text-[10px] font-bold mb-1 block">Memory #03</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-white font-serif">Laughter</h3>
-                        </div>
-                    </div>
-
-                    <!-- Photo 4 (Left again) -->
-                     <div class="sticky top-72 md:top-80 group rounded-[32px] overflow-hidden shadow-2xl h-[300px] md:h-[400px] max-w-md mr-auto md:ml-20 transition-transform duration-500 origin-center bg-white dark:bg-slate-800 border-[12px] border-white dark:border-slate-800 rotate-2 hover:rotate-0 hover:z-40" data-aos="fade-up">
-                        <div class="absolute inset-0 bg-black/10 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
-                        <img id="gallery-img-4"
-                            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                             class="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition duration-700"
-                             onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); }">
-                        
-                         <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                             <span class="text-white/80 uppercase tracking-widest text-[10px] font-bold mb-1 block">Memory #04</span>
-                            <h3 class="text-2xl md:text-3xl font-bold text-white font-serif">Pretty You</h3>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <section
-            class="py-32 px-4 md:px-6 transition-colors relative">
-            <div class="max-w-7xl mx-auto">
-                <!-- Sticky Header -->
-                <div class="sticky top-20 z-30 mb-20 text-center pointer-events-none" data-aos="fade-down" data-aos-offset="0">
-                     <div class="inline-flex items-center gap-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl px-10 py-4 rounded-full shadow-xl shadow-pink-500/5 border border-white/40 dark:border-white/10 pointer-events-auto transition-all hover:scale-105 duration-500">
-                        <i data-lucide="infinity" class="w-5 h-5 text-pink-500"></i>
-                        <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Immortalized Memories</h2>
-                     </div>
-                     <p class="text-slate-500/70 dark:text-slate-400/70 mt-4 text-xs font-medium tracking-[0.2em] uppercase max-w-xl mx-auto">
-                            Disimpan Selamanya
-                     </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                    <!-- Memory Card 1 -->
-                    <div class="bg-slate-50 dark:bg-slate-900 rounded-[32px] p-6 group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-800" data-aos="fade-up"
-                        data-aos-delay="100">
-                        <div
-                            class="h-64 mb-6 overflow-hidden rounded-2xl relative bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
-                            <div class="absolute inset-0 bg-slate-300 dark:bg-slate-700 animate-pulse memory-skeleton">
-                            </div>
-                            <img id="memory-img-1"
-                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500 absolute inset-0 opacity-0"
-                                onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); this.previousElementSibling?.classList.add('hidden'); }">
-                            <span id="memory-placeholder-1"
-                                class="text-6xl text-slate-300 dark:text-slate-600 font-serif hidden">?</span>
-                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 id="memory-title-1"
-                                class="text-xl font-serif font-bold text-slate-800 dark:text-white transition-colors">
-                                Senyum Kamu</h3>
-                            <i data-lucide="smile" class="w-5 h-5 text-brand-accent dark:text-brand-pink"></i>
-                        </div>
-                        <p id="memory-desc-1"
-                            class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed transition-colors">
-                            Momen dimana kamu ketawa lepas. Di detik itu, dunia rasanya berhenti berputar cuma buat
-                            ngeliat kamu bahagia.
-                        </p>
-                    </div>
-
-                    <div class="bg-slate-50 dark:bg-slate-900 rounded-[32px] p-6 group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-800" data-aos="fade-up"
-                        data-aos-delay="200">
-                        <div
-                            class="h-64 mb-6 overflow-hidden rounded-2xl relative bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
-                            <div class="absolute inset-0 bg-slate-300 dark:bg-slate-700 animate-pulse memory-skeleton">
-                            </div>
-                            <img id="memory-img-2"
-                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500 absolute inset-0 opacity-0"
-                                onload="if(this.src.indexOf('data:image/gif') === -1) { this.classList.remove('opacity-0'); this.previousElementSibling?.classList.add('hidden'); }">
-                            <span id="memory-placeholder-2"
-                                class="text-6xl text-slate-300 dark:text-slate-600 font-serif hidden">?</span>
-                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 id="memory-title-2"
-                                class="text-xl font-bold tracking-tight text-slate-800 dark:text-white transition-colors">
-                                Kebaikan Kamu</h3>
-                            <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                <i data-lucide="heart" class="w-5 h-5 text-blue-500 dark:text-blue-400"></i>
-                            </div>
-                        </div>
-                        <p id="memory-desc-2"
-                            class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed transition-colors">
-                            Cara kamu peduli sama hal-hal kecil. Itu yang bikin kamu beda dari semua orang yang pernah
-                            aku kenal.
-                        </p>
-                    </div>
-
-                    <div class="bg-slate-50 dark:bg-slate-900 rounded-[32px] p-6 group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-800" data-aos="fade-up"
-                        data-aos-delay="300">
-                        <div id="memory-img-3-container"
-                            class="h-64 mb-6 overflow-hidden rounded-2xl relative bg-slate-200 dark:bg-slate-800 flex items-center justify-center transition-colors">
-                            <img id="memory-img-3" src=""
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500 hidden">
-                            <span id="memory-placeholder-3"
-                                class="text-6xl text-slate-300 dark:text-slate-600 font-serif">?</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 id="memory-title-3"
-                                class="text-xl font-bold tracking-tight text-slate-800 dark:text-white transition-colors">
-                                Masa Depan?</h3>
-                            <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                                <i data-lucide="sparkles" class="w-5 h-5 text-yellow-500 dark:text-yellow-400"></i>
-                            </div>
-                        </div>
-                        <p id="memory-desc-3"
-                            class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed transition-colors">
-                            Space kosong ini buat kenangan kita selanjutnya. Kalau kamu ijinin aku buat ngisi lembaran
-                            ini lagi.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-32 px-4 md:px-6 flex flex-col items-center relative overflow-hidden">
-            <!-- Subtle Glow instead of Aurora -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-slate-100/50 dark:bg-slate-800/20 rounded-full blur-[100px] -z-10 transition-colors pointer-events-none"></div>
-            
-            <div class="text-center mb-16 w-full max-w-2xl" data-aos="fade-up">
-                <h2
-                    class="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white mb-8 transition-colors">
-                    Untuk Selamanya</h2>
-
-                <div class="bg-slate-50 dark:bg-slate-900 rounded-[32px] p-12 flex flex-col items-center gap-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer w-full max-w-sm mx-auto group border border-slate-100 dark:border-slate-800"
-                    onclick="openModal()">
-                    <div
-                        class="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-pink-500 dark:group-hover:text-pink-400 group-hover:bg-pink-50 dark:group-hover:bg-pink-900/20 transition-all duration-500">
-                        <i data-lucide="mail-open" class="w-8 h-8"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Sebuah Pesan Kecil</h3>
-                        <p class="text-slate-500 dark:text-slate-400">Ketuk untuk membuka...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="hidden-letter"
-                class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 dark:bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
-                <div
-                    class="glass-panel dark:glass-card p-8 md:p-12 rounded-3xl w-full max-w-lg text-center relative shadow-2xl overflow-y-auto max-h-[90vh] transition-colors">
-
-                    <button onclick="closeModal()"
-                        class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition bg-slate-100 dark:bg-slate-800 rounded-full">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-
-                    <div
-                        class="w-12 h-12 bg-pink-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 text-pink-500 dark:text-pink-400">
-                        <i data-lucide="heart-handshake" class="w-6 h-6"></i>
-                    </div>
-
-                    <h3 id="letter-title-display"
-                        class="text-2xl md:text-3xl font-serif text-slate-800 dark:text-white mb-6">Hai Anya...</h3>
-
-                    <div id="letter-content-display"
-                        class="prose prose-slate dark:prose-invert mx-auto text-slate-600 dark:text-slate-300 leading-relaxed space-y-4 text-sm md:text-base">
-                        <p>
-                            Aku tau kata-kata nggak akan pernah cukup. Tapi aku harap website ini bisa jadi bukti kecil
-                            kalau aku bener-bener serius.
-                        </p>
-                        <p>
-                            Terima kasih udah kasih ruang buat aku memperbaiki diri. <i>Take your time.</i> Aku bakal
-                            tetep di sini, ngejaga janji ini.
-                        </p>
-                    </div>
-
-                    <p id="letter-quote-display"
-                        class="font-bold text-brand-accent dark:text-brand-accentLight pt-4 font-serif text-lg">
-                        "I love you, today and forever."
-                    </p>
-
-                    <div class="flex justify-center gap-4 text-3xl mt-8">
-                        🥰 💝 🌹
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    
+        <HeroSection />
+        <LoveProgress />
+        <AboutSection />
+        <GallerySection />
+        <MemoriesSection />
+        <ForeverSection />
     </main>
 
-    <!-- Music / Audio -->
-    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40">
-        <button onclick="toggleMusic()" id="musicBtn"
-            class="bg-white/80 dark:bg-slate-800/80 backdrop-blur text-brand-accent dark:text-brand-accentLight p-3 md:p-4 rounded-full border border-pink-100 dark:border-slate-700 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-            <i data-lucide="music" id="musicIcon" class="w-5 h-5 md:w-6 md:h-6 transition-transform"></i>
-        </button>
-        <audio id="bgMusic" loop>
-            <source src="/music/about-you.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Secret Modal -->
-    
-    <div id="secret-login-modal"
-        class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
-        <div class="glass-card p-8 rounded-3xl w-full max-w-sm text-center transform scale-95 transition-transform duration-300"
-            id="login-card">
-            <div
-                class="w-16 h-16 bg-brand-pink/20 dark:bg-brand-pink/10 rounded-full flex items-center justify-center mx-auto mb-6 text-brand-accent dark:text-brand-accentLight">
-                <i data-lucide="lock" class="w-8 h-8"></i>
-            </div>
-
-            <h3 class="font-serif text-2xl font-bold text-slate-800 dark:text-white mb-2">Universe Access</h3>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Login to enter our world.</p>
-
-            <div class="space-y-4">
-                <input type="email" id="email-input" placeholder="Email"
-                    class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-accent/50 text-slate-800 dark:text-white placeholder:text-slate-400 transition-all">
-
-                <input type="password" id="password-input" placeholder="Password"
-                    class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-accent/50 text-slate-800 dark:text-white placeholder:text-slate-400 transition-all">
-
-                <div class="flex gap-3 mt-2">
-                    <button onclick="closeSecretLogin()"
-                        class="flex-1 py-3 px-4 rounded-xl text-sm font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                        Cancel
-                    </button>
-                    <button id="login-btn"
-                        class="flex-1 py-3 px-4 rounded-xl text-sm font-medium bg-brand-accent hover:bg-brand-accent/90 text-white shadow-lg shadow-brand-accent/20 transition-all flex justify-center items-center gap-2">
-                        <span>Enter</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
-                </div>
-                <p id="login-error" class="text-red-500 text-xs hidden"></p>
-            </div>
-        </div>
-    </div>
-
-    
+    <MusicPlayer />
+    <SecretLoginModal />
 
     <!-- Firestore Logic -->
     <script>
@@ -668,7 +68,6 @@ import Layout from '../layouts/Layout.astro';
             }
         }
 
-        // Load all content from Firestore
         // Default fallback data (used when Firestore unavailable)
         const FALLBACK_DATA = {
             profile: {
@@ -789,14 +188,12 @@ import Layout from '../layouts/Layout.astro';
                 console.log('✅ Landing data loaded from Firestore');
             } catch (error) {
                 console.log('Data loading skipped (skeleton remains):', error.message);
-                // Keep skeleton loading - don't load fallback photos
             }
         }
 
         // Load Love Progress for landing page
         async function loadLoveProgress() {
             try {
-                // Load love progress data
                 const progress = await getLoveProgress();
                 const container = document.getElementById('love-progress-section');
                 
@@ -810,7 +207,6 @@ import Layout from '../layouts/Layout.astro';
                 const currentValue = progress.currentProgress || 0;
                 const milestone = getMilestoneMessage(currentValue);
 
-                // Update progress bar - matching HTML element IDs
                 const progressBar = document.getElementById('landing-progress-bar');
                 const progressIndicator = document.getElementById('landing-progress-indicator');
                 const progressValue = document.getElementById('landing-progress-value');
@@ -864,7 +260,7 @@ import Layout from '../layouts/Layout.astro';
                     }
                 }
 
-                // Display visitor count from stats (same as main visitor counter)
+                // Display visitor count from stats
                 const statsDoc = await getDoc(doc(db, "landing", "stats"));
                 if (statsDoc.exists() && visitorCountEl) {
                     visitorCountEl.textContent = statsDoc.data().totalVisits?.toLocaleString() || '0';
@@ -886,7 +282,6 @@ import Layout from '../layouts/Layout.astro';
             const container = document.getElementById('love-progress-section');
             if (!container) return;
 
-            // Create confetti particles
             for (let i = 0; i < 50; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
@@ -915,7 +310,6 @@ import Layout from '../layouts/Layout.astro';
                     console.log('Share cancelled');
                 }
             } else {
-                // Fallback: copy to clipboard
                 const fullText = text + url;
                 await navigator.clipboard.writeText(fullText);
                 alert('Link berhasil disalin! 📋');
@@ -933,7 +327,6 @@ import Layout from '../layouts/Layout.astro';
                 timeline.classList.remove('hidden');
                 chevron.style.transform = 'rotate(180deg)';
                 
-                // Load history data on first open
                 if (!historyLoaded) {
                     await loadHistoryTimeline();
                     historyLoaded = true;
@@ -978,17 +371,14 @@ import Layout from '../layouts/Layout.astro';
 
                     return `
                         <div class="flex gap-4 relative">
-                            <!-- Timeline line -->
                             ${!isLast ? '<div class="absolute left-5 top-12 w-0.5 h-full bg-gradient-to-b from-pink-300 to-transparent dark:from-pink-700"></div>' : ''}
                             
-                            <!-- Timeline dot -->
                             <div class="relative flex-shrink-0">
                                 <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-pink-500/30 ring-4 ring-pink-100 dark:ring-pink-900/30">
                                     ${value}%
                                 </div>
                             </div>
                             
-                            <!-- Content -->
                             <div class="flex-1 pb-6">
                                 <div class="glass-card rounded-xl p-4 hover:shadow-lg transition-shadow">
                                     <div class="flex items-start justify-between gap-4 mb-2">
@@ -1034,7 +424,6 @@ import Layout from '../layouts/Layout.astro';
         const musicIcon = document.getElementById('musicIcon');
         let isPlaying = false;
         
-        // Toggle music function
         window.toggleMusic = function() {
             if (isPlaying) {
                 bgMusic.pause();
@@ -1083,13 +472,10 @@ import Layout from '../layouts/Layout.astro';
             if (logoClicks === 5) {
                 console.log('Triggering redirect...');
                 
-                // Check if we came from universe pages
                 const referrer = document.referrer;
                 if (referrer && referrer.includes('/universe/')) {
-                    // Redirect to universe login
                     window.location.href = '/universe/login';
                 } else {
-                    // Redirect to universe by default (since login.html removed)
                     window.location.href = 'universe/';
                 }
                 logoClicks = 0;
@@ -1131,7 +517,6 @@ import Layout from '../layouts/Layout.astro';
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // Success
                 loginCard.innerHTML = `
                     <div class="py-8">
                         <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500">

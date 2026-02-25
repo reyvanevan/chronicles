@@ -1,0 +1,10 @@
+<!-- Music / Audio -->
+<div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40">
+    <button onclick="toggleMusic()" id="musicBtn"
+        class="bg-white/80 dark:bg-slate-800/80 backdrop-blur text-brand-accent dark:text-brand-accentLight p-3 md:p-4 rounded-full border border-pink-100 dark:border-slate-700 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+        <i data-lucide="music" id="musicIcon" class="w-5 h-5 md:w-6 md:h-6 transition-transform"></i>
+    </button>
+    <audio id="bgMusic" loop>
+        <source src="/music/about-you.mp3" type="audio/mpeg">
+    </audio>
+</div>
