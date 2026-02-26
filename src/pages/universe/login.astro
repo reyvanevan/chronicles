@@ -9,7 +9,7 @@ import '../../styles/global.css';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronicles - Universe Access</title>
+    <title>The Steins;Gate Worldline</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@ import '../../styles/global.css';
         <div class="text-center mb-6">
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md rounded-full border border-slate-200 dark:border-slate-700/50 text-slate-600 dark:text-slate-400 text-xs font-medium uppercase tracking-widest shadow-sm">
                 <span class="w-2 h-2 bg-brand-accent rounded-full animate-pulse"></span>
-                Gerbang Semesta
+                Divergence Meter Online
             </div>
         </div>
 
@@ -58,11 +58,11 @@ import '../../styles/global.css';
             <div class="text-center mb-8">
                 <div class="relative inline-block mb-4">
                     <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-tr from-brand-pink to-brand-accent flex items-center justify-center shadow-lg shadow-pink-500/30 transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                        <i data-lucide="sparkles" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        <i data-lucide="atom" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                     </div>
                 </div>
-                <h1 class="font-serif text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-2">Universe Access</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm">Masuk untuk menjelajahi semesta kami</p>
+                <h1 class="font-serif text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-2">Steins;Gate Worldline</h1>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Hanya orang terpilih yang bisa masuk lintas worldline</p>
             </div>
 
             <!-- Login Form -->
@@ -75,7 +75,7 @@ import '../../styles/global.css';
                     <div class="relative">
                         <input type="email" id="email"
                             class="w-full px-4 py-3 md:py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-all"
-                            placeholder="us@chronicles.com" required>
+                            placeholder="christina@fgl.lab" required>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@ import '../../styles/global.css';
                 <!-- Submit Button -->
                 <button type="submit" id="loginBtn"
                     class="w-full py-3 md:py-4 bg-gradient-to-r from-brand-pink to-brand-accent hover:from-pink-600 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-pink-500/30 transform transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-6">
-                    <span>Masuk Semesta</span>
+                    <span>Melintas Worldline</span>
                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                 </button>
             </form>
@@ -117,8 +117,8 @@ import '../../styles/global.css';
                         Kembali ke Utama
                     </a>
                     <span class="flex items-center gap-1">
-                        <i data-lucide="globe" class="w-3 h-3"></i>
-                        Akses Privat
+                        <i data-lucide="infinity" class="w-3 h-3"></i>
+                        Divergence: 1.048596%
                     </span>
                 </div>
             </div>
@@ -126,7 +126,7 @@ import '../../styles/global.css';
 
         <!-- Bottom Text -->
         <p class="text-center text-slate-500 dark:text-slate-600 text-xs mt-6">
-            Chronicles © 2026 • Private Universe v2.0
+            FGL © 2025 • Steins;Gate Worldline
         </p>
     </div>
 
@@ -135,8 +135,8 @@ import '../../styles/global.css';
         <div class="w-16 h-16 bg-gradient-to-tr from-brand-pink to-brand-accent rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-pink-500/30 animate-pulse">
             <i data-lucide="loader-2" class="w-8 h-8 text-white animate-spin"></i>
         </div>
-        <h1 class="text-slate-800 dark:text-white text-xl font-bold mb-2">Memuat Semesta...</h1>
-        <p class="text-slate-500 dark:text-slate-400 text-sm">Sedang memeriksa sesi Anda</p>
+        <h1 class="text-slate-800 dark:text-white text-xl font-bold mb-2">Mengkalibrasi Divergence Meter...</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-sm">Membaca data lintas worldline</p>
     </div>
 
     <script>
@@ -195,7 +195,7 @@ import '../../styles/global.css';
             
             // Loading state
             btn.disabled = true;
-            btn.innerHTML = `<svg class="animate-spin w-5 h-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Membuka Portal...`;
+            btn.innerHTML = `<svg class="animate-spin w-5 h-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Mengkalibrasi Divergence...`;
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
@@ -203,7 +203,7 @@ import '../../styles/global.css';
                 // Success!
                 btn.classList.remove('from-brand-pink', 'to-brand-accent');
                 btn.classList.add('bg-green-500');
-                btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i> Akses Diterima`;
+                btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i> Worldline Reached: 1.048596%`;
                 lucide.createIcons();
 
                 // Redirect to dashboard
@@ -215,11 +215,11 @@ import '../../styles/global.css';
                 console.error('Login error:', error);
                 
                 // Show error
-                let errorMessage = 'Email atau password salah. Silakan coba lagi.';
+                let errorMessage = 'Akses ditolak. Worldline tidak dikenali.';
                 if (error.code === 'auth/user-not-found') {
-                    errorMessage = 'Akun tidak ditemukan.';
+                    errorMessage = 'Lab Member tidak ditemukan di worldline ini.';
                 } else if (error.code === 'auth/wrong-password') {
-                    errorMessage = 'Password salah.';
+                    errorMessage = 'Kode akses salah, Christina.';
                 }
                 
                 document.getElementById('errorText').textContent = errorMessage;
@@ -229,7 +229,7 @@ import '../../styles/global.css';
                 btn.disabled = false;
                 btn.classList.add('from-brand-pink', 'to-brand-accent');
                 btn.classList.remove('bg-green-500');
-                btn.innerHTML = `<span>Masuk Semesta</span><i data-lucide="arrow-right" class="w-5 h-5"></i>`;
+                btn.innerHTML = `<span>Melintas Worldline</span><i data-lucide="arrow-right" class="w-5 h-5"></i>`;
                 lucide.createIcons();
             }
         }
