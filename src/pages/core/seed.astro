@@ -404,10 +404,10 @@ import '../../styles/global.css';
                 addStatus('Letter data uploaded');
 
                 // 6. Upload Users (for role-based personalization)
-                await setDoc(doc(db, "users", "rey"), seedData.users.rey);
-                addStatus('User Rey uploaded');
-                await setDoc(doc(db, "users", "anya"), seedData.users.anya);
-                addStatus('User Anya uploaded');
+                await setDoc(doc(db, "users", "okabe"), seedData.users.okabe);
+                addStatus('User Okabe uploaded');
+                await setDoc(doc(db, "users", "kurisu"), seedData.users.kurisu);
+                addStatus('User Kurisu uploaded');
 
                 // 7. Upload Profile Rey
                 await setDoc(doc(db, "landing", "profileRey"), seedData.profileRey);
