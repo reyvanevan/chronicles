@@ -1,6 +1,6 @@
-import { db } from '../firebase-config.js';
 import { doc, getDoc } from 'firebase/firestore';
-import { renderPrincessGallery, renderGuardianGallery, renderStickers } from './gallery.js';
+import { db } from '../firebase-config.js';
+import { renderGuardianGallery, renderPrincessGallery, renderStickers } from './gallery.js';
 
 export async function loadDashboardData(): Promise<void> {
     try {

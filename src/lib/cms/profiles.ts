@@ -1,5 +1,5 @@
-import { db } from '../firebase-config.js';
 import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase-config.js';
 
 declare const lucide: any;
 const win = window as any;
