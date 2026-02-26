@@ -44,26 +44,26 @@ import Layout from '../layouts/Layout.astro';
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="cake" class="w-4 h-4 mx-auto text-pink-400 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Born</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">July 24</p>
+                <p id="her-stat-label-0" class="text-[9px] uppercase tracking-widest text-slate-400">Born</p>
+                <p id="her-stat-value-0" class="font-serif text-sm text-slate-700 dark:text-slate-300">July 24</p>
             </div>
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="cup-soda" class="w-4 h-4 mx-auto text-green-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Loves</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Matcha</p>
+                <p id="her-stat-label-1" class="text-[9px] uppercase tracking-widest text-slate-400">Loves</p>
+                <p id="her-stat-value-1" class="font-serif text-sm text-slate-700 dark:text-slate-300">Matcha</p>
             </div>
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="music-2" class="w-4 h-4 mx-auto text-purple-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Vibe</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">R&B</p>
+                <p id="her-stat-label-2" class="text-[9px] uppercase tracking-widest text-slate-400">Vibe</p>
+                <p id="her-stat-value-2" class="font-serif text-sm text-slate-700 dark:text-slate-300">R&B</p>
             </div>
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="lock" class="w-4 h-4 mx-auto text-red-400 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Mine</p>
+                <p id="her-stat-label-3" class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
+                <p id="her-stat-value-3" class="font-serif text-sm text-slate-700 dark:text-slate-300">Mine</p>
             </div>
         </div>
 
@@ -89,19 +89,6 @@ import Layout from '../layouts/Layout.astro';
         import { db } from '../lib/firebase-config.js';
         import { doc, getDoc } from 'firebase/firestore';
         
-        // Fallback data when Firestore unavailable
-        const FALLBACK = {
-            photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-            name: 'Her Name',
-            title: 'The Main Character',
-            bio: 'She is the poem I never knew how to write, and this life is the paper.'
-        };
-        
-        function loadFallback() {
-            document.getElementById('her-photo').src = FALLBACK.photo;
-            document.getElementById('her-photo-pulse')?.classList.add('hidden');
-        }
-        
         async function loadProfile() {
             try {
                 // Load from profileHer (Princess Profile section in dashboard)
@@ -113,6 +100,14 @@ import Layout from '../layouts/Layout.astro';
                     if (data.bio) document.getElementById('her-bio').textContent = '"' + data.bio + '"';
                     if (data.photo) document.getElementById('her-photo').src = data.photo;
                     if (data.title) document.getElementById('her-title').textContent = data.title;
+                    if (data.stats && data.stats.length >= 1) {
+                        data.stats.forEach((stat, i) => {
+                            const labelEl = document.getElementById(`her-stat-label-${i}`);
+                            const valueEl = document.getElementById(`her-stat-value-${i}`);
+                            if (labelEl && stat.label) labelEl.textContent = stat.label;
+                            if (valueEl && stat.value) valueEl.textContent = stat.value;
+                        });
+                    }
                     
                     // Load highlights with fallback
                     renderHighlights(data.highlights || []);
