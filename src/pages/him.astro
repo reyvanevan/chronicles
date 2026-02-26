@@ -45,26 +45,26 @@ import Layout from '../layouts/Layout.astro';
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="shield" class="w-4 h-4 mx-auto text-blue-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Role</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Guardian</p>
+                <p id="him-stat-label-0" class="text-[9px] uppercase tracking-widest text-slate-400">Role</p>
+                <p id="him-stat-value-0" class="font-serif text-sm text-slate-700 dark:text-slate-300">Guardian</p>
             </div>
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="star" class="w-4 h-4 mx-auto text-yellow-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Fav</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">You</p>
+                <p id="him-stat-label-1" class="text-[9px] uppercase tracking-widest text-slate-400">Fav</p>
+                <p id="him-stat-value-1" class="font-serif text-sm text-slate-700 dark:text-slate-300">You</p>
             </div>
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="gamepad-2" class="w-4 h-4 mx-auto text-purple-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Hobby</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Game</p>
+                <p id="him-stat-label-2" class="text-[9px] uppercase tracking-widest text-slate-400">Hobby</p>
+                <p id="him-stat-value-2" class="font-serif text-sm text-slate-700 dark:text-slate-300">Game</p>
             </div>
             <div
                 class="py-2 text-center rounded-xl border border-transparent hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors">
                 <i data-lucide="lock" class="w-4 h-4 mx-auto text-red-500 mb-1"></i>
-                <p class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
-                <p class="font-serif text-sm text-slate-700 dark:text-slate-300">Taken</p>
+                <p id="him-stat-label-3" class="text-[9px] uppercase tracking-widest text-slate-400">Status</p>
+                <p id="him-stat-value-3" class="font-serif text-sm text-slate-700 dark:text-slate-300">Taken</p>
             </div>
         </div>
 
@@ -91,19 +91,6 @@ import Layout from '../layouts/Layout.astro';
         import { db } from '../lib/firebase-config.js';
         import { doc, getDoc } from 'firebase/firestore';
         
-        // Fallback data when Firestore unavailable
-        const FALLBACK = {
-            photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-            name: 'His Name',
-            title: 'The Observer',
-            bio: 'I see the universe in your eyes, and my only job is to protect it.'
-        };
-        
-        function loadFallback() {
-            document.getElementById('him-photo').src = FALLBACK.photo;
-            document.getElementById('him-photo-pulse')?.classList.add('hidden');
-        }
-        
         async function loadProfile() {
             try {
                 const profileDoc = await getDoc(doc(db, 'landing', 'profileRey'));
@@ -114,6 +101,14 @@ import Layout from '../layouts/Layout.astro';
                     if (data.bio) document.getElementById('him-bio').textContent = '"' + data.bio + '"';
                     if (data.photo) document.getElementById('him-photo').src = data.photo;
                     if (data.title) document.getElementById('him-title').textContent = data.title;
+                    if (data.stats && data.stats.length >= 1) {
+                        data.stats.forEach((stat, i) => {
+                            const labelEl = document.getElementById(`him-stat-label-${i}`);
+                            const valueEl = document.getElementById(`him-stat-value-${i}`);
+                            if (labelEl && stat.label) labelEl.textContent = stat.label;
+                            if (valueEl && stat.value) valueEl.textContent = stat.value;
+                        });
+                    }
                     
                     // Load highlights with fallback
                     renderHighlights(data.highlights || []);

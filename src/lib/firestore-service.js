@@ -16,9 +16,9 @@ import {
     orderBy,
     query,
     serverTimestamp,
+    setDoc,
     Timestamp,
     updateDoc,
-    setDoc,
     where
 } from "firebase/firestore";
 import { auth, db } from './firebase-config.js';

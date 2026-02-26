@@ -63,6 +63,10 @@ win.savePrincessProfile = async function () {
             bio:   (document.getElementById('input-princess-bio')   as HTMLTextAreaElement).value,
             photo: (document.getElementById('princessProfilePreview') as HTMLImageElement).src,
             gallery: win.princessGallery || [],
+            stats: [0, 1, 2, 3].map(i => ({
+                label: ((document.getElementById(`stat-her-label-${i}`) as HTMLInputElement)?.value || ''),
+                value: ((document.getElementById(`stat-her-value-${i}`) as HTMLInputElement)?.value || ''),
+            })),
             updatedAt: new Date()
         });
         setBtnSuccess(btn, originalText, 'bg-pink-500');
@@ -83,6 +87,10 @@ win.saveReyProfile = async function () {
             photo:   (document.getElementById('reyProfilePreview') as HTMLImageElement).src,
             stickers: win.currentReyStickers || [],
             gallery:  win.guardianGallery || [],
+            stats: [0, 1, 2, 3].map(i => ({
+                label: ((document.getElementById(`stat-rey-label-${i}`) as HTMLInputElement)?.value || ''),
+                value: ((document.getElementById(`stat-rey-value-${i}`) as HTMLInputElement)?.value || ''),
+            })),
             updatedAt: new Date()
         });
         setBtnSuccess(btn, originalText, 'bg-blue-500');

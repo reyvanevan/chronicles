@@ -80,6 +80,14 @@ export async function loadDashboardData(): Promise<void> {
             (document.getElementById('input-princess-title') as HTMLInputElement).value = h.title || '';
             (document.getElementById('input-princess-bio') as HTMLTextAreaElement).value = h.bio || '';
             (document.getElementById('princessProfilePreview') as HTMLImageElement).src = h.photo || '';
+            if (h.stats && Array.isArray(h.stats)) {
+                h.stats.forEach((stat: any, i: number) => {
+                    const lbl = document.getElementById(`stat-her-label-${i}`) as HTMLInputElement;
+                    const val = document.getElementById(`stat-her-value-${i}`) as HTMLInputElement;
+                    if (lbl) lbl.value = stat.label || '';
+                    if (val) val.value = stat.value || '';
+                });
+            }
             const gallery = h.gallery?.length > 0 ? h.gallery : [];
             (window as any).princessGallery = gallery;
             renderPrincessGallery(gallery);
@@ -93,6 +101,14 @@ export async function loadDashboardData(): Promise<void> {
             (document.getElementById('input-rey-title') as HTMLInputElement).value = r.title || '';
             (document.getElementById('input-rey-bio') as HTMLTextAreaElement).value = r.bio || '';
             (document.getElementById('reyProfilePreview') as HTMLImageElement).src = r.photo || '';
+            if (r.stats && Array.isArray(r.stats)) {
+                r.stats.forEach((stat: any, i: number) => {
+                    const lbl = document.getElementById(`stat-rey-label-${i}`) as HTMLInputElement;
+                    const val = document.getElementById(`stat-rey-value-${i}`) as HTMLInputElement;
+                    if (lbl) lbl.value = stat.label || '';
+                    if (val) val.value = stat.value || '';
+                });
+            }
             const avatar = document.getElementById('sidebarAdminAvatar') as HTMLImageElement;
             const name   = document.getElementById('sidebarAdminName');
             if (avatar && r.photo) avatar.src = r.photo;
