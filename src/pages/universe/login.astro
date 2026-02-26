@@ -9,7 +9,7 @@ import '../../styles/global.css';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Universe</title>
+    <title>Chronicles - Universe Access</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -26,159 +26,187 @@ import '../../styles/global.css';
         }
     </script>
 </head>
-<body class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 selection:bg-brand-pink selection:text-brand-accent flex items-center justify-center p-4 md:p-6 overflow-hidden">
+<body class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 selection:bg-brand-pink selection:text-brand-accent overflow-hidden flex items-center justify-center p-4">
     
 
-    <!-- Floating Shapes Background -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none opacity-30">
-        <div class="absolute top-20 left-10 w-64 h-64 bg-pink-300 dark:bg-pink-900 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-300 dark:bg-blue-900 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
-        <div class="absolute top-1/2 left-1/2 w-72 h-72 bg-purple-300 dark:bg-purple-900 rounded-full blur-3xl animate-pulse-slow"></div>
+    <!-- Animated Background -->
+    <div class="absolute inset-0 overflow-hidden">
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        
+        <!-- Glowing Orbs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-[100px] animate-pulse-slow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] animate-float"></div>
     </div>
 
-    <!-- Loading Screen (shown first while checking auth) -->
-    <div id="authLoadingScreen" class="relative w-full max-w-md text-center">
-        <div class="w-16 h-16 bg-gradient-to-tr from-pink-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-pink-500/30 animate-pulse">
-            <i data-lucide="globe-2" class="w-8 h-8 text-white"></i>
+    <!-- Login Card -->
+    <div id="loginCard" class="relative z-10 w-full max-w-sm md:max-w-md mx-auto hidden opacity-0 transition-opacity duration-500">
+        
+        <!-- Top Badge -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md rounded-full border border-slate-200 dark:border-slate-700/50 text-slate-600 dark:text-slate-400 text-xs font-medium uppercase tracking-widest shadow-sm">
+                <span class="w-2 h-2 bg-brand-accent rounded-full animate-pulse"></span>
+                Gerbang Semesta
+            </div>
         </div>
-        <h1 class="text-slate-800 dark:text-white text-2xl font-bold mb-2">Universe</h1>
-        <p class="text-slate-600 dark:text-slate-300 text-lg font-medium">Authenticating...</p>
-        <p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Checking session</p>
-    </div>
 
-    <!-- Login Card (hidden until auth check completes) -->
-    <div id="loginCardWrapper" class="hidden relative w-full max-w-md">
-        <!-- Back Button -->
-        <a href="/" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-brand-accent dark:hover:text-brand-accentLight mb-6 transition-colors group">
-            <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
-            <span class="text-sm font-medium">Back to Home</span>
-        </a>
-
-        <div id="loginCard" class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-slate-200/50 dark:shadow-black/50 border border-white/20 dark:border-slate-700/30 p-8 md:p-10">
+        <!-- Main Card -->
+        <div class="bg-white/70 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-3xl shadow-2xl shadow-slate-200/50 dark:shadow-black/50 p-6 md:p-10 transition-colors duration-300">
+            
             <!-- Header -->
             <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-gradient-to-tr from-pink-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-pink-500/30">
-                    <i data-lucide="globe-2" class="w-8 h-8 text-white"></i>
+                <div class="relative inline-block mb-4">
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-tr from-brand-pink to-brand-accent flex items-center justify-center shadow-lg shadow-pink-500/30 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                        <i data-lucide="sparkles" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                    </div>
                 </div>
-                <h1 class="font-serif text-3xl font-bold text-slate-800 dark:text-white mb-2">
-                    Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Universe</span>
-                </h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400">
-                    Sign in to access our private world
-                </p>
+                <h1 class="font-serif text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-2">Universe Access</h1>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Masuk untuk menjelajahi semesta kami</p>
             </div>
 
             <!-- Login Form -->
-            <form id="loginForm" class="space-y-5" onsubmit="event.preventDefault(); handleLogin();">
-                <!-- Email Input -->
-                <div>
-                    <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        Email Address
+            <form onsubmit="handleLogin(event)" class="space-y-5">
+                <!-- Email -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="mail" class="w-3 h-3"></i> Email
                     </label>
                     <div class="relative">
-                        <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
-                        <input
-                            type="email"
-                            id="email"
-                            required
-                            placeholder="your@email.com"
-                            class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500 transition"
-                        >
+                        <input type="email" id="email"
+                            class="w-full px-4 py-3 md:py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-all"
+                            placeholder="guest@chronicles.com" required>
                     </div>
                 </div>
 
-                <!-- Password Input -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        Password
+                <!-- Password -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="key" class="w-3 h-3"></i> Password
                     </label>
                     <div class="relative">
-                        <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
-                        <input
-                            type="password"
-                            id="password"
-                            required
-                            placeholder="••••••••"
-                            class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500 transition"
-                        >
+                        <input type="password" id="password"
+                            class="w-full px-4 py-3 md:py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-all pr-12"
+                            placeholder="••••••••" required>
+                        <button type="button" onclick="togglePassword()"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
+                            <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Error Message -->
-                <div id="errorMsg" class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl p-3 flex items-start gap-2">
-                    <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
-                    <p id="errorText" class="text-sm text-red-600 dark:text-red-400"></p>
+                <div id="errorMsg" class="hidden p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-xl text-red-600 dark:text-red-400 text-sm text-center">
+                    <i data-lucide="alert-circle" class="w-4 h-4 inline mr-1"></i>
+                    <span id="errorText">Kredensial tidak valid</span>
                 </div>
 
                 <!-- Submit Button -->
-                <button
-                    type="submit"
-                    id="loginBtn"
-                    class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-pink-500/30 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
-                >
-                    <span>Enter Universe</span>
+                <button type="submit" id="loginBtn"
+                    class="w-full py-3 md:py-4 bg-gradient-to-r from-brand-pink to-brand-accent hover:from-pink-600 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-pink-500/30 transform transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-6">
+                    <span>Masuk Semesta</span>
                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                 </button>
             </form>
 
-            <!-- Footer Info -->
-            <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700 text-center">
-                <p class="text-xs text-slate-500 dark:text-slate-400">
-                    <i data-lucide="shield-check" class="w-3 h-3 inline"></i>
-                    Secured by Firebase Authentication
-                </p>
+            <!-- Footer -->
+            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700/50">
+                <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-500">
+                    <a href="/" class="flex items-center gap-1 hover:text-brand-pink dark:hover:text-white transition">
+                        <i data-lucide="arrow-left" class="w-3 h-3"></i>
+                        Kembali ke Utama
+                    </a>
+                    <span class="flex items-center gap-1">
+                        <i data-lucide="globe" class="w-3 h-3"></i>
+                        Akses Privat
+                    </span>
+                </div>
             </div>
         </div>
+
+        <!-- Bottom Text -->
+        <p class="text-center text-slate-500 dark:text-slate-600 text-xs mt-6">
+            Chronicles © 2026 • Private Universe v2.0
+        </p>
+    </div>
+
+    <!-- Loading Screen (shown first while checking auth) -->
+    <div id="authLoadingScreen" class="absolute inset-0 flex flex-col items-center justify-center z-20 transition-opacity duration-300">
+        <div class="w-16 h-16 bg-gradient-to-tr from-brand-pink to-brand-accent rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-pink-500/30 animate-pulse">
+            <i data-lucide="loader-2" class="w-8 h-8 text-white animate-spin"></i>
+        </div>
+        <h1 class="text-slate-800 dark:text-white text-xl font-bold mb-2">Memuat Semesta...</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-sm">Sedang memeriksa sesi Anda</p>
     </div>
 
     <script>
         import { auth } from '../../lib/firebase-config.js';
         import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
-        // Initialize Lucide icons
         lucide.createIcons();
 
-        // Check if already logged in - auto redirect to home
+        const loadingScreen = document.getElementById('authLoadingScreen');
+        const loginCard = document.getElementById('loginCard');
+
+        // Check if already logged in
         onAuthStateChanged(auth, (user) => {
-            const loadingScreen = document.getElementById('authLoadingScreen');
-            const loginCard = document.getElementById('loginCardWrapper');
-            
             if (user) {
-                // User has session, redirect to home
+                // User already logged in, redirect immediately
                 window.location.href = '/universe/home';
             } else {
-                // No session, show login form
-                loadingScreen.classList.add('hidden');
-                loginCard.classList.remove('hidden');
-                lucide.createIcons();
+                // Not logged in, show login form
+                loadingScreen.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    loginCard.classList.remove('hidden');
+                    // Small delay to allow display change before opacity transition
+                    requestAnimationFrame(() => {
+                        loginCard.classList.remove('opacity-0');
+                    });
+                }, 300);
             }
         });
 
-        // Handle login
-        window.handleLogin = async function() {
+        // Toggle Password Visibility
+        window.togglePassword = function() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        // Handle Login
+        window.handleLogin = async function(e) {
+            e.preventDefault();
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const btn = document.getElementById('loginBtn');
             const errorDiv = document.getElementById('errorMsg');
-            const card = document.getElementById('loginCard');
             
             // Hide previous error
             errorDiv.classList.add('hidden');
             
             // Loading state
             btn.disabled = true;
-            btn.innerHTML = `<svg class="animate-spin w-5 h-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Authenticating...`;
+            btn.innerHTML = `<svg class="animate-spin w-5 h-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Membuka Portal...`;
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 
                 // Success!
-                btn.classList.remove('from-pink-500', 'to-purple-600');
+                btn.classList.remove('from-brand-pink', 'to-brand-accent');
                 btn.classList.add('bg-green-500');
-                btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i> Welcome!`;
+                btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i> Akses Diterima`;
                 lucide.createIcons();
 
-                // Redirect to universe home
+                // Redirect to dashboard
                 setTimeout(() => {
                     window.location.href = '/universe/home';
                 }, 800);
@@ -187,43 +215,22 @@ import '../../styles/global.css';
                 console.error('Login error:', error);
                 
                 // Show error
-                let errorMessage = 'Invalid credentials. Please try again.';
+                let errorMessage = 'Email atau password salah. Silakan coba lagi.';
                 if (error.code === 'auth/user-not-found') {
-                    errorMessage = 'No account found with this email.';
+                    errorMessage = 'Akun tidak ditemukan.';
                 } else if (error.code === 'auth/wrong-password') {
-                    errorMessage = 'Incorrect password.';
-                } else if (error.code === 'auth/too-many-requests') {
-                    errorMessage = 'Too many attempts. Please try again later.';
+                    errorMessage = 'Password salah.';
                 }
                 
                 document.getElementById('errorText').textContent = errorMessage;
                 errorDiv.classList.remove('hidden');
                 
-                // Shake animation
-                card.classList.add('animate-shake');
-                setTimeout(() => card.classList.remove('animate-shake'), 500);
-                
                 // Reset button
                 btn.disabled = false;
-                btn.innerHTML = `<span>Enter Universe</span><i data-lucide="arrow-right" class="w-5 h-5"></i>`;
+                btn.classList.add('from-brand-pink', 'to-brand-accent');
+                btn.classList.remove('bg-green-500');
+                btn.innerHTML = `<span>Masuk Semesta</span><i data-lucide="arrow-right" class="w-5 h-5"></i>`;
                 lucide.createIcons();
-            }
-        }
-    </script>
-
-    
-    <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script is:inline>
-        AOS.init({ once: true, offset: 50, duration: 800 });
-        if(window.lucide) { lucide.createIcons(); }
-        
-        function toggleTheme() {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
             }
         }
     </script>
