@@ -29,7 +29,7 @@ A private, intimate couples website with a full CMS dashboard. Built with **Astr
 
 ```bash
 git clone https://github.com/reyvanevan/chronicles.git
-cd worldofanya
+cd chronicles
 npm install
 ```
 
@@ -188,6 +188,6 @@ posts/
 | :-------- | :---------------------------------------------------------- |
 | Framework | [Astro](https://astro.build)                                |
 | Backend   | [Firebase](https://firebase.google.com) (Auth + Firestore) |
-| Styling   | [Tailwind CSS](https://tailwindcss.com) (CDN)               |
+| Styling   | [Tailwind CSS](https://tailwindcss.com) (v4 via Vite plugin) |
 | Icons     | [Lucide](https://lucide.dev)                                |
 | Animation | [AOS](https://michalsnik.github.io/aos/)                    |

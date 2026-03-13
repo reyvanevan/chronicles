@@ -17,13 +17,13 @@ npm install
 #### A. Buat Firebase Project
 1. Buka [Firebase Console](https://console.firebase.google.com/)
 2. Klik **"Add project"**
-3. Masukkan nama project (contoh: `worldofanya`)
+3. Masukkan nama project (contoh: `chronicles`)
 4. Enable/disable Google Analytics (optional)
 5. Klik **"Create project"**
 
 #### B. Daftarkan Web App
 1. Di dashboard project, klik ikon **`</>`** (Web)
-2. Kasih nama app (contoh: `worldofanya-web`)
+2. Kasih nama app (contoh: `chronicles-web`)
 3. Jangan centang Firebase Hosting
 4. **Copy** firebaseConfig object yang muncul
 
@@ -80,7 +80,7 @@ npm run dev
 ### 5. First-Time Setup di CMS
 
 1. Buka `http://localhost:4321`
-2. Klik logo Navbar 5x cepat untuk trigger secret login
+2. Buka `http://localhost:4321/core/login`
 3. Login dengan akun admin yang sudah dibuat
 4. Akan diredirect ke `/core/setup` — isi semua konfigurasi awal:
    - Nama site & tagline
@@ -88,6 +88,8 @@ npm run dev
    - Salam pembuka/penutup surat
    - Tanggal mulai bersama
 5. Setelah setup selesai, masuk ke `/core` untuk CMS dashboard
+
+> Catatan: klik logo Navbar 5x di landing page mengarah ke login **Universe** (`/universe/login`), bukan login CMS admin.
 
 ---
 
@@ -100,7 +102,8 @@ Setelah login pertama kali, Firestore masih kosong. Beberapa collection akan dib
 | `config/site` | Setup wizard selesai |
 | `landing/stats` | Visitor pertama masuk |
 | `loveProgress/current` | Progress pertama di-update dari CMS |
-| `landing/profile` | Data profil di-save dari CMS |
+| `landing/profileHer` | Data profil Partner A di-save dari CMS |
+| `landing/profileRey` | Data profil Partner B di-save dari CMS |
 | `landing/gallery` | Foto pertama di-upload dari CMS |
 | `landing/memories` | Memory pertama di-save dari CMS |
 | `landing/letter` | Surat pertama di-publish dari CMS |
@@ -150,10 +153,12 @@ Di `src/lib/firestore-service.js`, ganti email mapping sesuai akun yang dibuat:
 
 ```javascript
 export const EMAIL_TO_AUTHOR = {
-    'email-kamu@domain.com': 'rey',
-    'email-pasangan@domain.com': 'anya'
+  'partner@example.com': 'rey',
+  'her@example.com': 'anya'
 };
 ```
+
+Lalu ubah email di atas ke email Firebase Auth kamu (pakai huruf kecil agar aman saat dibandingkan).
 
 ---
 

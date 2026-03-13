@@ -29,7 +29,7 @@ This document outlines the systematic plan to refactor the "World of Anya" proje
 - [x] Set up project structure (`src/components`, `src/layouts`, `src/pages`, `src/styles`, `src/lib`).
 
 ### Phase 2: Core Components & Layouts 🧩
-- [x] Create `MainLayout.astro`:
+- [x] Create `Layout.astro`:
     - Move head metadata (fonts, meta tags).
     - Implement AOS initialization.
     - Implement Theme Toggle logic (Dark/Light mode).
@@ -37,7 +37,7 @@ This document outlines the systematic plan to refactor the "World of Anya" proje
     - Extract from `index.html`.
     - Make links dynamic/active.
 - [x] Create `Footer.astro`.
-- [ ] Create `AnyaCard.astro` or similar reusable UI components (Will do as part of pages).
+- [x] Create reusable section/page components as part of page migration (replacing dedicated `AnyaCard.astro` task).
 
 ### Phase 3: Data & Logic Migration 🔐
 - [x] Move Firebase config to `src/lib/firebase-config.js`.
