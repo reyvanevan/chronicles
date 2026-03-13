@@ -38,26 +38,6 @@ const { title, description = "A small space on the internet to capture what the 
 				document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
 					button.setAttribute('aria-label', isDark ? 'Ganti ke light mode' : 'Ganti ke dark mode');
 					button.setAttribute('title', isDark ? 'Dark mode aktif' : 'Light mode aktif');
-					button.classList.toggle('ring-2', isDark);
-					button.classList.toggle('ring-brand-accentLight/40', isDark);
-					button.classList.toggle('bg-slate-900/90', isDark);
-					button.classList.toggle('text-white', isDark);
-					button.classList.toggle('bg-white/90', !isDark);
-					button.classList.toggle('text-slate-700', !isDark);
-
-					const label = button.querySelector('[data-theme-toggle-label]');
-					if (label) {
-						label.textContent = isDark ? 'Dark' : 'Light';
-					}
-
-					const badge = button.querySelector('[data-theme-toggle-badge]');
-					if (badge) {
-						badge.textContent = isDark ? 'ON' : 'OFF';
-						badge.classList.toggle('bg-emerald-400/20', isDark);
-						badge.classList.toggle('text-emerald-200', isDark);
-						badge.classList.toggle('bg-slate-200/80', !isDark);
-						badge.classList.toggle('text-slate-500', !isDark);
-					}
 				});
 			}
 

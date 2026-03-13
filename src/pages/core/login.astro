@@ -9,7 +9,7 @@ import '../../styles/global.css';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future Gadget Lab — Restricted Access</title>
+    <title>Chronicles Dashboard Access</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@ import '../../styles/global.css';
         <div class="text-center mb-6">
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md rounded-full border border-slate-200 dark:border-slate-700/50 text-slate-600 dark:text-slate-400 text-xs font-medium uppercase tracking-widest shadow-sm">
                 <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                Worldline Stable
+                Private Access
             </div>
         </div>
 
@@ -61,8 +61,8 @@ import '../../styles/global.css';
                         <i data-lucide="flask-conical" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                     </div>
                 </div>
-                <h1 class="font-serif text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-2">Lab Member Access</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm">Hanya untuk anggota Future Gadget Lab</p>
+                <h1 class="font-serif text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-2">Dashboard Access</h1>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Masuk untuk mengelola isi Chronicles.</p>
             </div>
 
             <!-- Login Form -->
@@ -75,7 +75,7 @@ import '../../styles/global.css';
                     <div class="relative">
                         <input type="email" id="email"
                             class="w-full px-4 py-3 md:py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-all"
-                            placeholder="hououin@fgl.lab" required>
+                            placeholder="you@example.com" required>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@ import '../../styles/global.css';
                 <!-- Submit Button -->
                 <button type="submit" id="loginBtn"
                     class="w-full py-3 md:py-4 bg-gradient-to-r from-brand-pink to-brand-accent hover:from-pink-600 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-pink-500/30 transform transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 mt-6">
-                    <span>El Psy Kongroo</span>
+                    <span>Masuk ke Dashboard</span>
                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                 </button>
             </form>
@@ -118,7 +118,7 @@ import '../../styles/global.css';
                     </a>
                     <span class="flex items-center gap-1">
                         <i data-lucide="shield" class="w-3 h-3"></i>
-                        SERN-Proof
+                        Private & Secure
                     </span>
                 </div>
             </div>
@@ -126,7 +126,7 @@ import '../../styles/global.css';
 
         <!-- Bottom Text -->
         <p class="text-center text-slate-500 dark:text-slate-600 text-xs mt-6">
-            FGL © 2025 • Divergence: 1.048596%
+            Chronicles © 2025 • Private Dashboard
         </p>
     </div>
 
@@ -152,15 +152,15 @@ import '../../styles/global.css';
             if (state === 'loading') {
                 btn.disabled = true;
                 btn.classList.add('from-brand-pink', 'to-brand-accent');
-                btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Membaca Worldline...</span>';
+                btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Memeriksa akses...</span>';
             } else if (state === 'success') {
                 btn.disabled = true;
                 btn.classList.add('bg-green-500');
-                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i><span>Reading Steiner Active</span>';
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i><span>Login berhasil</span>';
             } else {
                 btn.disabled = false;
                 btn.classList.add('from-brand-pink', 'to-brand-accent');
-                btn.innerHTML = '<span>El Psy Kongroo</span><i data-lucide="arrow-right" class="w-5 h-5"></i>';
+                btn.innerHTML = '<span>Masuk ke Dashboard</span><i data-lucide="arrow-right" class="w-5 h-5"></i>';
             }
 
             lucide.createIcons();
@@ -214,11 +214,11 @@ import '../../styles/global.css';
                 console.error('Login error:', error);
                 
                 // Show error
-                let errorMessage = 'Akses ditolak. Worldline tidak dikenali.';
+                let errorMessage = 'Akses ditolak. Silakan cek email dan password.';
                 if (error.code === 'auth/user-not-found') {
-                    errorMessage = 'Lab Member tidak ditemukan.';
+                    errorMessage = 'Akun tidak ditemukan.';
                 } else if (error.code === 'auth/wrong-password') {
-                    errorMessage = 'Kode akses salah, Kyouma.';
+                    errorMessage = 'Password yang kamu masukkan salah.';
                 }
                 
                 document.getElementById('errorText').textContent = errorMessage;

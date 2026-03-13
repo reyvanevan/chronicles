@@ -45,24 +45,17 @@ const getMobileLabel = (label: string) => {
                 <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
 
                 <!-- Theme Toggle -->
-                <button onclick="toggleTheme()" data-theme-toggle class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 px-2.5 py-2 shadow-sm transition-colors hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800" aria-label="Toggle theme">
-                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                        <i data-lucide="sun" class="w-4 h-4 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-4 h-4 text-slate-600 block dark:hidden"></i>
-                    </span>
-                    <span data-theme-toggle-label class="text-[11px] font-bold uppercase tracking-[0.2em]">Light</span>
-                    <span data-theme-toggle-badge class="rounded-full bg-slate-200/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">OFF</span>
+                <button onclick="toggleTheme()" data-theme-toggle class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="w-5 h-5 text-amber-500 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
                 </button>
             </nav>
 
             <!-- Mobile Menu Button -->
             <div class="md:hidden flex items-center gap-4">
-                <button onclick="toggleTheme()" data-theme-toggle class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 px-2.5 py-2 shadow-sm transition-colors hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800" aria-label="Toggle theme mobile">
-                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                        <i data-lucide="sun" class="w-4 h-4 text-yellow-400 hidden dark:block"></i>
-                        <i data-lucide="moon" class="w-4 h-4 text-slate-600 block dark:hidden"></i>
-                    </span>
-                    <span data-theme-toggle-label class="text-[11px] font-bold uppercase tracking-[0.2em]">Light</span>
+                <button onclick="toggleTheme()" data-theme-toggle class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Toggle theme mobile">
+                    <i data-lucide="sun" class="w-5 h-5 text-amber-500 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
                 </button>
                 <button onclick="toggleMobileMenu()" class="text-slate-600 dark:text-slate-300 hover:text-brand-accent focus:outline-none" aria-label="Open menu">
                     <i data-lucide="menu" class="w-6 h-6"></i>
