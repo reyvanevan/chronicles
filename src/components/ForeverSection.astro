@@ -8,7 +8,7 @@
             Untuk Selamanya</h2>
 
         <div class="bg-slate-50 dark:bg-slate-900 rounded-3xl p-8 flex flex-col items-center gap-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer w-full max-w-xs mx-auto group border border-slate-100 dark:border-slate-800"
-            onclick="openModal()">
+            onclick="openModal()" onkeydown="handleLetterTriggerKeydown(event)" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="hidden-letter">
             <div
                 class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-pink-500 dark:group-hover:text-pink-400 group-hover:bg-pink-50 dark:group-hover:bg-pink-900/20 transition-all duration-500">
                 <i data-lucide="mail-open" class="w-6 h-6"></i>
@@ -22,11 +22,12 @@
 
     <!-- Letter Modal -->
     <div id="hidden-letter"
+        role="dialog" aria-modal="true" aria-labelledby="letter-title-display" aria-describedby="letter-content-display"
         class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 dark:bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
         <div
             class="glass-panel dark:glass-card p-8 md:p-12 rounded-3xl w-full max-w-lg text-center relative shadow-2xl overflow-y-auto max-h-[90vh] transition-colors">
 
-            <button onclick="closeModal()"
+            <button onclick="closeModal()" aria-label="Tutup surat"
                 class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition bg-slate-100 dark:bg-slate-800 rounded-full">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>

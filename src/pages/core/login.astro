@@ -88,7 +88,7 @@ import '../../styles/global.css';
                         <input type="password" id="password"
                             class="w-full px-4 py-3 md:py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-all pr-12"
                             placeholder="••••••••" required>
-                        <button type="button" onclick="togglePassword()"
+                        <button type="button" onclick="togglePassword()" aria-label="Tampilkan password" aria-pressed="false"
                             class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
                             <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
                         </button>
@@ -143,16 +143,44 @@ import '../../styles/global.css';
             }
         });
 
+        function setLoginButtonState(state) {
+            const btn = document.getElementById('loginBtn');
+            if (!btn) return;
+
+            btn.classList.remove('from-brand-pink', 'to-brand-accent', 'bg-green-500');
+
+            if (state === 'loading') {
+                btn.disabled = true;
+                btn.classList.add('from-brand-pink', 'to-brand-accent');
+                btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Membaca Worldline...</span>';
+            } else if (state === 'success') {
+                btn.disabled = true;
+                btn.classList.add('bg-green-500');
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i><span>Reading Steiner Active</span>';
+            } else {
+                btn.disabled = false;
+                btn.classList.add('from-brand-pink', 'to-brand-accent');
+                btn.innerHTML = '<span>El Psy Kongroo</span><i data-lucide="arrow-right" class="w-5 h-5"></i>';
+            }
+
+            lucide.createIcons();
+        }
+
         // Toggle Password Visibility
         window.togglePassword = function() {
             const input = document.getElementById('password');
             const icon = document.getElementById('eyeIcon');
+            const toggleButton = icon?.closest('button');
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.setAttribute('data-lucide', 'eye-off');
+                toggleButton?.setAttribute('aria-label', 'Sembunyikan password');
+                toggleButton?.setAttribute('aria-pressed', 'true');
             } else {
                 input.type = 'password';
                 icon.setAttribute('data-lucide', 'eye');
+                toggleButton?.setAttribute('aria-label', 'Tampilkan password');
+                toggleButton?.setAttribute('aria-pressed', 'false');
             }
             lucide.createIcons();
         }
@@ -163,25 +191,19 @@ import '../../styles/global.css';
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const btn = document.getElementById('loginBtn');
             const errorDiv = document.getElementById('errorMsg');
-            const card = document.getElementById('loginCard');
             
             // Hide previous error
             errorDiv.classList.add('hidden');
             
             // Loading state
-            btn.disabled = true;
-            btn.innerHTML = `<svg class="animate-spin w-5 h-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Membaca Worldline...`;
+            setLoginButtonState('loading');
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 
                 // Success!
-                btn.classList.remove('from-brand-pink', 'to-brand-accent');
-                btn.classList.add('bg-green-500');
-                btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i> Reading Steiner Active`;
-                lucide.createIcons();
+                setLoginButtonState('success');
 
                 // Redirect to dashboard
                 setTimeout(() => {
@@ -203,11 +225,7 @@ import '../../styles/global.css';
                 errorDiv.classList.remove('hidden');
                 
                 // Reset button
-                btn.disabled = false;
-                btn.classList.add('from-brand-pink', 'to-brand-accent');
-                btn.classList.remove('bg-green-500');
-                btn.innerHTML = `<span>El Psy Kongroo</span><i data-lucide="arrow-right" class="w-5 h-5"></i>`;
-                lucide.createIcons();
+                setLoginButtonState('idle');
             }
         }
     </script>

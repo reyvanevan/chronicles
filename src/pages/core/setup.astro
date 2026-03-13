@@ -55,17 +55,18 @@ import '../../styles/global.css';
                 </div>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Site <span class="text-red-400">*</span></label>
+                        <label for="setup-siteName" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Site <span class="text-red-400">*</span></label>
                         <input type="text" id="setup-siteName" placeholder="World of Layla, Universe of Us, dll..."
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition text-lg">
+                        <p id="error-setup-siteName" class="hidden mt-2 text-xs font-medium text-red-500"></p>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Tagline <span class="text-slate-400 font-normal">(opsional)</span></label>
+                        <label for="setup-siteTagline" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Tagline <span class="text-slate-400 font-normal">(opsional)</span></label>
                         <input type="text" id="setup-siteTagline" placeholder="Control Center" value="Control Center"
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Tanggal Mulai Bersama <span class="text-slate-400 font-normal">(opsional)</span></label>
+                        <label for="setup-startDate" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Tanggal Mulai Bersama <span class="text-slate-400 font-normal">(opsional)</span></label>
                         <input type="date" id="setup-startDate"
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition">
                         <p class="text-xs text-slate-400 mt-1">Dipakai untuk counter "Days Together" di dashboard</p>
@@ -84,24 +85,25 @@ import '../../styles/global.css';
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Panggilan <span class="text-red-400">*</span></label>
+                        <label for="setup-pA-nickname" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Panggilan <span class="text-red-400">*</span></label>
                         <input type="text" id="setup-pA-nickname" placeholder="Anya, Layla, Cinta..."
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
+                        <p id="error-setup-pA-nickname" class="hidden mt-2 text-xs font-medium text-red-500"></p>
                         <p class="text-xs text-slate-400 mt-1">Muncul di greeting letter ("Hai Anya...")</p>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Lengkap</label>
+                        <label for="setup-pA-displayName" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Lengkap</label>
                         <input type="text" id="setup-pA-displayName" placeholder="Partner Full Name"
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Sebutan Peran</label>
+                        <label for="setup-pA-roleLabel" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Sebutan Peran</label>
                         <input type="text" id="setup-pA-roleLabel" placeholder="Princess" value="Princess"
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition">
                         <p class="text-xs text-slate-400 mt-1">Princess, Sayang, Cinta, Waifu...</p>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">URL Slug Halaman</label>
+                        <label for="setup-pA-pageSlug" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">URL Slug Halaman</label>
                         <div class="flex items-center gap-2">
                             <span class="text-slate-400 text-sm">/</span>
                             <input type="text" id="setup-pA-pageSlug" placeholder="her" value="her"
@@ -110,7 +112,7 @@ import '../../styles/global.css';
                         <p class="text-xs text-slate-400 mt-1">Jadi URL "/her", "/layla", dll</p>
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Kutipan</label>
+                        <label for="setup-pA-defaultBio" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Kutipan</label>
                         <textarea id="setup-pA-defaultBio" rows="2" placeholder="She is the poem I never knew how to write..."
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-pink-500 outline-none transition resize-none"></textarea>
                     </div>
@@ -128,24 +130,25 @@ import '../../styles/global.css';
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Panggilan <span class="text-red-400">*</span></label>
+                        <label for="setup-pB-nickname" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Panggilan <span class="text-red-400">*</span></label>
                         <input type="text" id="setup-pB-nickname" placeholder="Rey, Dika, Mas..."
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <p id="error-setup-pB-nickname" class="hidden mt-2 text-xs font-medium text-red-500"></p>
                         <p class="text-xs text-slate-400 mt-1">Muncul di dashboard ("Welcome back, Rey!")</p>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Lengkap</label>
+                        <label for="setup-pB-displayName" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Nama Lengkap</label>
                         <input type="text" id="setup-pB-displayName" placeholder="Your Full Name"
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Sebutan Peran</label>
+                        <label for="setup-pB-roleLabel" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Sebutan Peran</label>
                         <input type="text" id="setup-pB-roleLabel" placeholder="Guardian" value="Guardian"
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition">
                         <p class="text-xs text-slate-400 mt-1">Guardian, Abang, Pacar, Mas...</p>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">URL Slug Halaman</label>
+                        <label for="setup-pB-pageSlug" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">URL Slug Halaman</label>
                         <div class="flex items-center gap-2">
                             <span class="text-slate-400 text-sm">/</span>
                             <input type="text" id="setup-pB-pageSlug" placeholder="him" value="him"
@@ -153,7 +156,7 @@ import '../../styles/global.css';
                         </div>
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Kutipan</label>
+                        <label for="setup-pB-defaultBio" class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Bio / Kutipan</label>
                         <textarea id="setup-pB-defaultBio" rows="2" placeholder="I see the universe in your eyes..."
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"></textarea>
                     </div>
@@ -176,12 +179,12 @@ import '../../styles/global.css';
                         </h4>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold mb-2 text-slate-500">Nama Karakter</label>
+                                <label for="setup-zeroMarker-name" class="block text-xs font-bold mb-2 text-slate-500">Nama Karakter</label>
                                 <input type="text" id="setup-zeroMarker-name" placeholder="Sasuke Uchiha"
                                     class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold mb-2 text-slate-500">Deskripsi</label>
+                                <label for="setup-zeroMarker-desc" class="block text-xs font-bold mb-2 text-slate-500">Deskripsi</label>
                                 <input type="text" id="setup-zeroMarker-desc" placeholder="0% - Friendzone marker"
                                     class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
                             </div>
@@ -193,12 +196,12 @@ import '../../styles/global.css';
                         </h4>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold mb-2 text-slate-500">Default Greeting</label>
+                                <label for="setup-letter-greeting" class="block text-xs font-bold mb-2 text-slate-500">Default Greeting</label>
                                 <input type="text" id="setup-letter-greeting" placeholder="Dear Christina,"
                                     class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-red-400 outline-none transition">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold mb-2 text-slate-500">Default Closing</label>
+                                <label for="setup-letter-closing" class="block text-xs font-bold mb-2 text-slate-500">Default Closing</label>
                                 <input type="text" id="setup-letter-closing" placeholder="El Psy Kongroo. — Hououin Kyouma"
                                     class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-red-400 outline-none transition">
                             </div>
@@ -216,6 +219,11 @@ import '../../styles/global.css';
                 <button id="btn-next" onclick="nextStep()" class="px-6 py-2.5 rounded-xl bg-violet-500 hover:bg-violet-600 text-white font-medium shadow-lg shadow-violet-500/30 transition-transform hover:scale-105 flex items-center gap-2">
                     Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
+            </div>
+            <div id="setup-error-banner" class="hidden px-8 pb-5 text-sm text-red-600 dark:text-red-400 bg-slate-50/50 dark:bg-slate-800/30">
+                <div class="rounded-xl border border-red-200 bg-red-50/80 px-4 py-3 dark:border-red-500/30 dark:bg-red-500/10">
+                    <span id="setup-error-text"></span>
+                </div>
             </div>
         </div>
 
@@ -248,6 +256,55 @@ import '../../styles/global.css';
         // ── Step logic ────────────────────────────────────────────────────────
         let currentStep = 1;
         const TOTAL = 4;
+        const requiredFieldsByStep: Record<number, Array<{ id: string; message: string }>> = {
+            1: [{ id: 'setup-siteName', message: 'Nama site wajib diisi.' }],
+            2: [{ id: 'setup-pA-nickname', message: 'Nama panggilan Partner A wajib diisi.' }],
+            3: [{ id: 'setup-pB-nickname', message: 'Nama panggilan Partner B wajib diisi.' }],
+        };
+
+        function setFieldError(id: string, message: string) {
+            const input = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
+            const error = document.getElementById(`error-${id}`);
+            if (!input || !error) return;
+
+            input.classList.add('border-red-400', 'dark:border-red-400', 'ring-2', 'ring-red-300/60', 'dark:ring-red-500/30');
+            input.setAttribute('aria-invalid', 'true');
+            error.textContent = message;
+            error.classList.remove('hidden');
+        }
+
+        function clearFieldError(id: string) {
+            const input = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
+            const error = document.getElementById(`error-${id}`);
+            if (!input || !error) return;
+
+            input.classList.remove('border-red-400', 'dark:border-red-400', 'ring-2', 'ring-red-300/60', 'dark:ring-red-500/30');
+            input.removeAttribute('aria-invalid');
+            error.textContent = '';
+            error.classList.add('hidden');
+        }
+
+        function clearStepErrors(step: number) {
+            for (const field of requiredFieldsByStep[step] ?? []) {
+                clearFieldError(field.id);
+            }
+        }
+
+        function showBannerError(message: string) {
+            const banner = document.getElementById('setup-error-banner');
+            const text = document.getElementById('setup-error-text');
+            if (!banner || !text) return;
+            text.textContent = message;
+            banner.classList.remove('hidden');
+        }
+
+        function hideBannerError() {
+            const banner = document.getElementById('setup-error-banner');
+            const text = document.getElementById('setup-error-text');
+            if (!banner || !text) return;
+            text.textContent = '';
+            banner.classList.add('hidden');
+        }
 
         function showStep(n: number) {
             for (let i = 1; i <= TOTAL; i++) {
@@ -273,17 +330,30 @@ import '../../styles/global.css';
             if (window.lucide) (window as any).lucide.createIcons();
         }
 
-        function validate(step: number): string | null {
-            const v = (id: string) => (document.getElementById(id) as HTMLInputElement | null)?.value?.trim() ?? '';
-            if (step === 1 && !v('setup-siteName')) return 'Nama site wajib diisi.';
-            if (step === 2 && !v('setup-pA-nickname')) return 'Nama panggilan Partner A wajib diisi.';
-            if (step === 3 && !v('setup-pB-nickname')) return 'Nama panggilan Partner B wajib diisi.';
-            return null;
+        function validate(step: number): boolean {
+            clearStepErrors(step);
+
+            let firstInvalid: HTMLInputElement | HTMLTextAreaElement | null = null;
+            for (const field of requiredFieldsByStep[step] ?? []) {
+                const input = document.getElementById(field.id) as HTMLInputElement | HTMLTextAreaElement | null;
+                const value = input?.value?.trim() ?? '';
+                if (!value) {
+                    setFieldError(field.id, field.message);
+                    if (!firstInvalid) firstInvalid = input;
+                }
+            }
+
+            if (firstInvalid) {
+                firstInvalid.focus();
+                return false;
+            }
+
+            return true;
         }
 
         (window as any).nextStep = async function () {
-            const err = validate(currentStep);
-            if (err) { alert(err); return; }
+            hideBannerError();
+            if (!validate(currentStep)) return;
             if (currentStep < TOTAL) {
                 currentStep++;
                 showStep(currentStep);
@@ -293,11 +363,13 @@ import '../../styles/global.css';
         };
 
         (window as any).prevStep = function () {
+            hideBannerError();
             if (currentStep > 1) { currentStep--; showStep(currentStep); }
         };
 
         async function completeSetup() {
             const btn = document.getElementById('btn-next') as HTMLButtonElement;
+            hideBannerError();
             btn.disabled = true;
             btn.innerHTML = '<span class="animate-spin">⏳</span> Saving...';
 
@@ -341,10 +413,17 @@ import '../../styles/global.css';
                 setTimeout(() => { window.location.href = '/core'; }, 800);
             } catch (err: any) {
                 console.error(err);
-                alert('Setup failed: ' + err.message);
+                showBannerError('Setup gagal disimpan. ' + err.message);
                 btn.disabled = false;
                 btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Complete Setup';
                 if (window.lucide) (window as any).lucide.createIcons();
+            }
+        }
+
+        for (const fields of Object.values(requiredFieldsByStep)) {
+            for (const field of fields) {
+                const input = document.getElementById(field.id) as HTMLInputElement | HTMLTextAreaElement | null;
+                input?.addEventListener('input', () => clearFieldError(field.id));
             }
         }
 

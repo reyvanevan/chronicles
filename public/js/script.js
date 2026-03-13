@@ -10,6 +10,8 @@ AOS.init({
 
 // Theme Logic is handled in Layout.astro to prevent FOUC
 
+let lastLetterTrigger = null;
+
 // Mobile Menu Logic
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
@@ -22,8 +24,13 @@ function toggleMobileMenu() {
 function openModal() {
     const modal = document.getElementById('hidden-letter');
     if (modal) {
+        lastLetterTrigger = document.activeElement;
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+        const closeButton = modal.querySelector('button');
+        if (closeButton) {
+            closeButton.focus();
+        }
     }
 }
 
@@ -32,6 +39,16 @@ function closeModal() {
     if (modal) {
         modal.classList.add('hidden');
         document.body.style.overflow = 'auto';
+    }
+    if (lastLetterTrigger && typeof lastLetterTrigger.focus === 'function') {
+        lastLetterTrigger.focus();
+    }
+}
+
+function handleLetterTriggerKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openModal();
     }
 }
 
@@ -63,3 +80,12 @@ window.addEventListener('scroll', () => {
 });
 
 // Secret Login Logic handled in index.html
+
+document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+
+    const modal = document.getElementById('hidden-letter');
+    if (modal && !modal.classList.contains('hidden')) {
+        closeModal();
+    }
+});
