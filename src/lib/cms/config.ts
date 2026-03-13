@@ -22,7 +22,18 @@ export interface SiteConfig {
     partnerA: PartnerConfig;  // the one the site is dedicated to
     partnerB: PartnerConfig;  // the one managing the site
     zeroMarker: { name: string; description: string };
-    letter: { defaultGreeting: string; defaultClosing: string };
+    letter: { defaultGreeting: string; defaultContent: string; defaultClosing: string };
+    about: {
+        defaultIntro: string;
+        traitOneTitle: string;
+        traitOneDescription: string;
+        traitTwoTitle: string;
+        traitTwoDescription: string;
+        traitThreeTitle: string;
+        traitThreeDescription: string;
+        quoteText: string;
+        quoteAuthor: string;
+    };
     startDate: string;        // ISO date string, e.g. "2024-07-24"
     isSetupComplete: boolean;
 }
@@ -56,7 +67,19 @@ export const DEFAULT_CONFIG: SiteConfig = {
     },
     letter: {
         defaultGreeting: 'Untukmu,',
+        defaultContent: 'Terima kasih sudah bertahan, tumbuh, dan berjalan bersamaku sampai hari ini.',
         defaultClosing: 'Dengan sayang.',
+    },
+    about: {
+        defaultIntro: 'Di antara banyak kemungkinan, aku bersyukur kita bertemu dan memilih jalan yang sama.',
+        traitOneTitle: 'Setia',
+        traitOneDescription: 'Tetap hadir bahkan di hari-hari paling berat.',
+        traitTwoTitle: 'Bertumbuh',
+        traitTwoDescription: 'Berani belajar demi hubungan yang lebih baik.',
+        traitThreeTitle: 'Hangat',
+        traitThreeDescription: 'Selalu jadi rumah saat dunia terasa ramai.',
+        quoteText: 'Semua proses ini selalu terasa layak, selama akhirnya pulang ke kamu.',
+        quoteAuthor: 'A Love Note',
     },
     startDate: '',
     isSetupComplete: false,
@@ -130,7 +153,19 @@ win.saveSiteConfigForm = async function () {
             },
             letter: {
                 defaultGreeting: g('config-letter-greeting') || DEFAULT_CONFIG.letter.defaultGreeting,
+                defaultContent:  g('config-letter-content')  || DEFAULT_CONFIG.letter.defaultContent,
                 defaultClosing:  g('config-letter-closing')  || DEFAULT_CONFIG.letter.defaultClosing,
+            },
+            about: {
+                defaultIntro:            g('config-about-intro')               || DEFAULT_CONFIG.about.defaultIntro,
+                traitOneTitle:           g('config-about-trait-1-title')       || DEFAULT_CONFIG.about.traitOneTitle,
+                traitOneDescription:     g('config-about-trait-1-description') || DEFAULT_CONFIG.about.traitOneDescription,
+                traitTwoTitle:           g('config-about-trait-2-title')       || DEFAULT_CONFIG.about.traitTwoTitle,
+                traitTwoDescription:     g('config-about-trait-2-description') || DEFAULT_CONFIG.about.traitTwoDescription,
+                traitThreeTitle:         g('config-about-trait-3-title')       || DEFAULT_CONFIG.about.traitThreeTitle,
+                traitThreeDescription:   g('config-about-trait-3-description') || DEFAULT_CONFIG.about.traitThreeDescription,
+                quoteText:               g('config-about-quote-text')          || DEFAULT_CONFIG.about.quoteText,
+                quoteAuthor:             g('config-about-quote-author')        || DEFAULT_CONFIG.about.quoteAuthor,
             },
         };
 
@@ -212,11 +247,14 @@ export function applyConfigToDOM(cfg: SiteConfig): void {
 
     // ── Letter defaults
     p('letter-title', cfg.letter.defaultGreeting);
+    p('letter-content', cfg.letter.defaultContent);
     p('letter-quote', cfg.letter.defaultClosing);
     const previewTitle = document.getElementById('letter-preview-title');
     if (previewTitle) previewTitle.textContent = cfg.letter.defaultGreeting;
     const previewQuote = document.getElementById('letter-preview-quote');
     if (previewQuote) previewQuote.textContent = `"${cfg.letter.defaultClosing}"`;
+    const previewContent = document.getElementById('letter-preview-content');
+    if (previewContent) previewContent.textContent = cfg.letter.defaultContent;
 
     // ── Config form values (SectionSiteConfig)
     v('config-siteName',          cfg.siteName);
@@ -237,7 +275,17 @@ export function applyConfigToDOM(cfg: SiteConfig): void {
     v('config-zeroMarker-name',   cfg.zeroMarker.name);
     v('config-zeroMarker-desc',   cfg.zeroMarker.description);
     v('config-letter-greeting',   cfg.letter.defaultGreeting);
+    v('config-letter-content',    cfg.letter.defaultContent);
     v('config-letter-closing',    cfg.letter.defaultClosing);
+    v('config-about-intro',               cfg.about.defaultIntro);
+    v('config-about-trait-1-title',       cfg.about.traitOneTitle);
+    v('config-about-trait-1-description', cfg.about.traitOneDescription);
+    v('config-about-trait-2-title',       cfg.about.traitTwoTitle);
+    v('config-about-trait-2-description', cfg.about.traitTwoDescription);
+    v('config-about-trait-3-title',       cfg.about.traitThreeTitle);
+    v('config-about-trait-3-description', cfg.about.traitThreeDescription);
+    v('config-about-quote-text',          cfg.about.quoteText);
+    v('config-about-quote-author',        cfg.about.quoteAuthor);
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

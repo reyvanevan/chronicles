@@ -167,10 +167,75 @@
                     <input type="text" id="config-letter-greeting" placeholder="Untukmu,"
                         class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-red-400 outline-none transition">
                 </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Content</label>
+                    <textarea id="config-letter-content" rows="3" placeholder="Terima kasih sudah bertahan, tumbuh, dan berjalan bersamaku sampai hari ini."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-red-400 outline-none transition resize-none"></textarea>
+                </div>
                 <div>
                     <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Default Closing Quote</label>
                     <input type="text" id="config-letter-closing" placeholder="Dengan sayang."
                         class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-red-400 outline-none transition">
+                </div>
+            </div>
+        </div>
+
+        <!-- ── About Defaults ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="w-1 h-5 bg-fuchsia-500 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">About Defaults</h4>
+            </div>
+            <p class="text-xs text-slate-400 mb-4 ml-3">Teks fallback untuk section About di landing page</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Intro Text</label>
+                    <textarea id="config-about-intro" rows="2" placeholder="Di antara banyak kemungkinan, aku bersyukur kita bertemu dan memilih jalan yang sama."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Trait #1 Title</label>
+                    <input type="text" id="config-about-trait-1-title" placeholder="Setia"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Trait #1 Description</label>
+                    <input type="text" id="config-about-trait-1-description" placeholder="Tetap hadir bahkan di hari-hari paling berat."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Trait #2 Title</label>
+                    <input type="text" id="config-about-trait-2-title" placeholder="Bertumbuh"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Trait #2 Description</label>
+                    <input type="text" id="config-about-trait-2-description" placeholder="Berani belajar demi hubungan yang lebih baik."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Trait #3 Title</label>
+                    <input type="text" id="config-about-trait-3-title" placeholder="Hangat"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Trait #3 Description</label>
+                    <input type="text" id="config-about-trait-3-description" placeholder="Selalu jadi rumah saat dunia terasa ramai."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Quote Text</label>
+                    <input type="text" id="config-about-quote-text" placeholder="Semua proses ini selalu terasa layak, selama akhirnya pulang ke kamu."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Quote Author</label>
+                    <input type="text" id="config-about-quote-author" placeholder="A Love Note"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-fuchsia-500 outline-none transition">
                 </div>
             </div>
         </div>

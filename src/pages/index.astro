@@ -83,6 +83,25 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             ]
         };
 
+        const SITE_FALLBACK_CONFIG = {
+            letter: {
+                defaultGreeting: 'Untukmu,',
+                defaultContent: 'Terima kasih sudah bertahan, tumbuh, dan berjalan bersamaku sampai hari ini.',
+                defaultClosing: 'Dengan sayang.'
+            },
+            about: {
+                defaultIntro: 'Di antara banyak kemungkinan, aku bersyukur kita bertemu dan memilih jalan yang sama.',
+                traitOneTitle: 'Setia',
+                traitOneDescription: 'Tetap hadir bahkan di hari-hari paling berat.',
+                traitTwoTitle: 'Bertumbuh',
+                traitTwoDescription: 'Berani belajar demi hubungan yang lebih baik.',
+                traitThreeTitle: 'Hangat',
+                traitThreeDescription: 'Selalu jadi rumah saat dunia terasa ramai.',
+                quoteText: 'Semua proses ini selalu terasa layak, selama akhirnya pulang ke kamu.',
+                quoteAuthor: 'A Love Note'
+            }
+        };
+
         // Load fallback images to prevent skeleton stuck
         function loadFallbackImages() {
             // Profile
@@ -104,6 +123,48 @@ import MusicPlayer from '../components/MusicPlayer.astro';
 
         async function loadLandingData() {
             try {
+                const setText = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el && value) el.textContent = value;
+                };
+
+                const configDoc = await getDoc(doc(db, 'config', 'site'));
+                const cfgRaw = configDoc.exists() ? configDoc.data() : {};
+                const siteConfig = {
+                    letter: {
+                        ...SITE_FALLBACK_CONFIG.letter,
+                        ...(cfgRaw.letter || {})
+                    },
+                    about: {
+                        ...SITE_FALLBACK_CONFIG.about,
+                        ...(cfgRaw.about || {})
+                    }
+                };
+
+                // Apply config-driven fallback for About section
+                setText('about-intro-text', siteConfig.about.defaultIntro);
+                setText('about-trait-1-title', siteConfig.about.traitOneTitle);
+                setText('about-trait-1-description', siteConfig.about.traitOneDescription);
+                setText('about-trait-2-title', siteConfig.about.traitTwoTitle);
+                setText('about-trait-2-description', siteConfig.about.traitTwoDescription);
+                setText('about-trait-3-title', siteConfig.about.traitThreeTitle);
+                setText('about-trait-3-description', siteConfig.about.traitThreeDescription);
+                setText('about-quote-text', `"${siteConfig.about.quoteText}"`);
+                setText('about-quote-author', siteConfig.about.quoteAuthor);
+
+                // Apply config-driven fallback for Forever letter section
+                const letterTitleDisplay = document.getElementById('letter-title-display');
+                const letterContentDisplay = document.getElementById('letter-content-display');
+                const letterQuoteDisplay = document.getElementById('letter-quote-display');
+                if (letterTitleDisplay) letterTitleDisplay.textContent = siteConfig.letter.defaultGreeting;
+                if (letterContentDisplay) {
+                    letterContentDisplay.innerHTML = siteConfig.letter.defaultContent
+                        .split('\n')
+                        .map((paragraph) => `<p>${paragraph}</p>`)
+                        .join('');
+                }
+                if (letterQuoteDisplay) letterQuoteDisplay.textContent = `"${siteConfig.letter.defaultClosing}"`;
+
                 // Load Profile
                 const profileDoc = await getDoc(doc(db, "landing", "profile"));
                 if (profileDoc.exists()) {

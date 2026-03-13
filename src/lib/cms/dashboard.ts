@@ -58,18 +58,26 @@ export async function loadDashboardData(): Promise<void> {
 
         // Letter
         const letterDoc = await getDoc(doc(db, 'landing', 'letter'));
+        const cfg = (window as any).siteConfig;
+        const defaultGreeting = cfg?.letter?.defaultGreeting || 'Untukmu,';
+        const defaultContent  = cfg?.letter?.defaultContent  || 'Terima kasih sudah bertahan, tumbuh, dan berjalan bersamaku sampai hari ini.';
+        const defaultClosing  = cfg?.letter?.defaultClosing  || 'Dengan sayang.';
+        const get = (id: string) => document.getElementById(id);
         if (letterDoc.exists()) {
             const l = letterDoc.data();
-            const cfg = (window as any).siteConfig;
-            const defaultGreeting = cfg?.letter?.defaultGreeting || 'Hai Anya...';
-            const defaultClosing  = cfg?.letter?.defaultClosing  || 'I love you, today and forever.';
-            const get = (id: string) => document.getElementById(id);
             (get('letter-title') as HTMLInputElement).value  = l.title || '';
             (get('letter-content') as HTMLTextAreaElement).value = l.content || '';
             (get('letter-quote') as HTMLInputElement).value  = l.quote || '';
             if (get('letter-preview-title'))   get('letter-preview-title')!.textContent = l.title || defaultGreeting;
-            if (get('letter-preview-content')) get('letter-preview-content')!.textContent = l.content || 'Your message will appear here...';
+            if (get('letter-preview-content')) get('letter-preview-content')!.textContent = l.content || defaultContent;
             if (get('letter-preview-quote'))   get('letter-preview-quote')!.textContent = '"' + (l.quote || defaultClosing) + '"';
+        } else {
+            (get('letter-title') as HTMLInputElement).value = '';
+            (get('letter-content') as HTMLTextAreaElement).value = '';
+            (get('letter-quote') as HTMLInputElement).value = '';
+            if (get('letter-preview-title')) get('letter-preview-title')!.textContent = defaultGreeting;
+            if (get('letter-preview-content')) get('letter-preview-content')!.textContent = defaultContent;
+            if (get('letter-preview-quote')) get('letter-preview-quote')!.textContent = '"' + defaultClosing + '"';
         }
 
         // Princess Profile
