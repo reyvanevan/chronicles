@@ -7,7 +7,6 @@ import GallerySection from '../components/GallerySection.astro';
 import MemoriesSection from '../components/MemoriesSection.astro';
 import ForeverSection from '../components/ForeverSection.astro';
 import MusicPlayer from '../components/MusicPlayer.astro';
-import SecretLoginModal from '../components/SecretLoginModal.astro';
 ---
 
 <Layout title="Home">
@@ -33,7 +32,6 @@ import SecretLoginModal from '../components/SecretLoginModal.astro';
     </main>
 
     <MusicPlayer />
-    <SecretLoginModal />
 
     <!-- Firestore Logic -->
     <script>
@@ -440,38 +438,21 @@ import SecretLoginModal from '../components/SecretLoginModal.astro';
     
     </script>
     <script>
-        
-        import { auth } from '../lib/firebase-config.js';
-        import { signInWithEmailAndPassword } from "firebase/auth";
-
-        // Secret Login Logic
+        // Universe access trigger: 5 taps on the navbar logo.
         let logoClicks = 0;
         let clickTimer;
         const logoTrigger = document.getElementById('secret-login-trigger');
-        const secretModal = document.getElementById('secret-login-modal');
-        const loginCard = document.getElementById('login-card');
-        const emailInput = document.getElementById('email-input');
-        const passwordInput = document.getElementById('password-input');
-        const loginBtn = document.getElementById('login-btn');
-        const loginError = document.getElementById('login-error');
-
-        // Make functions globally available for onclick
-        window.closeSecretLogin = closeSecretLogin;
 
         logoTrigger.addEventListener('click', (e) => {
             e.preventDefault();
             logoClicks++;
-            console.log('Logo clicked:', logoClicks);
 
             clearTimeout(clickTimer);
             clickTimer = setTimeout(() => {
                 logoClicks = 0;
-                console.log('Click timer reset');
             }, 2000);
 
             if (logoClicks === 5) {
-                console.log('Triggering redirect...');
-                
                 const referrer = document.referrer;
                 if (referrer && referrer.includes('/universe/')) {
                     window.location.href = '/universe/login';
@@ -479,81 +460,6 @@ import SecretLoginModal from '../components/SecretLoginModal.astro';
                     window.location.href = 'universe/';
                 }
                 logoClicks = 0;
-            }
-        });
-
-        function openSecretLogin() {
-            secretModal.classList.remove('hidden');
-            setTimeout(() => {
-                secretModal.classList.remove('opacity-0');
-                loginCard.classList.remove('scale-95');
-                loginCard.classList.add('scale-100');
-                emailInput.focus();
-            }, 10);
-        }
-
-        function closeSecretLogin() {
-            secretModal.classList.add('opacity-0');
-            loginCard.classList.remove('scale-100');
-            loginCard.classList.add('scale-95');
-
-            setTimeout(() => {
-                secretModal.classList.add('hidden');
-                emailInput.value = '';
-                passwordInput.value = '';
-                loginError.classList.add('hidden');
-            }, 300);
-        }
-
-        async function handleLogin() {
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            if (!email || !password) return;
-
-            loginBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>';
-            loginBtn.disabled = true;
-            loginError.classList.add('hidden');
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                loginCard.innerHTML = `
-                    <div class="py-8">
-                        <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500">
-                            <i data-lucide="check" class="w-8 h-8"></i>
-                        </div>
-                        <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-white">Welcome Home</h3>
-                    </div>
-                `;
-                lucide.createIcons();
-
-                setTimeout(() => {
-                    window.location.href = '/universe/home';
-                }, 1000);
-
-            } catch (error) {
-                console.error(error);
-                loginError.textContent = "Invalid email or password.";
-                loginError.classList.remove('hidden');
-                loginCard.classList.add('animate-shake');
-                setTimeout(() => loginCard.classList.remove('animate-shake'), 500);
-
-                loginBtn.innerHTML = '<span>Enter</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
-                loginBtn.disabled = false;
-                lucide.createIcons();
-            }
-        }
-
-        loginBtn.addEventListener('click', handleLogin);
-
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleLogin();
-        });
-
-        // Close on backdrop click
-        secretModal.addEventListener('click', (e) => {
-            if (e.target === secretModal) {
-                closeSecretLogin();
             }
         });
 

@@ -12,6 +12,21 @@ import Layout from '../layouts/Layout.astro';
             <p class="text-slate-500 dark:text-slate-400 text-sm">Every second with you is a memory I want to keep.</p>
         </div>
 
+        <!-- Timeline Search -->
+        <div class="max-w-lg mx-auto mb-6" data-aos="fade-down" data-aos-delay="50">
+            <div class="relative glass-card rounded-2xl border border-slate-200/60 dark:border-slate-700/60 px-4 py-3">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+                    <input id="timelineSearch" type="search" placeholder="Cari caption, lokasi, tag, atau nama..."
+                        class="w-full bg-transparent text-sm text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none">
+                    <button id="clearTimelineSearch" type="button" class="hidden text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                        Clear
+                    </button>
+                </div>
+            </div>
+            <p id="timelineSearchStatus" class="hidden mt-2 px-1 text-xs text-slate-500 dark:text-slate-400"></p>
+        </div>
+
         <!-- STORIES SECTION (Horizontal Scroll like Instagram) -->
         <div class="max-w-lg mx-auto mb-8">
             <div class="flex gap-4 overflow-x-auto no-scrollbar py-2 px-1" id="storiesContainer">
@@ -91,14 +106,78 @@ import Layout from '../layouts/Layout.astro';
         let allPosts = [];
         let currentModalPost = null;
         let modalCurrentImageIndex = 0;
+        let currentSearchQuery = '';
         
         // Load feed on page load
         document.addEventListener('DOMContentLoaded', async () => {
             // Load fresh avatars from Firestore first
+            initTimelineSearch();
             await loadUserAvatarsFromFirestore();
             await loadStories();
             await loadFeed();
         });
+
+        function normalizeSearchValue(value) {
+            return (value || '').toString().trim().toLowerCase();
+        }
+
+        function buildSearchHaystack(item) {
+            const author = USER_PROFILES[item.authorId] || USER_PROFILES.rey;
+            return [
+                author.displayName,
+                author.name,
+                item.caption,
+                item.content,
+                item.location,
+                item.type,
+                ...(item.tags || []),
+            ]
+                .filter(Boolean)
+                .join(' ')
+                .toLowerCase();
+        }
+
+        function getFilteredPosts(posts, query) {
+            const normalizedQuery = normalizeSearchValue(query);
+            if (!normalizedQuery) return posts;
+            return posts.filter((item) => buildSearchHaystack(item).includes(normalizedQuery));
+        }
+
+        function updateSearchUi(filteredCount, totalCount) {
+            const status = document.getElementById('timelineSearchStatus');
+            const clearButton = document.getElementById('clearTimelineSearch');
+            const hasQuery = currentSearchQuery.length > 0;
+
+            clearButton?.classList.toggle('hidden', !hasQuery);
+
+            if (!status) return;
+            if (!hasQuery) {
+                status.textContent = '';
+                status.classList.add('hidden');
+                return;
+            }
+
+            status.textContent = `Menampilkan ${filteredCount} dari ${totalCount} momen untuk "${currentSearchQuery}".`;
+            status.classList.remove('hidden');
+        }
+
+        function initTimelineSearch() {
+            const searchInput = document.getElementById('timelineSearch');
+            const clearButton = document.getElementById('clearTimelineSearch');
+            if (!searchInput || !clearButton) return;
+
+            searchInput.addEventListener('input', (event) => {
+                currentSearchQuery = event.target.value.trim();
+                renderFeed();
+            });
+
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                currentSearchQuery = '';
+                renderFeed();
+                searchInput.focus();
+            });
+        }
         
         // ===== STORIES SECTION =====
         async function loadStories() {
@@ -281,9 +360,6 @@ import Layout from '../layouts/Layout.astro';
         // ===== FEED SECTION (Posts Only) =====
         async function loadFeed() {
             const loadingState = document.getElementById('loadingState');
-            const emptyState = document.getElementById('emptyState');
-            const feedList = document.getElementById('feedList');
-            const endOfFeed = document.getElementById('endOfFeed');
             
             try {
                 // Get posts only (stories are shown as bubbles above)
@@ -292,22 +368,7 @@ import Layout from '../layouts/Layout.astro';
                 
                 // Hide loading
                 loadingState.classList.add('hidden');
-                
-                if (posts.length === 0) {
-                    emptyState.classList.remove('hidden');
-                    return;
-                }
-                
-                // Render feed (posts only)
-                feedList.innerHTML = posts.map((item, index) => renderFeedItem(item, index)).join('');
-                feedList.classList.remove('hidden');
-                endOfFeed.classList.remove('hidden');
-                
-                // Re-init Lucide icons
-                lucide.createIcons();
-                
-                // Re-init AOS for new elements
-                AOS.refresh();
+                renderFeed();
                 
             } catch (error) {
                 console.error('Failed to load feed:', error);
@@ -320,6 +381,53 @@ import Layout from '../layouts/Layout.astro';
                 `;
                 lucide.createIcons();
             }
+        }
+
+        function renderFeed() {
+            const emptyState = document.getElementById('emptyState');
+            const feedList = document.getElementById('feedList');
+            const endOfFeed = document.getElementById('endOfFeed');
+            const filteredPosts = getFilteredPosts(allPosts, currentSearchQuery);
+
+            updateSearchUi(filteredPosts.length, allPosts.length);
+
+            if (allPosts.length === 0) {
+                emptyState.innerHTML = `
+                    <div class="w-20 h-20 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                        <i data-lucide="image" class="w-10 h-10 text-slate-400"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-slate-700 dark:text-white mb-2">No moments yet</h3>
+                    <p class="text-slate-500 text-sm">Start capturing your journey together!</p>
+                `;
+                emptyState.classList.remove('hidden');
+                feedList.classList.add('hidden');
+                endOfFeed.classList.add('hidden');
+                lucide.createIcons();
+                return;
+            }
+
+            if (filteredPosts.length === 0) {
+                emptyState.innerHTML = `
+                    <div class="w-20 h-20 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                        <i data-lucide="search-x" class="w-10 h-10 text-slate-400"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-slate-700 dark:text-white mb-2">No matching moments</h3>
+                    <p class="text-slate-500 text-sm">Coba kata kunci lain untuk caption, lokasi, tag, atau nama.</p>
+                `;
+                emptyState.classList.remove('hidden');
+                feedList.classList.add('hidden');
+                endOfFeed.classList.add('hidden');
+                lucide.createIcons();
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            feedList.innerHTML = filteredPosts.map((item, index) => renderFeedItem(item, index)).join('');
+            feedList.classList.remove('hidden');
+            endOfFeed.classList.remove('hidden');
+
+            lucide.createIcons();
+            AOS.refresh();
         }
         
         function renderFeedItem(item, index) {

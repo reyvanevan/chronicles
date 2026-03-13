@@ -11,6 +11,7 @@ AOS.init({
 // Theme Logic is handled in Layout.astro to prevent FOUC
 
 let lastLetterTrigger = null;
+let musicStatusTimer = null;
 
 // Mobile Menu Logic
 function toggleMobileMenu() {
@@ -52,17 +53,52 @@ function handleLetterTriggerKeydown(event) {
     }
 }
 
+function setMusicStatus(message, tone = 'info') {
+    const status = document.getElementById('musicStatus');
+    if (!status) return;
+
+    status.classList.remove('hidden', 'text-slate-600', 'dark:text-slate-300', 'text-red-600', 'dark:text-red-400', 'border-red-200', 'dark:border-red-500/30', 'bg-red-50/90', 'dark:bg-red-500/10');
+    status.textContent = message;
+
+    if (tone === 'error') {
+        status.classList.add('text-red-600', 'dark:text-red-400', 'border-red-200', 'dark:border-red-500/30', 'bg-red-50/90', 'dark:bg-red-500/10');
+    } else {
+        status.classList.add('text-slate-600', 'dark:text-slate-300');
+    }
+
+    if (musicStatusTimer) {
+        clearTimeout(musicStatusTimer);
+    }
+
+    musicStatusTimer = setTimeout(() => {
+        status.classList.add('hidden');
+        status.textContent = '';
+    }, tone === 'error' ? 5000 : 2500);
+}
+
 // Music Logic
 function toggleMusic() {
     const audio = document.getElementById('bgMusic');
     const btn = document.getElementById('musicBtn');
     if (audio && btn) {
         if (audio.paused) {
-            audio.play();
-            btn.classList.add('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
+            setMusicStatus('Mencoba memutar musik...');
+            audio.play()
+                .then(() => {
+                    btn.classList.add('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
+                    btn.setAttribute('aria-label', 'Jeda musik latar');
+                    setMusicStatus('Musik diputar.');
+                })
+                .catch(() => {
+                    btn.classList.remove('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
+                    btn.setAttribute('aria-label', 'Putar musik latar');
+                    setMusicStatus('Browser menahan autoplay atau file audio gagal diputar.', 'error');
+                });
         } else {
             audio.pause();
             btn.classList.remove('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
+            btn.setAttribute('aria-label', 'Putar musik latar');
+            setMusicStatus('Musik dijeda.');
         }
     }
 }
@@ -88,4 +124,21 @@ document.addEventListener('keydown', (event) => {
     if (modal && !modal.classList.contains('hidden')) {
         closeModal();
     }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('bgMusic');
+    const btn = document.getElementById('musicBtn');
+    if (!audio || !btn) return;
+
+    audio.addEventListener('error', () => {
+        btn.classList.remove('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
+        btn.setAttribute('aria-label', 'Musik latar tidak tersedia');
+        setMusicStatus('File musik tidak ditemukan atau gagal dimuat.', 'error');
+    });
+
+    audio.addEventListener('ended', () => {
+        btn.classList.remove('ring-4', 'ring-brand-pink/30', 'dark:ring-brand-accent/20');
+        btn.setAttribute('aria-label', 'Putar musik latar');
+    });
 });

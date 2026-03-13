@@ -31,6 +31,36 @@ const { title, description = "A small space on the internet to capture what the 
 
 		<!-- Theme Initialization -->
 		<script is:inline>
+			function updateThemeToggleUi(themeValue) {
+				const isDark = themeValue === 'dark';
+				document.documentElement.dataset.theme = themeValue;
+
+				document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+					button.setAttribute('aria-label', isDark ? 'Ganti ke light mode' : 'Ganti ke dark mode');
+					button.setAttribute('title', isDark ? 'Dark mode aktif' : 'Light mode aktif');
+					button.classList.toggle('ring-2', isDark);
+					button.classList.toggle('ring-brand-accentLight/40', isDark);
+					button.classList.toggle('bg-slate-900/90', isDark);
+					button.classList.toggle('text-white', isDark);
+					button.classList.toggle('bg-white/90', !isDark);
+					button.classList.toggle('text-slate-700', !isDark);
+
+					const label = button.querySelector('[data-theme-toggle-label]');
+					if (label) {
+						label.textContent = isDark ? 'Dark' : 'Light';
+					}
+
+					const badge = button.querySelector('[data-theme-toggle-badge]');
+					if (badge) {
+						badge.textContent = isDark ? 'ON' : 'OFF';
+						badge.classList.toggle('bg-emerald-400/20', isDark);
+						badge.classList.toggle('text-emerald-200', isDark);
+						badge.classList.toggle('bg-slate-200/80', !isDark);
+						badge.classList.toggle('text-slate-500', !isDark);
+					}
+				});
+			}
+
 			// Check for theme immediately
 			const theme = (() => {
 				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -47,6 +77,7 @@ const { title, description = "A small space on the internet to capture what the 
 			} else {
 				document.documentElement.classList.remove('dark');
 			}
+			updateThemeToggleUi(theme);
 			
 			// Global toggle function
 			window.toggleTheme = function() {
@@ -54,8 +85,14 @@ const { title, description = "A small space on the internet to capture what the 
 				element.classList.toggle('dark');
 
 				const isDark = element.classList.contains('dark');
-				localStorage.setItem('theme', isDark ? 'dark' : 'light');
+				const nextTheme = isDark ? 'dark' : 'light';
+				localStorage.setItem('theme', nextTheme);
+				updateThemeToggleUi(nextTheme);
 			}
+
+			document.addEventListener('DOMContentLoaded', () => {
+				updateThemeToggleUi(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+			});
 		</script>
 	</head>
 	<body class="bg-gradient-to-br from-brand-blue via-slate-50 to-brand-pink dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-screen text-slate-700 dark:text-slate-300 overflow-x-clip selection:bg-brand-pink selection:text-brand-accent">

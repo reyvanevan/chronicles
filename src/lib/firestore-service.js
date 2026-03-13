@@ -325,6 +325,18 @@ export async function deletePost(postId) {
 }
 
 /**
+ * Update a post
+ * @param {string} postId - Document ID
+ * @param {Object} updates - Partial post fields to update
+ */
+export async function updatePost(postId, updates) {
+    await updateDoc(doc(db, 'posts', postId), {
+        ...updates,
+        updatedAt: serverTimestamp()
+    });
+}
+
+/**
  * Like/unlike a post (toggle)
  * @param {string} postId - Document ID
  * @param {number} currentLikes - Current like count

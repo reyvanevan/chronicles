@@ -310,6 +310,42 @@ import '../../styles/global.css';
         </div>
     </div>
 
+    <!-- Edit Post Modal -->
+    <div id="editPostModal" class="fixed inset-0 z-[110] hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeEditPostModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+                <div class="flex items-start justify-between gap-4 mb-5">
+                    <div>
+                        <h3 class="font-serif text-2xl font-bold text-slate-800 dark:text-white">Edit Memory</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Update caption dan lokasi post kamu.</p>
+                    </div>
+                    <button type="button" onclick="closeEditPostModal()" class="p-2 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white transition" aria-label="Close edit modal">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="editPostCaption" class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Caption</label>
+                        <textarea id="editPostCaption" rows="4" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></textarea>
+                    </div>
+                    <div>
+                        <label for="editPostLocation" class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Location</label>
+                        <input id="editPostLocation" type="text" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                    </div>
+                </div>
+
+                <p id="editPostError" class="hidden mt-4 text-sm text-red-500"></p>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" onclick="closeEditPostModal()" class="rounded-full px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Cancel</button>
+                    <button type="button" id="saveEditPostBtn" onclick="saveEditedPost()" class="rounded-full bg-pink-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:bg-pink-600">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Load Logic -->
     <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script is:inline src='/js/script.js'></script>
@@ -319,7 +355,7 @@ import '../../styles/global.css';
         import { auth, db } from '../../lib/firebase-config.js';
         import { onAuthStateChanged } from "firebase/auth";
         import { doc, getDoc } from "firebase/firestore";
-        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES, loadUserAvatarsFromFirestore, getAuthorAvatar, logout } from '../../lib/firestore-service.js';
+        import { getPosts, getActiveStories, formatRelativeTime, USER_PROFILES, loadUserAvatarsFromFirestore, getAuthorAvatar, getCurrentAuthor, updatePost, deletePost, logout } from '../../lib/firestore-service.js';
 
         // Global logout function
         window.handleLogout = async function() {
@@ -337,6 +373,7 @@ import '../../styles/global.css';
             if (!user) {
                 window.location.href = '/';
             } else {
+                window.currentAuthor = getCurrentAuthor(user);
                 // Load fresh avatars from Firestore first
                 await loadUserAvatarsFromFirestore();
                 // User is logged in, load data
@@ -425,6 +462,7 @@ import '../../styles/global.css';
         // Render photo post
         function renderPhotoPost(post) {
             const tags = (post.tags || []).map(t => `<span class="text-blue-500">#${t}</span>`).join(' ');
+            const isOwnPost = post.authorId === window.currentAuthor;
             
             // Check if carousel (multiple images)
             const isCarousel = post.type === 'carousel' && post.images && post.images.length > 1;
@@ -441,7 +479,16 @@ import '../../styles/global.css';
                                 ${post.location ? `<p class="text-xs text-slate-500">${post.location}</p>` : ''}
                             </div>
                         </div>
-                        <button><i data-lucide="more-horizontal" class="w-5 h-5 text-slate-400"></i></button>
+                        ${isOwnPost ? `
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="openEditPostModal('${post.id}'); event.stopPropagation();" class="p-2 rounded-full text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Edit post">
+                                <i data-lucide="pencil" class="w-4 h-4"></i>
+                            </button>
+                            <button type="button" onclick="handleDeletePost('${post.id}'); event.stopPropagation();" class="p-2 rounded-full text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Delete post">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        ` : `<button type="button"><i data-lucide="more-horizontal" class="w-5 h-5 text-slate-400"></i></button>`}
                     </div>
 
                     <div class="relative aspect-square bg-slate-100 dark:bg-slate-800 cursor-pointer group" 
@@ -491,6 +538,7 @@ import '../../styles/global.css';
         // Render note post
         function renderNotePost(post) {
             const authorColor = post.authorId === 'rey' ? 'blue' : 'pink';
+            const isOwnPost = post.authorId === window.currentAuthor;
             
             return `
                 <article class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden" data-aos="fade-up">
@@ -500,6 +548,16 @@ import '../../styles/global.css';
                         </div>
                         <span class="font-bold text-sm">${post.authorDisplayName}'s Note</span>
                         <span class="text-xs text-slate-400 ml-auto">${formatRelativeTime(post.createdAt)}</span>
+                        ${isOwnPost ? `
+                        <div class="flex items-center gap-1 ml-2">
+                            <button type="button" onclick="openEditPostModal('${post.id}'); event.stopPropagation();" class="p-1.5 rounded-full text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Edit note">
+                                <i data-lucide="pencil" class="w-4 h-4"></i>
+                            </button>
+                            <button type="button" onclick="handleDeletePost('${post.id}'); event.stopPropagation();" class="p-1.5 rounded-full text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Delete note">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        ` : ''}
                     </div>
 
                     <div class="p-8 bg-gradient-to-br from-pink-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 text-center">
@@ -572,6 +630,115 @@ import '../../styles/global.css';
 
         // Make formatRelativeTime available globally for re-renders
         window.formatRelativeTime = formatRelativeTime;
+        window.openEditPostModal = function(postId) {
+            const post = allPosts.find((item) => item.id === postId && item.authorId === window.currentAuthor);
+            if (!post) return;
+
+            const modal = document.getElementById('editPostModal');
+            const captionInput = document.getElementById('editPostCaption');
+            const locationInput = document.getElementById('editPostLocation');
+            const errorText = document.getElementById('editPostError');
+
+            window.editingPostId = post.id;
+            captionInput.value = post.caption || '';
+            locationInput.value = post.location || '';
+            errorText.textContent = '';
+            errorText.classList.add('hidden');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            captionInput.focus();
+            lucide.createIcons();
+        };
+
+        window.closeEditPostModal = function() {
+            const modal = document.getElementById('editPostModal');
+            const errorText = document.getElementById('editPostError');
+            window.editingPostId = null;
+            errorText.textContent = '';
+            errorText.classList.add('hidden');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        window.saveEditedPost = async function() {
+            const postId = window.editingPostId;
+            const saveBtn = document.getElementById('saveEditPostBtn');
+            const captionInput = document.getElementById('editPostCaption');
+            const locationInput = document.getElementById('editPostLocation');
+            const errorText = document.getElementById('editPostError');
+
+            if (!postId) return;
+
+            const nextCaption = captionInput.value.trim();
+            const nextLocation = locationInput.value.trim();
+            const post = allPosts.find((item) => item.id === postId);
+
+            if (!post) return;
+            if (post.type === 'note' && !nextCaption) {
+                errorText.textContent = 'Note tidak boleh kosong.';
+                errorText.classList.remove('hidden');
+                captionInput.focus();
+                return;
+            }
+
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            errorText.textContent = '';
+            errorText.classList.add('hidden');
+
+            try {
+                await updatePost(postId, {
+                    caption: nextCaption,
+                    location: nextLocation
+                });
+
+                allPosts = allPosts.map((item) => item.id === postId
+                    ? { ...item, caption: nextCaption, location: nextLocation }
+                    : item
+                );
+
+                document.getElementById('postsList').innerHTML = allPosts.map(renderPost).join('');
+                lucide.createIcons();
+                AOS.refresh();
+                closeEditPostModal();
+            } catch (error) {
+                console.error('Failed to update post:', error);
+                errorText.textContent = 'Gagal menyimpan perubahan. Coba lagi.';
+                errorText.classList.remove('hidden');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Changes';
+            }
+        };
+
+        window.handleDeletePost = async function(postId) {
+            const post = allPosts.find((item) => item.id === postId && item.authorId === window.currentAuthor);
+            if (!post) return;
+            if (!confirm('Hapus memory ini? Tindakan ini tidak bisa dibatalkan.')) return;
+
+            try {
+                await deletePost(postId);
+                allPosts = allPosts.filter((item) => item.id !== postId);
+
+                const postsList = document.getElementById('postsList');
+                const emptyState = document.getElementById('emptyState');
+
+                if (allPosts.length === 0) {
+                    postsList.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                } else {
+                    postsList.innerHTML = allPosts.map(renderPost).join('');
+                    postsList.classList.remove('hidden');
+                    emptyState.classList.add('hidden');
+                }
+
+                lucide.createIcons();
+                AOS.refresh();
+            } catch (error) {
+                console.error('Failed to delete post:', error);
+                alert('Gagal menghapus memory. Coba lagi.');
+            }
+        };
         
         // Photo Modal Functions
         // Modal state for carousel
