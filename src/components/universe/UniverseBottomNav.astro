@@ -1,30 +1,39 @@
-<nav class="fixed bottom-0 left-0 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 pb-safe transition-colors duration-300">
-    <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
+---
+const { active = 'home', variant = 'glass' } = Astro.props;
 
-        <a href="#" class="flex flex-col items-center justify-center w-14 h-full text-pink-500 group">
-            <i data-lucide="home" class="w-6 h-6 text-pink-500 fill-pink-500/20 transition-transform group-hover:scale-110"></i>
-            <span class="text-[10px] font-bold mt-0.5">Home</span>
+const navClass = variant === 'solid'
+    ? 'fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50 pb-safe transition-colors duration-300'
+    : 'fixed bottom-0 left-0 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 pb-safe transition-colors duration-300';
+
+const isActive = (tab) => active === tab;
+---
+
+<nav class={navClass}>
+    <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
+        <a href="/universe/home" class={`flex flex-col items-center justify-center w-14 h-full transition group ${isActive('home') ? 'text-pink-500' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'}`}>
+            <i data-lucide="home" class={`w-6 h-6 transition-transform group-hover:scale-110 ${isActive('home') ? 'fill-pink-500/20' : ''}`}></i>
+            <span class={`text-[10px] mt-0.5 ${isActive('home') ? 'font-bold' : 'font-medium'}`}>Home</span>
         </a>
 
-        <a href="/universe/explore" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition group">
-            <i data-lucide="search" class="w-6 h-6 transition-transform group-hover:scale-110"></i>
-            <span class="text-[10px] font-medium mt-0.5">Memories</span>
+        <a href="/universe/explore" class={`flex flex-col items-center justify-center w-14 h-full transition group ${isActive('explore') ? 'text-pink-500' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'}`}>
+            <i data-lucide="search" class={`w-6 h-6 transition-transform group-hover:scale-110 ${isActive('explore') ? 'stroke-[3px]' : ''}`}></i>
+            <span class={`text-[10px] mt-0.5 ${isActive('explore') ? 'font-bold' : 'font-medium'}`}>Memories</span>
         </a>
 
         <a href="/universe/upload" class="relative -top-5 group">
-            <div class="w-14 h-14 bg-gradient-to-tr from-pink-500 to-rose-500 text-white rounded-full shadow-lg shadow-pink-500/30 flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform group-hover:scale-105 group-active:scale-95">
+            <div class={`w-14 h-14 bg-gradient-to-tr from-pink-500 to-rose-500 text-white rounded-full shadow-lg shadow-pink-500/30 flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform group-hover:scale-105 group-active:scale-95 ${isActive('upload') ? 'scale-110 ring-2 ring-pink-300/60 dark:ring-pink-700/40' : ''}`}>
                 <i data-lucide="plus" class="w-7 h-7"></i>
             </div>
         </a>
 
-        <a href="/universe/him" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition group">
-            <i data-lucide="user" class="w-6 h-6 transition-colors group-hover:text-blue-500"></i>
-            <span class="text-[10px] font-medium mt-0.5">Him</span>
+        <a href="/universe/him" class={`flex flex-col items-center justify-center w-14 h-full transition group ${isActive('him') ? 'text-blue-500' : 'text-slate-400 hover:text-blue-500'}`}>
+            <i data-lucide="user" class={`w-6 h-6 transition-colors ${isActive('him') ? 'fill-current' : 'group-hover:text-blue-500'}`}></i>
+            <span class={`text-[10px] mt-0.5 ${isActive('him') ? 'font-bold' : 'font-medium'}`}>Him</span>
         </a>
 
-        <a href="/universe/her" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition group">
-            <i data-lucide="heart" class="w-6 h-6 transition-colors group-hover:text-pink-500"></i>
-            <span class="text-[10px] font-medium mt-0.5">Her</span>
+        <a href="/universe/her" class={`flex flex-col items-center justify-center w-14 h-full transition group ${isActive('her') ? 'text-pink-500' : 'text-slate-400 hover:text-pink-500'}`}>
+            <i data-lucide="heart" class={`w-6 h-6 transition-colors ${isActive('her') ? 'fill-current' : 'group-hover:text-pink-500'}`}></i>
+            <span class={`text-[10px] mt-0.5 ${isActive('her') ? 'font-bold' : 'font-medium'}`}>Her</span>
         </a>
     </div>
 </nav>

@@ -1,5 +1,6 @@
 ---
 import '../../styles/global.css';
+import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro';
 
 // To keep the CMS and Universe layout separate from the public landing layout
 ---
@@ -253,45 +254,7 @@ import '../../styles/global.css';
     </div>
 
     <!-- 3. BOTTOM NAVIGATION (Fixed) -->
-    <nav
-        class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-50 pb-safe">
-        <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
-            <!-- Home -->
-            <a href="/universe/home" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
-                <i data-lucide="home" class="w-6 h-6"></i>
-                <span class="text-[10px] font-medium mt-0.5">Home</span>
-            </a>
-
-            <!-- Memories -->
-            <a href="/universe/explore"
-                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
-                <i data-lucide="search" class="w-6 h-6"></i>
-                <span class="text-[10px] font-medium mt-0.5">Memories</span>
-            </a>
-
-            <!-- ADD Button (Center) -->
-            <a href="/universe/upload" class="relative -top-5">
-                <div
-                    class="w-14 h-14 bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform hover:scale-105">
-                    <i data-lucide="plus" class="w-7 h-7"></i>
-                </div>
-            </a>
-
-            <!-- Him (Active) -->
-            <a href="#"
-                class="flex flex-col items-center justify-center w-14 h-full text-blue-500">
-                <i data-lucide="user" class="w-6 h-6 fill-current"></i>
-                <span class="text-[10px] font-medium mt-0.5">Rey</span>
-            </a>
-
-            <!-- Her -->
-            <a href="/universe/her"
-                class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition">
-                <i data-lucide="heart" class="w-6 h-6"></i>
-                <span class="text-[10px] font-medium mt-0.5">Anya</span>
-            </a>
-        </div>
-    </nav>
+    <UniverseBottomNav active="him" variant="solid" />
 
     <!-- Archive Section (Only visible to owner) -->
     <div id="archiveSection" class="hidden">
