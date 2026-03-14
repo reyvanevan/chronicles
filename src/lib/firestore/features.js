@@ -135,14 +135,43 @@ export async function getQuickNotes(limitCount = 50, authorId = null) {
         limit(limitCount)
     );
 
-    const snap = await getDocs(notesQuery);
-    return snap.docs.map((item) => ({
+    const mapQuickNoteDoc = (item) => ({
         id: item.id,
         ...item.data(),
         dueDate: normalizeFirestoreDate(item.data().dueDate),
         createdAt: normalizeFirestoreDate(item.data().createdAt),
         updatedAt: normalizeFirestoreDate(item.data().updatedAt)
-    }));
+    });
+
+    try {
+        const snap = await getDocs(notesQuery);
+        return snap.docs.map(mapQuickNoteDoc);
+    } catch (error) {
+        // Firestore may require a composite index for where + orderBy queries.
+        // If missing, fallback to a simpler query and sort client-side.
+        if (error?.code !== 'failed-precondition') {
+            throw error;
+        }
+
+        console.warn('Quick notes index missing, using client-side sort fallback:', error);
+
+        const fallbackQuery = query(
+            collection(db, FEATURE_COLLECTIONS.quickNotes),
+            where('authorId', '==', resolvedAuthorId)
+        );
+
+        const fallbackSnap = await getDocs(fallbackQuery);
+        const fallbackNotes = fallbackSnap.docs.map(mapQuickNoteDoc);
+
+        const toTime = (value) => {
+            const parsed = value ? new Date(value).getTime() : 0;
+            return Number.isNaN(parsed) ? 0 : parsed;
+        };
+
+        return fallbackNotes
+            .sort((left, right) => toTime(right.updatedAt || right.createdAt) - toTime(left.updatedAt || left.createdAt))
+            .slice(0, limitCount);
+    }
 }
 
 export async function updateQuickNote(noteId, updates) {
