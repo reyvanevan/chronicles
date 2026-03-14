@@ -24,6 +24,79 @@ import MusicPlayer from '../components/MusicPlayer.astro';
 
     <main class="pt-16 relative">
         <HeroSection />
+        <section id="public-time-preview" class="hidden px-6 py-10 md:px-12 md:py-14">
+            <div class="mx-auto max-w-5xl">
+                <div class="overflow-hidden rounded-[2rem] border border-white/30 bg-white/55 shadow-[0_20px_80px_rgba(236,72,153,0.12)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/55" data-aos="fade-up">
+                    <div class="grid gap-0 md:grid-cols-[1.15fr_0.85fr]">
+                        <div class="border-b border-white/20 p-6 md:border-b-0 md:border-r md:p-8 dark:border-white/10">
+                            <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-pink-500">A living moment</p>
+                            <h2 class="mt-3 max-w-lg font-serif text-3xl font-bold leading-tight text-slate-800 dark:text-white md:text-4xl">
+                                Time keeps moving, and somehow that makes this story softer.
+                            </h2>
+                            <p class="mt-4 max-w-xl text-sm leading-7 text-slate-600 dark:text-slate-300 md:text-base">
+                                Bukan dashboard. Bukan data mentah. Cuma sedikit potongan waktu yang terus berjalan, sebagai pengingat kalau cerita yang baik selalu tumbuh pelan-pelan.
+                            </p>
+
+                            <div class="mt-6 flex flex-wrap gap-3">
+                                <div class="rounded-2xl bg-pink-50/80 px-4 py-3 dark:bg-pink-950/30">
+                                    <p class="text-[10px] uppercase tracking-[0.2em] text-slate-400">Age right now</p>
+                                    <p id="public-age-value" class="mt-1 font-mono text-lg font-semibold text-slate-900 dark:text-white">0.000000000</p>
+                                </div>
+                                <div class="rounded-2xl bg-blue-50/80 px-4 py-3 dark:bg-blue-950/30">
+                                    <p class="text-[10px] uppercase tracking-[0.2em] text-slate-400">Current season</p>
+                                    <p id="public-season-value" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">Summer</p>
+                                </div>
+                                <div class="rounded-2xl bg-violet-50/80 px-4 py-3 dark:bg-violet-950/30">
+                                    <p class="text-[10px] uppercase tracking-[0.2em] text-slate-400">Next milestone</p>
+                                    <p id="public-milestone-value" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">Calculating...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6 md:p-8">
+                            <div class="space-y-5">
+                                <div>
+                                    <div class="mb-2 flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
+                                        <span>Life progress</span>
+                                        <span id="public-life-progress-value" class="font-semibold text-slate-900 dark:text-white">0%</span>
+                                    </div>
+                                    <div class="h-2 overflow-hidden rounded-full bg-slate-200/80 dark:bg-slate-800">
+                                        <div id="public-life-progress-bar" class="h-full rounded-full bg-gradient-to-r from-pink-500 to-rose-500" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="mb-2 flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
+                                        <span>This year</span>
+                                        <span id="public-year-progress-value" class="font-semibold text-slate-900 dark:text-white">0%</span>
+                                    </div>
+                                    <div class="h-2 overflow-hidden rounded-full bg-slate-200/80 dark:bg-slate-800">
+                                        <div id="public-year-progress-bar" class="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="mb-2 flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
+                                        <span>Today</span>
+                                        <span id="public-day-progress-value" class="font-semibold text-slate-900 dark:text-white">0%</span>
+                                    </div>
+                                    <div class="h-2 overflow-hidden rounded-full bg-slate-200/80 dark:bg-slate-800">
+                                        <div id="public-day-progress-bar" class="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-900/70">
+                                <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">Quiet note</p>
+                                <p id="public-preview-note" class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                                    Every passing second becomes part of a longer, gentler archive.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <LoveProgress />
         <AboutSection />
         <GallerySection />
@@ -99,6 +172,25 @@ import MusicPlayer from '../components/MusicPlayer.astro';
                 traitThreeDescription: 'Selalu jadi rumah saat dunia terasa ramai.',
                 quoteText: 'Semua proses ini selalu terasa layak, selama akhirnya pulang ke kamu.',
                 quoteAuthor: 'A Love Note'
+            }
+        };
+
+        const TIME_PROGRESS_FALLBACK = {
+            birthDate: '2002-03-18',
+            lifeExpectancyYears: 80,
+            breathingRatePerMinute: 15,
+            seasons: {
+                spring: { min: 0, max: 20, label: 'Learning & Growing' },
+                summer: { min: 21, max: 40, label: 'Building & Hustling' },
+                autumn: { min: 41, max: 60, label: 'Reflecting & Refining' },
+                winter: { min: 61, max: 120, label: 'Legacy & Wisdom' }
+            },
+            publicPreviewEnabled: true
+        };
+
+        const FEATURE_VISIBILITY_FALLBACK = {
+            public: {
+                progressPreview: true
             }
         };
 
@@ -248,6 +340,118 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             } catch (error) {
                 console.log('Data loading skipped (skeleton remains):', error.message);
             }
+        }
+
+        let publicPreviewTimer = null;
+
+        async function loadPublicTimePreview() {
+            try {
+                const [timeProgressDoc, featureVisibilityDoc] = await Promise.all([
+                    getDoc(doc(db, 'config', 'timeProgress')),
+                    getDoc(doc(db, 'config', 'featureVisibility'))
+                ]);
+
+                const timeProgressConfig = timeProgressDoc.exists()
+                    ? {
+                        ...TIME_PROGRESS_FALLBACK,
+                        ...timeProgressDoc.data(),
+                        seasons: {
+                            ...TIME_PROGRESS_FALLBACK.seasons,
+                            ...(timeProgressDoc.data().seasons || {})
+                        }
+                    }
+                    : TIME_PROGRESS_FALLBACK;
+
+                const featureVisibilityConfig = featureVisibilityDoc.exists()
+                    ? {
+                        ...FEATURE_VISIBILITY_FALLBACK,
+                        ...featureVisibilityDoc.data(),
+                        public: {
+                            ...FEATURE_VISIBILITY_FALLBACK.public,
+                            ...(featureVisibilityDoc.data().public || {})
+                        }
+                    }
+                    : FEATURE_VISIBILITY_FALLBACK;
+
+                const enabled = featureVisibilityConfig.public.progressPreview !== false
+                    && timeProgressConfig.publicPreviewEnabled !== false;
+
+                const section = document.getElementById('public-time-preview');
+                if (!enabled) {
+                    section?.classList.add('hidden');
+                    return;
+                }
+
+                section?.classList.remove('hidden');
+                renderPublicTimePreview(timeProgressConfig);
+
+                if (publicPreviewTimer) clearInterval(publicPreviewTimer);
+                publicPreviewTimer = window.setInterval(() => renderPublicTimePreview(timeProgressConfig), 1000);
+            } catch (error) {
+                console.warn('Public time preview skipped:', error.message);
+            }
+        }
+
+        function renderPublicTimePreview(config) {
+            const now = new Date();
+            const birthDate = new Date(`${config.birthDate}T00:00:00`);
+            const endOfLife = new Date(birthDate);
+            endOfLife.setFullYear(endOfLife.getFullYear() + Number(config.lifeExpectancyYears || 80));
+
+            const livedMs = Math.max(now.getTime() - birthDate.getTime(), 0);
+            const lifeSpanMs = Math.max(endOfLife.getTime() - birthDate.getTime(), 1);
+            const ageYears = livedMs / (365.2425 * 24 * 60 * 60 * 1000);
+            const lifeProgress = (livedMs / lifeSpanMs) * 100;
+
+            const lastBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+            const nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+            if (now >= nextBirthday) nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+            if (now < lastBirthday) lastBirthday.setFullYear(lastBirthday.getFullYear() - 1);
+
+            const yearProgress = ((now.getTime() - lastBirthday.getTime()) / Math.max(nextBirthday.getTime() - lastBirthday.getTime(), 1)) * 100;
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const dayProgress = ((now.getTime() - startOfDay.getTime()) / Math.max(endOfDay.getTime() - startOfDay.getTime(), 1)) * 100;
+            const currentAge = Math.floor(ageYears);
+            const season = getPublicSeasonLabel(currentAge, config.seasons);
+            const daysToBirthday = Math.ceil((nextBirthday.getTime() - now.getTime()) / 86400000);
+
+            setPublicText('public-age-value', ageYears.toFixed(9));
+            setPublicText('public-season-value', season);
+            setPublicText('public-milestone-value', `H-${Math.max(daysToBirthday, 0)} to next birthday`);
+            setPublicText('public-preview-note', buildPublicPreviewNote(season, lifeProgress));
+            setPublicProgress('public-life-progress-bar', 'public-life-progress-value', lifeProgress);
+            setPublicProgress('public-year-progress-bar', 'public-year-progress-value', yearProgress);
+            setPublicProgress('public-day-progress-bar', 'public-day-progress-value', dayProgress);
+        }
+
+        function getPublicSeasonLabel(age, seasons) {
+            const seasonEntries = Object.values(seasons || {});
+            const matched = seasonEntries.find((entry) => age >= entry.min && age <= entry.max);
+            return matched?.label || 'Still unfolding';
+        }
+
+        function buildPublicPreviewNote(season, lifeProgress) {
+            if (lifeProgress >= 70) {
+                return `Deep into ${season}, and still collecting beautiful reasons to stay soft.`;
+            }
+            if (lifeProgress >= 40) {
+                return `Somewhere inside ${season}, with enough room left for wonder, repair, and warmth.`;
+            }
+            return `Still early in ${season}, where almost everything meaningful is quietly taking shape.`;
+        }
+
+        function setPublicText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        }
+
+        function setPublicProgress(barId, labelId, value) {
+            const safeValue = `${Math.min(Math.max(value, 0), 100).toFixed(2)}%`;
+            const bar = document.getElementById(barId);
+            const label = document.getElementById(labelId);
+            if (bar) bar.style.width = safeValue;
+            if (label) label.textContent = safeValue;
         }
 
         // Load Love Progress for landing page
@@ -476,6 +680,7 @@ import MusicPlayer from '../components/MusicPlayer.astro';
         trackVisit();
         loadLandingData();
         loadLoveProgress();
+        loadPublicTimePreview();
         
         // Music control
         const bgMusic = document.getElementById('bgMusic');

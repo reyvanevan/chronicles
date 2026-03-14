@@ -9,9 +9,14 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400">Customize names, labels & default text</p>
             </div>
         </div>
-        <button id="btn-save-site-config" onclick="saveSiteConfigForm()" class="px-3 py-2 md:px-4 bg-violet-500 hover:bg-violet-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-violet-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
-            <i data-lucide="save" class="w-4 h-4"></i> Save Config
-        </button>
+        <div class="flex items-center gap-2">
+            <button id="btn-save-feature-config" onclick="saveUniverseFeatureConfigForm()" class="px-3 py-2 md:px-4 bg-slate-700 hover:bg-slate-800 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-slate-500/20 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
+                <i data-lucide="sliders-horizontal" class="w-4 h-4"></i> Save Feature Config
+            </button>
+            <button id="btn-save-site-config" onclick="saveSiteConfigForm()" class="px-3 py-2 md:px-4 bg-violet-500 hover:bg-violet-600 text-white text-xs md:text-sm font-medium rounded-full shadow-lg shadow-violet-500/30 transition-transform hover:scale-105 flex items-center gap-1 md:gap-2">
+                <i data-lucide="save" class="w-4 h-4"></i> Save Site Config
+            </button>
+        </div>
     </div>
 
     <div class="p-4 md:p-8 space-y-8">
@@ -40,6 +45,94 @@
                     <input type="date" id="config-startDate"
                         class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-violet-500 outline-none transition">
                     <p class="text-xs text-slate-400 mt-1">Used for "Days Together" counter</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Time Progress ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="w-1 h-5 bg-rose-500 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">Time Progress</h4>
+            </div>
+            <p class="text-xs text-slate-400 mb-4 ml-3">Controls for dynamic age, progress bars, milestone math, and season labels.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Birth Date</label>
+                    <input type="date" id="config-time-birthDate"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-rose-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Life Expectancy (Years)</label>
+                    <input type="number" id="config-time-lifeExpectancyYears" min="1" max="150" step="1"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-rose-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Breathing Rate / Min</label>
+                    <input type="number" id="config-time-breathingRatePerMinute" min="1" max="60" step="1"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-rose-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Spring Label</label>
+                    <input type="text" id="config-time-spring-label" placeholder="Learning & Growing"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-rose-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Summer Label</label>
+                    <input type="text" id="config-time-summer-label" placeholder="Building & Hustling"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-rose-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Autumn Label</label>
+                    <input type="text" id="config-time-autumn-label" placeholder="Reflecting & Refining"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-rose-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-slate-600 dark:text-slate-400">Winter Label</label>
+                    <input type="text" id="config-time-winter-label" placeholder="Legacy & Wisdom"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-rose-500 outline-none transition">
+                </div>
+                <div class="md:col-span-2 flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3 dark:border-slate-700 dark:bg-slate-900/50">
+                    <input type="checkbox" id="config-time-publicPreviewEnabled" class="h-4 w-4 rounded border-slate-300 text-rose-500 focus:ring-rose-500">
+                    <label for="config-time-publicPreviewEnabled" class="text-sm text-slate-600 dark:text-slate-300">Enable public preview for time/life progress teaser</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Feature Visibility ── -->
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="w-1 h-5 bg-emerald-500 rounded-full"></div>
+                <h4 class="font-bold text-slate-700 dark:text-slate-200">Feature Visibility</h4>
+            </div>
+            <p class="text-xs text-slate-400 mb-4 ml-3">Toggle which portal can expose key Phase 1 features.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="rounded-2xl border border-slate-200/70 p-4 dark:border-slate-700">
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Public</p>
+                    <div class="mt-4 space-y-3">
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-public-progressPreview" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Progress Preview</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-public-onThisDayPreview" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> On This Day Preview</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-public-ourStoryProgressPreview" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Our Story Progress Preview</label>
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-slate-200/70 p-4 dark:border-slate-700">
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Universe</p>
+                    <div class="mt-4 space-y-3">
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-universe-progressWidgets" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Progress Widgets</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-universe-dailyDashboard" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Daily Dashboard</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-universe-moodJournal" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Mood Journal</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-universe-notesAndReminders" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Notes & Reminders</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-universe-projectTracker" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Project Tracker</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-universe-letterbox" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Letterbox</label>
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-slate-200/70 p-4 dark:border-slate-700">
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Core</p>
+                    <div class="mt-4 space-y-3">
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-core-timeProgressConfig" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Time Progress Config</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-core-featureVisibilityConfig" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Feature Visibility Config</label>
+                        <label class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"><input id="config-visibility-core-integrationConfig" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"> Integration Config</label>
+                    </div>
                 </div>
             </div>
         </div>

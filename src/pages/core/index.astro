@@ -140,7 +140,7 @@ import SectionSiteConfig from '../../components/core/SectionSiteConfig.astro';
         import { initAuth } from '../../lib/cms/auth.js';
         import { loadDashboardData } from '../../lib/cms/dashboard.js';
         import { loadSasukeImage } from '../../lib/cms/content.js';
-        import { loadSiteConfig } from '../../lib/cms/config.js';
+        import { loadFeatureVisibilityConfig, loadSiteConfig, loadTimeProgressConfig, applyFeatureVisibilityConfigToDOM, applyTimeProgressConfigToDOM } from '../../lib/cms/config.js';
         import '../../lib/cms/gallery.js';
         import '../../lib/cms/profiles.js';
         import '../../lib/cms/content.js';
@@ -151,6 +151,12 @@ import SectionSiteConfig from '../../components/core/SectionSiteConfig.astro';
                 window.location.href = '/core/setup';
                 return;
             }
+            const [timeProgressConfig, featureVisibilityConfig] = await Promise.all([
+                loadTimeProgressConfig(),
+                loadFeatureVisibilityConfig()
+            ]);
+            applyTimeProgressConfigToDOM(timeProgressConfig);
+            applyFeatureVisibilityConfigToDOM(featureVisibilityConfig);
             await loadDashboardData();
             loadSasukeImage();
         });

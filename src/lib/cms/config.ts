@@ -38,6 +38,27 @@ export interface SiteConfig {
     isSetupComplete: boolean;
 }
 
+export interface TimeProgressConfig {
+    birthDate: string;
+    lifeExpectancyYears: number;
+    breathingRatePerMinute: number;
+    seasons: {
+        spring: { min: number; max: number; label: string };
+        summer: { min: number; max: number; label: string };
+        autumn: { min: number; max: number; label: string };
+        winter: { min: number; max: number; label: string };
+    };
+    publicPreviewEnabled: boolean;
+}
+
+export type FeaturePortal = 'public' | 'universe' | 'core';
+
+export interface FeatureVisibilityConfig {
+    public: Record<string, boolean>;
+    universe: Record<string, boolean>;
+    core: Record<string, boolean>;
+}
+
 // ─── Defaults ─────────────────────────────────────────────────────────────────
 
 export const DEFAULT_CONFIG: SiteConfig = {
@@ -85,6 +106,44 @@ export const DEFAULT_CONFIG: SiteConfig = {
     isSetupComplete: false,
 };
 
+export const DEFAULT_TIME_PROGRESS_CONFIG: TimeProgressConfig = {
+    birthDate: '2002-03-18',
+    lifeExpectancyYears: 80,
+    breathingRatePerMinute: 15,
+    seasons: {
+        spring: { min: 0, max: 20, label: 'Learning & Growing' },
+        summer: { min: 21, max: 40, label: 'Building & Hustling' },
+        autumn: { min: 41, max: 60, label: 'Reflecting & Refining' },
+        winter: { min: 61, max: 120, label: 'Legacy & Wisdom' }
+    },
+    publicPreviewEnabled: true
+};
+
+export const DEFAULT_FEATURE_VISIBILITY_CONFIG: FeatureVisibilityConfig = {
+    public: {
+        progressPreview: true,
+        onThisDayPreview: false,
+        ourStoryProgressPreview: false
+    },
+    universe: {
+        progressWidgets: true,
+        dailyDashboard: true,
+        moodJournal: true,
+        notesAndReminders: true,
+        projectTracker: true,
+        letterbox: true,
+        financeTracker: true,
+        sharedLinkArchive: true,
+        aiAssistant: false,
+        moodPlaylist: false
+    },
+    core: {
+        timeProgressConfig: true,
+        featureVisibilityConfig: true,
+        integrationConfig: true
+    }
+};
+
 // ─── Load ─────────────────────────────────────────────────────────────────────
 
 export async function loadSiteConfig(): Promise<SiteConfig> {
@@ -112,6 +171,189 @@ export async function saveSiteConfig(partial: Partial<SiteConfig>): Promise<void
     win.siteConfig = next;
     applyConfigToDOM(next);
 }
+
+export async function loadTimeProgressConfig(): Promise<TimeProgressConfig> {
+    try {
+        const snap = await getDoc(doc(db, 'config', 'timeProgress'));
+        const config: TimeProgressConfig = snap.exists()
+            ? deepMerge(DEFAULT_TIME_PROGRESS_CONFIG, snap.data()) as TimeProgressConfig
+            : await ensureTimeProgressConfig();
+        win.timeProgressConfig = config;
+        return config;
+    } catch (err) {
+        console.error('Error loading time progress config:', err);
+        win.timeProgressConfig = DEFAULT_TIME_PROGRESS_CONFIG;
+        return DEFAULT_TIME_PROGRESS_CONFIG;
+    }
+}
+
+export async function saveTimeProgressConfig(partial: Partial<TimeProgressConfig>): Promise<void> {
+    const current: TimeProgressConfig = win.timeProgressConfig ?? DEFAULT_TIME_PROGRESS_CONFIG;
+    const next = deepMerge(current, partial) as TimeProgressConfig;
+    await setDoc(doc(db, 'config', 'timeProgress'), next, { merge: true });
+    win.timeProgressConfig = next;
+}
+
+export async function loadFeatureVisibilityConfig(): Promise<FeatureVisibilityConfig> {
+    try {
+        const snap = await getDoc(doc(db, 'config', 'featureVisibility'));
+        const config: FeatureVisibilityConfig = snap.exists()
+            ? deepMerge(DEFAULT_FEATURE_VISIBILITY_CONFIG, snap.data()) as FeatureVisibilityConfig
+            : await ensureFeatureVisibilityConfig();
+        win.featureVisibilityConfig = config;
+        return config;
+    } catch (err) {
+        console.error('Error loading feature visibility config:', err);
+        win.featureVisibilityConfig = DEFAULT_FEATURE_VISIBILITY_CONFIG;
+        return DEFAULT_FEATURE_VISIBILITY_CONFIG;
+    }
+}
+
+export async function saveFeatureVisibilityConfig(partial: Partial<FeatureVisibilityConfig>): Promise<void> {
+    const current: FeatureVisibilityConfig = win.featureVisibilityConfig ?? DEFAULT_FEATURE_VISIBILITY_CONFIG;
+    const next = deepMerge(current, partial) as FeatureVisibilityConfig;
+    await setDoc(doc(db, 'config', 'featureVisibility'), next, { merge: true });
+    win.featureVisibilityConfig = next;
+}
+
+export async function setSingleFeatureVisibility(
+    portal: FeaturePortal,
+    featureKey: string,
+    isVisible: boolean
+): Promise<FeatureVisibilityConfig> {
+    const current = await loadFeatureVisibilityConfig();
+    const next: FeatureVisibilityConfig = {
+        ...current,
+        [portal]: {
+            ...(current[portal] || {}),
+            [featureKey]: !!isVisible
+        }
+    };
+    await saveFeatureVisibilityConfig(next);
+    return next;
+}
+
+export async function isFeatureVisible(
+    portal: FeaturePortal,
+    featureKey: string,
+    fallback = true
+): Promise<boolean> {
+    const config = await loadFeatureVisibilityConfig();
+    const portalConfig = config?.[portal] || {};
+    if (portalConfig[featureKey] === undefined) return fallback;
+    return !!portalConfig[featureKey];
+}
+
+export async function ensureTimeProgressConfig(): Promise<TimeProgressConfig> {
+    const seeded = deepMerge({}, DEFAULT_TIME_PROGRESS_CONFIG) as TimeProgressConfig;
+    await setDoc(doc(db, 'config', 'timeProgress'), seeded, { merge: true });
+    win.timeProgressConfig = seeded;
+    return seeded;
+}
+
+export async function ensureFeatureVisibilityConfig(): Promise<FeatureVisibilityConfig> {
+    const seeded = deepMerge({}, DEFAULT_FEATURE_VISIBILITY_CONFIG) as FeatureVisibilityConfig;
+    await setDoc(doc(db, 'config', 'featureVisibility'), seeded, { merge: true });
+    win.featureVisibilityConfig = seeded;
+    return seeded;
+}
+
+export async function ensureFeatureConfigDefaults(): Promise<void> {
+    await Promise.all([
+        ensureTimeProgressConfig(),
+        ensureFeatureVisibilityConfig()
+    ]);
+}
+
+win.saveUniverseFeatureConfigForm = async function () {
+    const btn = document.getElementById('btn-save-feature-config') as HTMLButtonElement | null;
+    if (!btn) return;
+
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Saving...';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    try {
+        const inputValue = (id: string) => (document.getElementById(id) as HTMLInputElement | null)?.value?.trim() ?? '';
+        const inputChecked = (id: string) => (document.getElementById(id) as HTMLInputElement | null)?.checked ?? false;
+
+        const timeProgressPartial: Partial<TimeProgressConfig> = {
+            birthDate: inputValue('config-time-birthDate') || DEFAULT_TIME_PROGRESS_CONFIG.birthDate,
+            lifeExpectancyYears: Number(inputValue('config-time-lifeExpectancyYears') || DEFAULT_TIME_PROGRESS_CONFIG.lifeExpectancyYears),
+            breathingRatePerMinute: Number(inputValue('config-time-breathingRatePerMinute') || DEFAULT_TIME_PROGRESS_CONFIG.breathingRatePerMinute),
+            publicPreviewEnabled: inputChecked('config-time-publicPreviewEnabled'),
+            seasons: {
+                spring: {
+                    ...DEFAULT_TIME_PROGRESS_CONFIG.seasons.spring,
+                    ...(win.timeProgressConfig?.seasons?.spring || {}),
+                    label: inputValue('config-time-spring-label') || DEFAULT_TIME_PROGRESS_CONFIG.seasons.spring.label
+                },
+                summer: {
+                    ...DEFAULT_TIME_PROGRESS_CONFIG.seasons.summer,
+                    ...(win.timeProgressConfig?.seasons?.summer || {}),
+                    label: inputValue('config-time-summer-label') || DEFAULT_TIME_PROGRESS_CONFIG.seasons.summer.label
+                },
+                autumn: {
+                    ...DEFAULT_TIME_PROGRESS_CONFIG.seasons.autumn,
+                    ...(win.timeProgressConfig?.seasons?.autumn || {}),
+                    label: inputValue('config-time-autumn-label') || DEFAULT_TIME_PROGRESS_CONFIG.seasons.autumn.label
+                },
+                winter: {
+                    ...DEFAULT_TIME_PROGRESS_CONFIG.seasons.winter,
+                    ...(win.timeProgressConfig?.seasons?.winter || {}),
+                    label: inputValue('config-time-winter-label') || DEFAULT_TIME_PROGRESS_CONFIG.seasons.winter.label
+                }
+            }
+        };
+
+        const featureVisibilityPartial: Partial<FeatureVisibilityConfig> = {
+            public: {
+                progressPreview: inputChecked('config-visibility-public-progressPreview'),
+                onThisDayPreview: inputChecked('config-visibility-public-onThisDayPreview'),
+                ourStoryProgressPreview: inputChecked('config-visibility-public-ourStoryProgressPreview')
+            },
+            universe: {
+                progressWidgets: inputChecked('config-visibility-universe-progressWidgets'),
+                dailyDashboard: inputChecked('config-visibility-universe-dailyDashboard'),
+                moodJournal: inputChecked('config-visibility-universe-moodJournal'),
+                notesAndReminders: inputChecked('config-visibility-universe-notesAndReminders'),
+                projectTracker: inputChecked('config-visibility-universe-projectTracker'),
+                letterbox: inputChecked('config-visibility-universe-letterbox')
+            },
+            core: {
+                timeProgressConfig: inputChecked('config-visibility-core-timeProgressConfig'),
+                featureVisibilityConfig: inputChecked('config-visibility-core-featureVisibilityConfig'),
+                integrationConfig: inputChecked('config-visibility-core-integrationConfig')
+            }
+        };
+
+        await Promise.all([
+            saveTimeProgressConfig(timeProgressPartial),
+            saveFeatureVisibilityConfig(featureVisibilityPartial)
+        ]);
+
+        btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Saved!';
+        btn.classList.replace('bg-slate-700', 'bg-green-500');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.classList.replace('bg-green-500', 'bg-slate-700');
+            btn.disabled = false;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }, 2000);
+    } catch (err: any) {
+        console.error('Save feature config error:', err);
+        btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i> Error!';
+        btn.disabled = false;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        setTimeout(() => {
+            alert('Failed to save feature config: ' + err.message);
+            btn.innerHTML = original;
+        }, 800);
+    }
+};
 
 // ─── Window handler (called from SectionSiteConfig save button) ───────────────
 
@@ -286,6 +528,48 @@ export function applyConfigToDOM(cfg: SiteConfig): void {
     v('config-about-trait-3-description', cfg.about.traitThreeDescription);
     v('config-about-quote-text',          cfg.about.quoteText);
     v('config-about-quote-author',        cfg.about.quoteAuthor);
+}
+
+export function applyTimeProgressConfigToDOM(cfg: TimeProgressConfig): void {
+    const value = (id: string, text: string | number) => {
+        const el = document.getElementById(id) as HTMLInputElement | null;
+        if (el) el.value = String(text ?? '');
+    };
+    const checked = (id: string, state: boolean) => {
+        const el = document.getElementById(id) as HTMLInputElement | null;
+        if (el) el.checked = !!state;
+    };
+
+    value('config-time-birthDate', cfg.birthDate);
+    value('config-time-lifeExpectancyYears', cfg.lifeExpectancyYears);
+    value('config-time-breathingRatePerMinute', cfg.breathingRatePerMinute);
+    value('config-time-spring-label', cfg.seasons.spring.label);
+    value('config-time-summer-label', cfg.seasons.summer.label);
+    value('config-time-autumn-label', cfg.seasons.autumn.label);
+    value('config-time-winter-label', cfg.seasons.winter.label);
+    checked('config-time-publicPreviewEnabled', cfg.publicPreviewEnabled);
+}
+
+export function applyFeatureVisibilityConfigToDOM(cfg: FeatureVisibilityConfig): void {
+    const checked = (id: string, state: boolean) => {
+        const el = document.getElementById(id) as HTMLInputElement | null;
+        if (el) el.checked = !!state;
+    };
+
+    checked('config-visibility-public-progressPreview', cfg.public.progressPreview);
+    checked('config-visibility-public-onThisDayPreview', cfg.public.onThisDayPreview);
+    checked('config-visibility-public-ourStoryProgressPreview', cfg.public.ourStoryProgressPreview);
+
+    checked('config-visibility-universe-progressWidgets', cfg.universe.progressWidgets);
+    checked('config-visibility-universe-dailyDashboard', cfg.universe.dailyDashboard);
+    checked('config-visibility-universe-moodJournal', cfg.universe.moodJournal);
+    checked('config-visibility-universe-notesAndReminders', cfg.universe.notesAndReminders);
+    checked('config-visibility-universe-projectTracker', cfg.universe.projectTracker);
+    checked('config-visibility-universe-letterbox', cfg.universe.letterbox);
+
+    checked('config-visibility-core-timeProgressConfig', cfg.core.timeProgressConfig);
+    checked('config-visibility-core-featureVisibilityConfig', cfg.core.featureVisibilityConfig);
+    checked('config-visibility-core-integrationConfig', cfg.core.integrationConfig);
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
