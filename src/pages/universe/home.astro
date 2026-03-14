@@ -1,5 +1,10 @@
 ---
 import '../../styles/global.css';
+import EditPostModal from '../../components/universe/EditPostModal.astro';
+import PhotoModal from '../../components/universe/PhotoModal.astro';
+import StoryModal from '../../components/universe/StoryModal.astro';
+import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro';
+import UniverseHeader from '../../components/universe/UniverseHeader.astro';
 
 // To keep the CMS and Universe layout separate from the public landing layout
 ---
@@ -30,34 +35,7 @@ import '../../styles/global.css';
     
 
     <!-- 1. HEADER (Sticky Top) -->
-    <header
-        class="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-        <div class="max-w-md mx-auto px-4 h-16 flex justify-between items-center">
-
-            <!-- Logo -->
-            <a href="/" class="flex items-center gap-2">
-                <i data-lucide="globe-2" class="w-5 h-5 text-pink-500"></i>
-                <span class="font-serif font-bold text-lg tracking-tight">Chronicles</span>
-            </a>
-
-            <!-- Actions -->
-            <div class="flex items-center gap-3">
-                <!-- Theme Toggle (Langsung di Header biar praktis) -->
-                <button onclick="toggleTheme()"
-                    class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                    <i data-lucide="sun" class="w-5 h-5 text-amber-500 hidden dark:block"></i>
-                    <i data-lucide="moon" class="w-5 h-5 text-slate-600 block dark:hidden"></i>
-                </button>
-
-                <!-- Logout -->
-                <button onclick="handleLogout()" 
-                    class="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition" 
-                    title="Logout">
-                    <i data-lucide="log-out" class="w-5 h-5 text-red-500"></i>
-                </button>
-            </div>
-        </div>
-    </header>
+    <UniverseHeader />
 
     <!-- 2. MAIN CONTENT (Feed) -->
     <main class="max-w-md mx-auto pt-20 px-4 space-y-6">
@@ -312,201 +290,16 @@ import '../../styles/global.css';
     </main>
 
     <!-- 3. BOTTOM NAVIGATION (Fixed) -->
-    <nav class="fixed bottom-0 left-0 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 pb-safe transition-colors duration-300">
-    <div class="max-w-md mx-auto h-16 flex justify-around items-center px-2">
-        
-        <a href="#" class="flex flex-col items-center justify-center w-14 h-full text-pink-500 group">
-            <i data-lucide="home" class="w-6 h-6 text-pink-500 fill-pink-500/20 transition-transform group-hover:scale-110"></i>
-            <span class="text-[10px] font-bold mt-0.5">Home</span>
-        </a>
-
-        <a href="/universe/explore" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition group">
-            <i data-lucide="search" class="w-6 h-6 transition-transform group-hover:scale-110"></i>
-            <span class="text-[10px] font-medium mt-0.5">Memories</span>
-        </a>
-
-        <a href="/universe/upload" class="relative -top-5 group">
-            <div class="w-14 h-14 bg-gradient-to-tr from-pink-500 to-rose-500 text-white rounded-full shadow-lg shadow-pink-500/30 flex items-center justify-center border-4 border-white dark:border-slate-950 transition transform group-hover:scale-105 group-active:scale-95">
-                <i data-lucide="plus" class="w-7 h-7"></i>
-            </div>
-        </a>
-
-        <a href="/universe/him" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-blue-500 transition group">
-            <i data-lucide="user" class="w-6 h-6 transition-colors group-hover:text-blue-500"></i>
-            <span class="text-[10px] font-medium mt-0.5">Rey</span>
-        </a>
-
-        <a href="/universe/her" class="flex flex-col items-center justify-center w-14 h-full text-slate-400 hover:text-pink-500 transition group">
-            <i data-lucide="heart" class="w-6 h-6 transition-colors group-hover:text-pink-500"></i>
-            <span class="text-[10px] font-medium mt-0.5">Anya</span>
-        </a>
-    </div>
-    </nav>
+    <UniverseBottomNav />
 
     <!-- Photo Modal/Popup -->
-    <div id="photoModal" class="fixed inset-0 z-[100] hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closePhotoModal()"></div>
-        
-        <!-- Modal Content -->
-        <div class="absolute inset-0 flex items-center justify-center p-4">
-            <!-- Close Button -->
-            <button onclick="closePhotoModal()" 
-                class="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white transition">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            
-            <!-- Image Container -->
-            <div class="relative max-w-2xl w-full max-h-[90vh] flex flex-col">
-                <!-- Image with Carousel Controls -->
-                <div class="relative">
-                    <img id="modalImage" src="" alt="Photo" 
-                        class="w-full max-h-[70vh] object-contain rounded-t-2xl bg-black">
-                    
-                    <!-- Carousel Navigation (hidden for single images) -->
-                    <button id="modalPrevBtn" onclick="modalPrevImage()" 
-                        class="hidden absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition disabled:opacity-30 disabled:cursor-not-allowed">
-                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
-                    </button>
-                    <button id="modalNextBtn" onclick="modalNextImage()" 
-                        class="hidden absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition disabled:opacity-30 disabled:cursor-not-allowed">
-                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
-                    </button>
-                    
-                    <!-- Image Counter -->
-                    <div id="modalImageCounter" class="hidden absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-sm font-medium">
-                        <span>1</span>/<span>1</span>
-                    </div>
-                    
-                    <!-- Dots Indicator -->
-                    <div id="modalDots" class="hidden absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                        <!-- Dots generated by JS -->
-                    </div>
-                </div>
-                
-                <!-- Caption & Details -->
-                <div id="modalDetails" class="bg-white dark:bg-slate-900 rounded-b-2xl p-4 max-h-[20vh] overflow-y-auto">
-                    <!-- Author -->
-                    <div class="flex items-center gap-3 mb-3">
-                        <img id="modalAuthorAvatar" src="" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <p id="modalAuthorName" class="font-bold text-sm"></p>
-                            <p id="modalLocation" class="text-xs text-slate-500"></p>
-                        </div>
-                        <p id="modalTime" class="text-xs text-slate-400 ml-auto"></p>
-                    </div>
-                    
-                    <!-- Caption -->
-                    <p id="modalCaption" class="text-sm leading-relaxed"></p>
-                    
-                    <!-- Tags -->
-                    <div id="modalTags" class="flex gap-2 mt-2 flex-wrap"></div>
-                    
-                    <!-- Actions -->
-                    <div class="flex items-center gap-4 mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
-                        <button class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-pink-500 transition">
-                            <i data-lucide="heart" class="w-5 h-5"></i>
-                            <span id="modalLikes" class="text-sm">0</span>
-                        </button>
-                        <button class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-500 transition">
-                            <i data-lucide="message-circle" class="w-5 h-5"></i>
-                        </button>
-                        <button class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-green-500 transition">
-                            <i data-lucide="share-2" class="w-5 h-5"></i>
-                        </button>
-                        <button class="ml-auto text-slate-600 dark:text-slate-400 hover:text-yellow-500 transition">
-                            <i data-lucide="bookmark" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <PhotoModal />
 
     <!-- Story Viewer Modal (Instagram/WhatsApp Style) -->
-    <div id="storyModal" class="fixed inset-0 z-[100] hidden bg-black">
-        <!-- Progress Bars Container -->
-        <div id="storyProgressBars" class="absolute top-0 left-0 right-0 z-20 flex gap-1 p-2 px-3">
-            <!-- Progress bars will be dynamically inserted -->
-        </div>
-        
-        <!-- Header -->
-        <div class="absolute top-6 left-0 right-0 z-20 px-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img id="storyAuthorAvatar" src="" class="w-8 h-8 rounded-full object-cover border border-white/30">
-                <div>
-                    <p id="storyAuthorName" class="text-white text-sm font-semibold"></p>
-                    <p id="storyTime" class="text-white/60 text-xs"></p>
-                </div>
-            </div>
-            <button onclick="closeStoryModal()" class="p-2 text-white/80 hover:text-white">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-        </div>
-        
-        <!-- Story Image -->
-        <div class="absolute inset-0 flex items-center justify-center">
-            <img id="storyImage" src="" class="max-w-full max-h-full object-contain">
-        </div>
-        
-        <!-- Navigation Touch Areas -->
-        <div class="absolute inset-0 flex z-10">
-            <!-- Left (Previous) -->
-            <div onclick="prevStory()" class="w-1/3 h-full cursor-pointer"></div>
-            <!-- Center (Pause/Play) -->
-            <div onclick="toggleStoryPause()" class="w-1/3 h-full cursor-pointer"></div>
-            <!-- Right (Next) -->
-            <div onclick="nextStory()" class="w-1/3 h-full cursor-pointer"></div>
-        </div>
-        
-        <!-- Caption (Bottom) -->
-        <div class="absolute bottom-0 left-0 right-0 z-20 p-4 pb-8 bg-gradient-to-t from-black/80 to-transparent">
-            <p id="storyCaption" class="text-white text-sm text-center"></p>
-        </div>
-        
-        <!-- Pause Indicator -->
-        <div id="pauseIndicator" class="absolute inset-0 hidden items-center justify-center z-30 pointer-events-none">
-            <div class="bg-black/50 rounded-full p-4">
-                <i data-lucide="pause" class="w-12 h-12 text-white"></i>
-            </div>
-        </div>
-    </div>
+    <StoryModal />
 
     <!-- Edit Post Modal -->
-    <div id="editPostModal" class="fixed inset-0 z-[110] hidden">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeEditPostModal()"></div>
-        <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
-                <div class="flex items-start justify-between gap-4 mb-5">
-                    <div>
-                        <h3 class="font-serif text-2xl font-bold text-slate-800 dark:text-white">Edit Memory</h3>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Update caption dan lokasi post kamu.</p>
-                    </div>
-                    <button type="button" onclick="closeEditPostModal()" class="p-2 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white transition" aria-label="Close edit modal">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label for="editPostCaption" class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Caption</label>
-                        <textarea id="editPostCaption" rows="4" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></textarea>
-                    </div>
-                    <div>
-                        <label for="editPostLocation" class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Location</label>
-                        <input id="editPostLocation" type="text" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
-                    </div>
-                </div>
-
-                <p id="editPostError" class="hidden mt-4 text-sm text-red-500"></p>
-
-                <div class="mt-6 flex justify-end gap-3">
-                    <button type="button" onclick="closeEditPostModal()" class="rounded-full px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Cancel</button>
-                    <button type="button" id="saveEditPostBtn" onclick="saveEditedPost()" class="rounded-full bg-pink-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:bg-pink-600">Save Changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <EditPostModal />
 
     <!-- Load Logic -->
     <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
