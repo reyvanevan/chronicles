@@ -9,7 +9,8 @@ Task breakdown teknis per route ada di `IMPLEMENTATION_TASKLIST.md`.
 
 - Foundation portal-aware sudah kebentuk: planning docs, service modularization, config contract, dan visibility guard.
 - Phase 1 quick wins sudah terkirim untuk `Universe`, `Core`, dan `Public`.
-- Fokus berikutnya pindah ke modul daily utility dan sentimental di `Phase 2`.
+- Phase 2 sudah mulai lewat `Sticky Notes & Quick Reminders` di `Universe`.
+- Fokus berikutnya pindah ke `Mood Journal`, `Project Tracker`, dan `On This Day`.
 
 ## Goals
 
@@ -90,7 +91,7 @@ Output akhir Phase 1:
 
 Fokus: utility harian + emotional hooks.
 
-- [ ] `Universe` (Primary): Sticky Notes & Quick Reminders.
+- [x] `Universe` (Primary): Sticky Notes & Quick Reminders.
 - [ ] `Universe` (Primary): Thesis/Project Tracker.
 - [ ] `Universe` (Primary): Mood Journal + kalender warna.
 - [ ] `Universe` (Primary): On This Day (flashback tanggal sama).

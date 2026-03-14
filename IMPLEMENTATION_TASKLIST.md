@@ -16,7 +16,8 @@ Referensi:
 ## Status Snapshot
 
 - Phase 1 foundation selesai: config seed, helper/service contract, Universe widgets, Core config panel, dan Public teaser.
-- Fokus berikutnya pindah ke Phase 2 modules (`notes`, `mood journal`, `project tracker`, `letterbox`, `shared resources`).
+- Phase 2 baru mulai lewat module `notes/reminders` di `Universe home`.
+- Fokus berikutnya pindah ke `mood journal`, `project tracker`, `letterbox`, dan `shared resources`.
 - Guard public vs private sudah mulai diterapkan lewat `config/timeProgress` dan `config/featureVisibility`.
 
 ## 2) Route Mapping (Execution Surface)
@@ -125,7 +126,7 @@ File target utama:
 - `src/pages/universe/him.astro`
 
 Tasks:
-- [ ] Sticky notes + quick reminders module.
+ - [x] Sticky notes + quick reminders module.
 - [ ] Thesis/project tracker module.
 - [ ] Mood journal module + calendar heatmap sederhana.
 - [ ] On This Day module (tanggal sama tahun sebelumnya).
