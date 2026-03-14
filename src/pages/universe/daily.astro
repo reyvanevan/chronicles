@@ -45,9 +45,20 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
         </div>
     </header>
 
-    <main class="max-w-md mx-auto pt-20 px-4 space-y-6 pb-28">
+    <main id="dailyMain" class="max-w-md mx-auto pt-20 px-4 space-y-4 pb-28">
+        <section class="sticky top-20 z-30 rounded-2xl border border-slate-200/70 bg-white/90 p-2 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90">
+            <div class="grid grid-cols-3 gap-2 text-xs font-semibold">
+                <button id="dailyTabOverview" type="button" onclick="switchDailyTab('overview')" class="rounded-xl px-3 py-2.5 transition">Overview</button>
+                <button id="dailyTabProgress" type="button" onclick="switchDailyTab('progress')" class="rounded-xl px-3 py-2.5 transition">Progress</button>
+                <button id="dailyTabNotes" type="button" onclick="switchDailyTab('notes')" class="rounded-xl px-3 py-2.5 transition inline-flex items-center justify-center gap-1.5">
+                    <span>Notes</span>
+                    <span id="dailyTabNotesCount" class="hidden rounded-full bg-slate-200 px-1.5 py-0.5 text-[10px] leading-none text-slate-600 dark:bg-slate-700 dark:text-slate-200">0</span>
+                </button>
+            </div>
+        </section>
+
         <section id="lifeWidgetsSection" class="hidden space-y-4" data-aos="fade-up" data-aos-delay="40">
-            <div class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90">
+            <div id="dailyOverviewCard" class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90">
                 <div class="flex items-start justify-between gap-4">
                     <div>
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">Daily Orbit</p>
@@ -94,7 +105,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 </div>
             </div>
 
-            <div class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
+            <div id="lifeProgressCard" class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
                 <div class="mb-4 flex items-center justify-between gap-3">
                     <div>
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">Life Progress</p>
@@ -184,29 +195,13 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                     </div>
                 </div>
 
-                <form id="quickNoteForm" class="mt-5 space-y-3" onsubmit="submitQuickNote(event)">
-                    <input id="quickNoteTitle" type="text" maxlength="80" placeholder="Judul singkat, misal: jangan lupa kirim voice note"
-                        class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
-                    <textarea id="quickNoteContent" rows="3" maxlength="280" placeholder="Isi catatan atau reminder kecil untuk hari ini..."
-                        class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></textarea>
-                    <div class="grid grid-cols-[1fr_auto] gap-3">
-                        <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                            <span class="mb-2 block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Due date</span>
-                            <input id="quickNoteDueDate" type="date" class="w-full bg-transparent text-sm text-slate-800 outline-none dark:text-slate-100">
-                        </label>
-                        <label class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                            <input id="quickNotePinned" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-pink-500 focus:ring-pink-500">
-                            <span>Pin</span>
-                        </label>
-                    </div>
-                    <div class="flex items-center justify-between gap-3">
-                        <p id="quickNoteFeedback" class="hidden text-sm"></p>
-                        <button id="quickNoteSubmitButton" type="submit" class="inline-flex items-center gap-2 rounded-full bg-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:bg-pink-600">
-                            <i data-lucide="notebook-pen" class="h-4 w-4"></i>
-                            Save note
-                        </button>
-                    </div>
-                </form>
+                <div class="mt-5 flex items-center justify-between gap-3">
+                    <p id="quickNoteFeedback" class="hidden text-sm"></p>
+                    <button type="button" onclick="openQuickNoteModal()" class="inline-flex items-center gap-2 rounded-full bg-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:bg-pink-600">
+                        <i data-lucide="plus" class="h-4 w-4"></i>
+                        Add note
+                    </button>
+                </div>
             </div>
 
             <div id="quickNotesEmptyState" class="hidden rounded-3xl border border-dashed border-slate-300/80 bg-white/70 p-8 text-center dark:border-slate-700 dark:bg-slate-900/70">
@@ -221,6 +216,41 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
         </section>
     </main>
 
+    <div id="quickNoteModal" class="hidden fixed inset-0 z-[70] bg-slate-950/65 backdrop-blur-sm p-4">
+        <div class="mx-auto mt-20 w-full max-w-md rounded-3xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+            <div class="mb-4 flex items-center justify-between">
+                <h3 class="font-serif text-xl font-bold text-slate-800 dark:text-white">New Quick Note</h3>
+                <button type="button" onclick="closeQuickNoteModal()" class="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close quick note modal">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+
+            <form id="quickNoteForm" class="space-y-3" onsubmit="submitQuickNote(event)">
+                <input id="quickNoteTitle" type="text" maxlength="80" placeholder="Judul singkat, misal: jangan lupa kirim voice note"
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <textarea id="quickNoteContent" rows="3" maxlength="280" placeholder="Isi catatan atau reminder kecil untuk hari ini..."
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></textarea>
+                <div class="grid grid-cols-[1fr_auto] gap-3">
+                    <label class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <span class="mb-2 block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Due date</span>
+                        <input id="quickNoteDueDate" type="date" class="w-full bg-transparent text-sm text-slate-800 outline-none dark:text-slate-100">
+                    </label>
+                    <label class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <input id="quickNotePinned" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-pink-500 focus:ring-pink-500">
+                        <span>Pin</span>
+                    </label>
+                </div>
+                <div class="flex items-center justify-end gap-3 pt-1">
+                    <button type="button" onclick="closeQuickNoteModal()" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">Cancel</button>
+                    <button id="quickNoteSubmitButton" type="submit" class="inline-flex items-center gap-2 rounded-full bg-pink-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-500/20 transition hover:bg-pink-600">
+                        <i data-lucide="notebook-pen" class="h-4 w-4"></i>
+                        Save note
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <UniverseBottomNav active="daily" variant="solid" />
 
     <script>
@@ -230,7 +260,63 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
         import { ensureFeatureConfigDefaults, loadFeatureVisibilityConfig, loadTimeProgressConfig } from '../../lib/cms/config.ts';
 
         let lifeWidgetTimer = null;
+        let currentDailyTab = 'overview';
         let quickNotesState = [];
+
+        function updateDailyTabStyles() {
+            const tabs = [
+                { id: 'dailyTabOverview', key: 'overview' },
+                { id: 'dailyTabProgress', key: 'progress' },
+                { id: 'dailyTabNotes', key: 'notes' }
+            ];
+
+            tabs.forEach((tab) => {
+                const element = document.getElementById(tab.id);
+                if (!element) return;
+
+                const active = currentDailyTab === tab.key;
+                element.classList.remove('bg-violet-500', 'text-white', 'bg-white', 'text-slate-500', 'dark:bg-slate-800', 'dark:text-slate-300');
+                if (active) {
+                    element.classList.add('bg-violet-500', 'text-white');
+                } else {
+                    element.classList.add('bg-white', 'text-slate-500', 'dark:bg-slate-800', 'dark:text-slate-300');
+                }
+            });
+        }
+
+        window.switchDailyTab = function(tab, options = {}) {
+            currentDailyTab = tab;
+
+            const lifeWidgets = document.getElementById('lifeWidgetsSection');
+            const overview = document.getElementById('dailyOverviewCard');
+            const progress = document.getElementById('lifeProgressCard');
+            const notes = document.getElementById('quickNotesSection');
+
+            if (lifeWidgets) lifeWidgets.classList.toggle('hidden', tab === 'notes');
+            if (overview) overview.classList.toggle('hidden', tab !== 'overview');
+            if (progress) progress.classList.toggle('hidden', tab !== 'progress');
+            if (notes) notes.classList.toggle('hidden', tab !== 'notes');
+
+            updateDailyTabStyles();
+
+            if (!options.preserveScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        window.openQuickNoteModal = function() {
+            const modal = document.getElementById('quickNoteModal');
+            modal?.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('quickNoteTitle')?.focus();
+            lucide.createIcons();
+        };
+
+        window.closeQuickNoteModal = function() {
+            const modal = document.getElementById('quickNoteModal');
+            modal?.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
 
         window.handleLogout = async function() {
             if (!confirm('Yakin mau logout?')) return;
@@ -268,6 +354,9 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
 
                 if (!widgetsEnabled && !dashboardEnabled) {
                     section?.classList.add('hidden');
+                    if (currentDailyTab !== 'notes') {
+                        switchDailyTab('notes', { preserveScroll: true });
+                    }
                     return;
                 }
 
@@ -277,6 +366,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
 
                 if (lifeWidgetTimer) clearInterval(lifeWidgetTimer);
                 lifeWidgetTimer = window.setInterval(() => updateLifeWidgets(timeConfig), 1000);
+                switchDailyTab(currentDailyTab, { preserveScroll: true });
             } catch (error) {
                 console.error('Failed to load life widgets:', error);
             }
@@ -413,11 +503,24 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
 
                 if (!enabled) {
                     section?.classList.add('hidden');
+                    const notesTab = document.getElementById('dailyTabNotes');
+                    notesTab?.classList.add('hidden');
+                    const notesCount = document.getElementById('dailyTabNotesCount');
+                    if (notesCount) {
+                        notesCount.textContent = '0';
+                        notesCount.classList.add('hidden');
+                    }
+                    if (currentDailyTab === 'notes') {
+                        switchDailyTab('overview', { preserveScroll: true });
+                    }
                     return;
                 }
 
                 section?.classList.remove('hidden');
+                const notesTab = document.getElementById('dailyTabNotes');
+                notesTab?.classList.remove('hidden');
                 await refreshQuickNotes();
+                switchDailyTab(currentDailyTab, { preserveScroll: true });
             } catch (error) {
                 console.error('Failed to load quick notes module:', error);
             }
@@ -457,6 +560,13 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
             setText('quickNotesOpenCount', String(sortedNotes.filter((note) => note.status !== 'done').length));
             setText('quickNotesPinnedCount', String(sortedNotes.filter((note) => !!note.isPinned).length));
             setText('quickNotesDoneCount', String(sortedNotes.filter((note) => note.status === 'done').length));
+
+            const notesCount = document.getElementById('dailyTabNotesCount');
+            if (notesCount) {
+                notesCount.textContent = String(sortedNotes.length);
+                notesCount.classList.toggle('hidden', sortedNotes.length === 0);
+            }
+
             lucide.createIcons();
         }
 
@@ -538,6 +648,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 if (pinnedInput) pinnedInput.checked = false;
 
                 setQuickNoteFeedback('Note tersimpan.', 'success');
+                closeQuickNoteModal();
                 await refreshQuickNotes();
             } catch (error) {
                 console.error('Failed to create quick note:', error);
@@ -640,6 +751,14 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 localStorage.theme = 'dark';
             }
         };
+
+        updateDailyTabStyles();
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeQuickNoteModal();
+            }
+        });
     </script>
 
     <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
