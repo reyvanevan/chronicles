@@ -58,7 +58,25 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
         </section>
 
         <section id="lifeWidgetsSection" class="hidden space-y-4" data-aos="fade-up" data-aos-delay="40">
-            <div id="dailyOverviewCard" class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90">
+            <div id="lifeWidgetsLoading" class="space-y-4 animate-pulse">
+                <div class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
+                    <div class="h-4 w-24 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="mt-3 h-7 w-48 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="mt-2 h-4 w-36 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="mt-5 h-28 rounded-2xl bg-slate-200 dark:bg-slate-700"></div>
+                </div>
+                <div class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
+                    <div class="h-4 w-28 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="mt-3 h-6 w-44 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="mt-4 space-y-3">
+                        <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                        <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                        <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dailyOverviewCard" class="hidden rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/90">
                 <div class="flex items-start justify-between gap-4">
                     <div>
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">Daily Orbit</p>
@@ -123,7 +141,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 </div>
             </div>
 
-            <div id="lifeProgressCard" class="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
+            <div id="lifeProgressCard" class="hidden rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/90">
                 <div class="mb-4 flex items-center justify-between gap-3">
                     <div>
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">Life Progress</p>
@@ -220,6 +238,11 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                         Add note
                     </button>
                 </div>
+
+                <div id="quickNotesLoading" class="mt-5 hidden space-y-3 animate-pulse">
+                    <div class="h-24 rounded-2xl bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="h-24 rounded-2xl bg-slate-200 dark:bg-slate-700"></div>
+                </div>
             </div>
 
             <div id="quickNotesEmptyState" class="hidden rounded-3xl border border-dashed border-slate-300/80 bg-white/70 p-8 text-center dark:border-slate-700 dark:bg-slate-900/70">
@@ -280,6 +303,21 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
         let lifeWidgetTimer = null;
         let currentDailyTab = 'overview';
         let quickNotesState = [];
+
+        function setLifeWidgetsLoading(isLoading) {
+            const skeleton = document.getElementById('lifeWidgetsLoading');
+            const overview = document.getElementById('dailyOverviewCard');
+            const progress = document.getElementById('lifeProgressCard');
+
+            skeleton?.classList.toggle('hidden', !isLoading);
+            overview?.classList.toggle('hidden', isLoading);
+            progress?.classList.toggle('hidden', isLoading);
+        }
+
+        function setQuickNotesLoading(isLoading) {
+            const skeleton = document.getElementById('quickNotesLoading');
+            skeleton?.classList.toggle('hidden', !isLoading);
+        }
 
         function updateDailyTabStyles() {
             const tabs = [
@@ -372,6 +410,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
 
                 if (!widgetsEnabled && !dashboardEnabled) {
                     section?.classList.add('hidden');
+                    setLifeWidgetsLoading(false);
                     if (currentDailyTab !== 'notes') {
                         switchDailyTab('notes', { preserveScroll: true });
                     }
@@ -379,12 +418,15 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 }
 
                 section?.classList.remove('hidden');
+                setLifeWidgetsLoading(true);
                 updateLifeWidgets(timeConfig);
+                setLifeWidgetsLoading(false);
 
                 if (lifeWidgetTimer) clearInterval(lifeWidgetTimer);
                 lifeWidgetTimer = window.setInterval(() => updateLifeWidgets(timeConfig), 1000);
                 switchDailyTab(currentDailyTab, { preserveScroll: true });
             } catch (error) {
+                setLifeWidgetsLoading(false);
                 console.error('Failed to load life widgets:', error);
             }
         }
@@ -525,6 +567,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
 
                 if (!enabled) {
                     section?.classList.add('hidden');
+                    setQuickNotesLoading(false);
                     const notesTab = document.getElementById('dailyTabNotes');
                     notesTab?.classList.add('hidden');
                     const notesCount = document.getElementById('dailyTabNotesCount');
@@ -539,11 +582,14 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 }
 
                 section?.classList.remove('hidden');
+                setQuickNotesLoading(true);
                 const notesTab = document.getElementById('dailyTabNotes');
                 notesTab?.classList.remove('hidden');
                 await refreshQuickNotes();
+                setQuickNotesLoading(false);
                 switchDailyTab(currentDailyTab, { preserveScroll: true });
             } catch (error) {
+                setQuickNotesLoading(false);
                 console.error('Failed to load quick notes module:', error);
             }
         }
@@ -553,6 +599,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 quickNotesState = await getQuickNotes(50, window.currentAuthor);
                 renderQuickNotes();
             } catch (error) {
+                setQuickNotesLoading(false);
                 console.error('Failed to refresh quick notes:', error);
                 setQuickNoteFeedback('Gagal memuat notes. Coba refresh sebentar lagi.', 'error');
             }
