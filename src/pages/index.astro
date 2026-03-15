@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
+import DaysTogetherSection from '../components/DaysTogetherSection.astro';
 import LoveProgress from '../components/LoveProgress.astro';
 import AboutSection from '../components/AboutSection.astro';
 import GallerySection from '../components/GallerySection.astro';
@@ -97,6 +98,7 @@ import MusicPlayer from '../components/MusicPlayer.astro';
                 </div>
             </div>
         </section>
+        <DaysTogetherSection />
         <LoveProgress />
         <AboutSection />
         <GallerySection />
@@ -223,6 +225,7 @@ import MusicPlayer from '../components/MusicPlayer.astro';
                 const configDoc = await getDoc(doc(db, 'config', 'site'));
                 const cfgRaw = configDoc.exists() ? configDoc.data() : {};
                 const siteConfig = {
+                    startDate: cfgRaw.startDate || '',
                     letter: {
                         ...SITE_FALLBACK_CONFIG.letter,
                         ...(cfgRaw.letter || {})
@@ -256,6 +259,8 @@ import MusicPlayer from '../components/MusicPlayer.astro';
                         .join('');
                 }
                 if (letterQuoteDisplay) letterQuoteDisplay.textContent = `"${siteConfig.letter.defaultClosing}"`;
+
+                renderDaysTogetherPreview(siteConfig.startDate);
 
                 // Load Profile
                 const profileDoc = await getDoc(doc(db, "landing", "profile"));
@@ -452,6 +457,66 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             const label = document.getElementById(labelId);
             if (bar) bar.style.width = safeValue;
             if (label) label.textContent = safeValue;
+        }
+
+        function renderDaysTogetherPreview(startDateValue) {
+            const section = document.getElementById('days-together-section');
+            const daysText = document.getElementById('landing-days-together');
+            const noteText = document.getElementById('landing-days-together-note');
+            const sinceText = document.getElementById('landing-since-date');
+            const nextAnniversaryText = document.getElementById('landing-next-anniversary');
+            const nextAnniversaryDateText = document.getElementById('landing-next-anniversary-date');
+
+            if (!section || !daysText || !noteText || !sinceText || !nextAnniversaryText || !nextAnniversaryDateText) return;
+
+            if (!startDateValue) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            const startDate = new Date(`${startDateValue}T00:00:00`);
+            if (Number.isNaN(startDate.getTime())) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            section.classList.remove('hidden');
+
+            const now = new Date();
+            const daysTogether = Math.max(Math.floor((now.getTime() - startDate.getTime()) / 86400000), 0);
+
+            const nextAnniversary = new Date(startDate);
+            nextAnniversary.setFullYear(now.getFullYear());
+            nextAnniversary.setHours(0, 0, 0, 0);
+            if (nextAnniversary.getTime() <= now.getTime()) {
+                nextAnniversary.setFullYear(now.getFullYear() + 1);
+            }
+
+            const daysToAnniversary = Math.max(Math.ceil((nextAnniversary.getTime() - now.getTime()) / 86400000), 0);
+
+            daysText.textContent = `${daysTogether.toLocaleString('id-ID')} hari`;
+            sinceText.textContent = startDate.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+            nextAnniversaryText.textContent = `H-${daysToAnniversary}`;
+            nextAnniversaryDateText.textContent = nextAnniversary.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            if (daysToAnniversary <= 7) {
+                noteText.textContent = 'Minggu anniversary udah deket. Mungkin ini waktunya siapin hal kecil yang bikin dia senyum lebih lama.';
+                return;
+            }
+            if (daysToAnniversary <= 30) {
+                noteText.textContent = 'Hitung mundur udah mulai kerasa. Nggak harus mewah, cukup jadi hari yang bikin hati tenang.';
+                return;
+            }
+            noteText.textContent = 'Setiap hari yang lewat tetap kita hitung, bukan karena takut lupa, tapi karena ini memang layak dirayakan pelan-pelan.';
         }
 
         // Load Love Progress for landing page
