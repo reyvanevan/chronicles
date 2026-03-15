@@ -80,7 +80,7 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 <div class="flex items-start justify-between gap-4">
                     <div>
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">Daily Orbit</p>
-                        <h2 class="mt-2 font-serif text-2xl font-bold text-slate-800 dark:text-white">A little desk for today</h2>
+                        <h2 class="mt-2 font-serif text-2xl font-bold text-slate-800 dark:text-white">Countdown focus</h2>
                         <p id="dailyDateLabel" class="mt-1 text-sm text-slate-500 dark:text-slate-400"></p>
                     </div>
                     <div class="rounded-2xl bg-slate-100/80 px-4 py-3 text-right dark:bg-slate-800/80">
@@ -89,13 +89,53 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                     </div>
                 </div>
 
-                <div class="mt-5 space-y-3">
-                    <div class="rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50 p-4 dark:from-pink-950/40 dark:to-slate-900">
-                        <div class="flex items-center gap-2 text-pink-500">
-                            <i data-lucide="sparkles" class="h-4 w-4"></i>
-                            <span class="text-xs font-semibold uppercase tracking-[0.16em]">Dynamic Age</span>
+                <div class="mt-5 rounded-2xl bg-gradient-to-br from-pink-50 to-orange-50 p-4 dark:from-pink-950/40 dark:to-slate-900">
+                    <div class="flex items-center justify-between gap-3">
+                        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-pink-500">Next Milestone</p>
+                        <p id="nextMilestoneDate" class="text-xs font-medium text-slate-500 dark:text-slate-300">--</p>
+                    </div>
+                    <p id="nextMilestoneValue" class="mt-2 font-serif text-2xl font-bold text-slate-900 dark:text-white">Calculating...</p>
+
+                    <div class="mt-4 grid grid-cols-4 gap-2">
+                        <div class="rounded-xl bg-white/70 p-2 text-center dark:bg-slate-800/70">
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-slate-400">Days</p>
+                            <p id="countdownDays" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">0</p>
                         </div>
-                        <p id="dynamicAgeValue" class="mt-3 break-all font-mono text-2xl font-semibold text-slate-900 dark:text-white">0y 0m 0d</p>
+                        <div class="rounded-xl bg-white/70 p-2 text-center dark:bg-slate-800/70">
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-slate-400">Hours</p>
+                            <p id="countdownHours" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">00</p>
+                        </div>
+                        <div class="rounded-xl bg-white/70 p-2 text-center dark:bg-slate-800/70">
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-slate-400">Minutes</p>
+                            <p id="countdownMinutes" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">00</p>
+                        </div>
+                        <div class="rounded-xl bg-white/70 p-2 text-center dark:bg-slate-800/70">
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-slate-400">Seconds</p>
+                            <p id="countdownSeconds" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                    <div class="rounded-2xl border border-slate-200/70 p-3 dark:border-slate-700">
+                        <p class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Days Together</p>
+                        <p id="daysTogetherValue" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">0</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200/70 p-3 dark:border-slate-700">
+                        <p class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Current Season</p>
+                        <p id="seasonValue" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">--</p>
+                    </div>
+                </div>
+
+                <button id="toggleLifeDetailsBtn" type="button" onclick="toggleLifeDetails()" class="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
+                    <i data-lucide="chevrons-down-up" class="h-4 w-4"></i>
+                    Show Details
+                </button>
+
+                <div id="lifeDetailsPanel" class="hidden mt-4 space-y-3">
+                    <div class="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/80">
+                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Dynamic Age</p>
+                        <p id="dynamicAgeValue" class="mt-2 break-all font-mono text-xl font-semibold text-slate-900 dark:text-white">0y 0m 0d</p>
                         <p id="dynamicAgeClockValue" class="mt-1 font-mono text-sm font-medium text-slate-600 dark:text-slate-300">00:00:00</p>
                     </div>
 
@@ -123,19 +163,6 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                         <div class="rounded-2xl bg-slate-50 p-3 text-center dark:bg-slate-800/80">
                             <p class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Seconds</p>
                             <p id="ageSecondsValue" class="mt-2 text-lg font-semibold text-slate-900 dark:text-white">0</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 rounded-2xl border border-slate-200/70 p-4 dark:border-slate-700">
-                    <div class="flex items-center justify-between gap-3">
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Current Season</p>
-                            <p id="seasonValue" class="mt-1 font-serif text-xl font-semibold text-slate-800 dark:text-white">Summer</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">Next Milestone</p>
-                            <p id="nextMilestoneValue" class="mt-1 text-sm font-medium text-slate-700 dark:text-slate-200">Calculating...</p>
                         </div>
                     </div>
                 </div>
@@ -360,6 +387,20 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
             }
         };
 
+        window.toggleLifeDetails = function() {
+            const panel = document.getElementById('lifeDetailsPanel');
+            const button = document.getElementById('toggleLifeDetailsBtn');
+            if (!panel || !button) return;
+
+            const isHidden = panel.classList.contains('hidden');
+            panel.classList.toggle('hidden', !isHidden);
+            button.innerHTML = isHidden
+                ? '<i data-lucide="chevrons-up-down" class="h-4 w-4"></i> Hide Details'
+                : '<i data-lucide="chevrons-down-up" class="h-4 w-4"></i> Show Details';
+
+            if (window.lucide) window.lucide.createIcons();
+        };
+
         window.openQuickNoteModal = function() {
             const modal = document.getElementById('quickNoteModal');
             modal?.classList.remove('hidden');
@@ -459,7 +500,12 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
             const dayProgress = ((now.getTime() - startOfDay.getTime()) / (endOfDay.getTime() - startOfDay.getTime())) * 100;
             const lifeProgress = (livedMs / lifeSpanMs) * 100;
             const currentAge = detailedAge.years;
-            const daysUntilBirthday = Math.ceil((nextBirthday.getTime() - now.getTime()) / 86400000);
+            const milestoneDiffMs = Math.max(nextBirthday.getTime() - now.getTime(), 0);
+            const daysUntilBirthday = Math.ceil(milestoneDiffMs / 86400000);
+            const countdownDays = Math.floor(milestoneDiffMs / 86400000);
+            const countdownHours = Math.floor((milestoneDiffMs % 86400000) / 3600000);
+            const countdownMinutes = Math.floor((milestoneDiffMs % 3600000) / 60000);
+            const countdownSeconds = Math.floor((milestoneDiffMs % 60000) / 1000);
 
             const seasonLabel = getSeasonLabel(currentAge, config.seasons);
             const formattedDate = now.toLocaleDateString('en-US', {
@@ -468,9 +514,21 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
                 day: 'numeric',
                 year: 'numeric'
             });
+            const milestoneDateLabel = nextBirthday.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
 
             setText('digitalClockValue', now.toLocaleTimeString('en-GB'));
             setText('dailyDateLabel', formattedDate);
+            setText('nextMilestoneDate', milestoneDateLabel);
+            setText('nextMilestoneValue', `H-${Math.max(daysUntilBirthday, 0)} to next birthday`);
+            setText('countdownDays', String(countdownDays));
+            setText('countdownHours', pad2(countdownHours));
+            setText('countdownMinutes', pad2(countdownMinutes));
+            setText('countdownSeconds', pad2(countdownSeconds));
+            setText('daysTogetherValue', Math.floor(totalDays).toLocaleString());
             setText('dynamicAgeValue', `${detailedAge.years}y ${detailedAge.months}m ${detailedAge.days}d`);
             setText('dynamicAgeClockValue', `${pad2(detailedAge.hours)}:${pad2(detailedAge.minutes)}:${pad2(detailedAge.seconds)}`);
             setText('ageYearsValue', String(detailedAge.years));
@@ -480,7 +538,6 @@ import UniverseBottomNav from '../../components/universe/UniverseBottomNav.astro
             setText('ageMinutesValue', String(detailedAge.minutes));
             setText('ageSecondsValue', String(detailedAge.seconds));
             setText('seasonValue', seasonLabel);
-            setText('nextMilestoneValue', `H-${Math.max(daysUntilBirthday, 0)} to next birthday`);
 
             setProgress('lifeProgressBar', 'lifeProgressValue', lifeProgress);
             setProgress('yearProgressBar', 'yearProgressValue', yearProgress);

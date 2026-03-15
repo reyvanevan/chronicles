@@ -28,7 +28,23 @@ export async function loadDashboardData(): Promise<void> {
             if (el('stat-memories')) el('stat-memories')!.textContent = s.memoriesCount || '0';
             if (s.startDate && el('stat-days')) {
                 const start = s.startDate.toDate ? s.startDate.toDate() : new Date(s.startDate);
-                el('stat-days')!.textContent = Math.floor((Date.now() - start.getTime()) / 86400000).toLocaleString();
+                const now = new Date();
+                const daysTogether = Math.max(Math.floor((Date.now() - start.getTime()) / 86400000), 0);
+
+                const nextAnniversary = new Date(start);
+                nextAnniversary.setFullYear(now.getFullYear());
+                nextAnniversary.setHours(0, 0, 0, 0);
+                if (nextAnniversary.getTime() <= now.getTime()) {
+                    nextAnniversary.setFullYear(now.getFullYear() + 1);
+                }
+
+                const daysToAnniversary = Math.max(Math.ceil((nextAnniversary.getTime() - now.getTime()) / 86400000), 0);
+                el('stat-days')!.textContent = `H-${daysToAnniversary}`;
+
+                if (el('stat-days-caption')) {
+                    const anniversaryLabel = nextAnniversary.toLocaleDateString('id-ID', { month: 'short', day: 'numeric' });
+                    el('stat-days-caption')!.textContent = `${daysTogether.toLocaleString()} days together • ${anniversaryLabel}`;
+                }
             }
         }
 
