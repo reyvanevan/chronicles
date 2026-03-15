@@ -62,64 +62,6 @@
         </div>
     </div>
 
-    <!-- Love Progress Config -->
-    <div class="p-4 md:p-8 border-t border-slate-200/50 dark:border-slate-700/50">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <div class="flex items-center gap-3">
-                <span class="text-xl">🖤</span>
-                <div>
-                    <h4 class="font-bold text-slate-800 dark:text-white">Love Progress Config</h4>
-                    <p class="text-xs text-slate-400">Manage visibility and 0% marker image</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <label class="flex items-center cursor-pointer gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">
-                    <div class="relative">
-                        <input type="checkbox" id="loveProgressVisibilityToggle" class="sr-only peer" onchange="toggleLoveProgress()">
-                        <div class="block bg-slate-300 dark:bg-slate-600 peer-checked:bg-pink-500 w-10 h-6 rounded-full transition-colors duration-300"></div>
-                        <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full shadow transition-transform duration-300 peer-checked:translate-x-4"></div>
-                    </div>
-                    <span class="text-xs font-medium text-slate-600 dark:text-slate-300" id="visibilityToggleLabel">Hidden</span>
-                </label>
-                <button onclick="saveSasukeImage()" id="saveSasukeBtn" class="px-4 py-2 bg-brand-accent hover:bg-pink-600 text-white text-sm font-medium rounded-full shadow-lg transition flex items-center gap-2">
-                    <i data-lucide="save" class="w-4 h-4"></i> Save Image
-                </button>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-6">
-            <div>
-                <label id="section-zero-marker-label" class="block text-sm font-bold mb-3 text-slate-700 dark:text-slate-300">Upload Sasuke Image</label>
-                <div class="relative group rounded-xl overflow-hidden aspect-square border-4 border-slate-300 dark:border-slate-700 shadow-xl max-w-xs mx-auto">
-                    <img id="sasukePreview" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer backdrop-blur-sm">
-                        <button type="button" class="bg-white/90 text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg hover:bg-white transition">
-                            <i data-lucide="upload" class="w-4 h-4"></i> Change Image
-                        </button>
-                    </div>
-                    <input type="file" id="sasukeImageInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="updateSasukePreview(this)">
-                </div>
-                <p class="text-xs text-center text-slate-400 mt-3">Recommended: Square 1:1</p>
-            </div>
-            <div class="flex flex-col justify-center space-y-4">
-                <div>
-                    <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Name/Label</label>
-                    <input type="text" id="sasukeName" value="" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Description</label>
-                    <input type="text" id="sasukeDescription" value="" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
-                </div>
-                <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-                    <p id="section-zero-marker-info" class="text-xs text-slate-600 dark:text-slate-400">
-                        <strong>Info:</strong> Image ini akan muncul sebagai marker 0% di Love Progress section.
-                        Upload gambar Sasuke atau karakter lain yang mewakili "friendzone".
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Princess Gallery -->
     <div class="p-4 md:p-8 border-t border-slate-200/50 dark:border-slate-700/50">
         <div class="flex items-center justify-between mb-4">

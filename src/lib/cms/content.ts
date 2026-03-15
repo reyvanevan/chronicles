@@ -1,6 +1,5 @@
+import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase-config.js';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { compressImageToBase64, toggleLoveProgressVisibility } from '../firestore-service.js';
 
 declare const lucide: any;
 const win = window as any;
@@ -111,75 +110,3 @@ win.saveLetter = async function () {
     }
 };
 
-// ─── Sasuke / Love Progress ───────────────────────────────────────────────────
-
-export async function loadSasukeImage(): Promise<void> {
-    try {
-        const cfg       = (window as any).siteConfig;
-        const sasukeDoc = await getDoc(doc(db, 'landing', 'sasukeImage'));
-        if (sasukeDoc.exists()) {
-            const d = sasukeDoc.data();
-            const preview = document.getElementById('sasukePreview')     as HTMLImageElement;
-            const nameEl  = document.getElementById('sasukeName')        as HTMLInputElement;
-            const descEl  = document.getElementById('sasukeDescription') as HTMLInputElement;
-            if (preview) preview.src  = d.url || '';
-            if (nameEl)  nameEl.value = d.name        || cfg?.zeroMarker?.name        || 'Sasuke Uchiha';
-            if (descEl)  descEl.value = d.description || cfg?.zeroMarker?.description || '0% - Stranger/Friendzone marker';
-        }
-        const progressDoc = await getDoc(doc(db, 'landing', 'loveProgress'));
-        const isVisible   = progressDoc.exists() ? (progressDoc.data().isVisible ?? true) : true;
-        const toggleBtn   = document.getElementById('loveProgressVisibilityToggle') as HTMLInputElement;
-        const label       = document.getElementById('visibilityToggleLabel');
-        if (toggleBtn) toggleBtn.checked = isVisible;
-        if (label)     label.textContent  = isVisible ? 'Visible' : 'Hidden';
-    } catch (error) {
-        console.error('Error loading Sasuke image:', error);
-    }
-}
-
-win.saveSasukeImage = async function () {
-    const fileInput = document.getElementById('sasukeImageInput')   as HTMLInputElement;
-    const name      = (document.getElementById('sasukeName')        as HTMLInputElement).value.trim();
-    const desc      = (document.getElementById('sasukeDescription') as HTMLInputElement).value.trim();
-    const saveBtn   = document.getElementById('saveSasukeBtn')      as HTMLButtonElement;
-    if (!fileInput.files?.[0]) { alert('Please select an image first'); return; }
-    if (!name)                  { alert('Please enter a name/label'); return; }
-    try {
-        saveBtn.disabled = true;
-        saveBtn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Saving...';
-        lucide.createIcons();
-        const base64Image = await compressImageToBase64(fileInput.files[0], 600, 0.8);
-        await setDoc(doc(db, 'landing', 'sasukeImage'), { url: base64Image, name, description: desc, updatedAt: serverTimestamp() });
-        saveBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Saved!';
-        saveBtn.classList.replace('bg-brand-accent', 'bg-green-600');
-        lucide.createIcons();
-        setTimeout(() => {
-            saveBtn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Image';
-            saveBtn.classList.replace('bg-green-600', 'bg-brand-accent');
-            saveBtn.disabled = false;
-            lucide.createIcons();
-        }, 2000);
-    } catch (error: any) {
-        console.error('Save error:', error);
-        alert('Failed to save image: ' + error.message);
-        saveBtn.innerHTML = '<i data-lucide="save" class="w-4 h-4"></i> Save Image';
-        saveBtn.disabled = false;
-        lucide.createIcons();
-    }
-};
-
-win.toggleLoveProgress = async function () {
-    const toggleBtn = document.getElementById('loveProgressVisibilityToggle') as HTMLInputElement;
-    const label     = document.getElementById('visibilityToggleLabel');
-    const isVisible = toggleBtn.checked;
-    try {
-        if (label) label.textContent = 'Saving...';
-        await toggleLoveProgressVisibility(isVisible);
-        if (label) label.textContent = isVisible ? 'Visible' : 'Hidden';
-    } catch (error) {
-        console.error('Error toggling visibility:', error);
-        alert('Failed to update visibility setting');
-        toggleBtn.checked = !isVisible;
-        if (label) label.textContent = toggleBtn.checked ? 'Visible' : 'Hidden';
-    }
-};

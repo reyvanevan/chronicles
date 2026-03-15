@@ -175,23 +175,6 @@ import '../../styles/global.css';
                 <div class="space-y-6">
                     <div>
                         <h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-3 flex items-center gap-2">
-                            <span>🖤</span> Love Progress — 0% Marker
-                        </h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label for="setup-zeroMarker-name" class="block text-xs font-bold mb-2 text-slate-500">Nama Karakter</label>
-                                <input type="text" id="setup-zeroMarker-name" placeholder="Sasuke Uchiha"
-                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
-                            </div>
-                            <div>
-                                <label for="setup-zeroMarker-desc" class="block text-xs font-bold mb-2 text-slate-500">Deskripsi</label>
-                                <input type="text" id="setup-zeroMarker-desc" placeholder="0% - Friendzone marker"
-                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-slate-500 outline-none transition">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-3 flex items-center gap-2">
                             <span>✉️</span> Default Letter Text
                         </h4>
                         <div class="grid grid-cols-2 gap-4">
@@ -402,10 +385,6 @@ import '../../styles/global.css';
                         defaultBio:   g('setup-pB-defaultBio')  || DEFAULT_CONFIG.partnerB.defaultBio,
                         pageSlug:     g('setup-pB-pageSlug')    || DEFAULT_CONFIG.partnerB.pageSlug,
                         colorTheme:   'blue',
-                    },
-                    zeroMarker: {
-                        name:        g('setup-zeroMarker-name') || DEFAULT_CONFIG.zeroMarker.name,
-                        description: g('setup-zeroMarker-desc') || DEFAULT_CONFIG.zeroMarker.description,
                     },
                     letter: {
                         defaultGreeting: g('setup-letter-greeting') || `Hai ${g('setup-pA-nickname') || DEFAULT_CONFIG.partnerA.nickname}...`,

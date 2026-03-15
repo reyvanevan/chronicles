@@ -21,7 +21,6 @@ export interface SiteConfig {
     siteTagline: string;
     partnerA: PartnerConfig;  // the one the site is dedicated to
     partnerB: PartnerConfig;  // the one managing the site
-    zeroMarker: { name: string; description: string };
     letter: { defaultGreeting: string; defaultContent: string; defaultClosing: string };
     about: {
         defaultIntro: string;
@@ -81,10 +80,6 @@ export const DEFAULT_CONFIG: SiteConfig = {
         defaultBio: 'Seseorang yang ingin menyimpan semua cerita kalian di satu tempat.',
         pageSlug: 'him',
         colorTheme: 'blue',
-    },
-    zeroMarker: {
-        name: 'Awal Cerita',
-        description: '0% - Titik awal sebelum semuanya dimulai',
     },
     letter: {
         defaultGreeting: 'Untukmu,',
@@ -389,10 +384,6 @@ win.saveSiteConfigForm = async function () {
                 pageSlug:     g('config-pB-pageSlug')     || DEFAULT_CONFIG.partnerB.pageSlug,
                 colorTheme:   win.siteConfig?.partnerB?.colorTheme ?? 'blue',
             },
-            zeroMarker: {
-                name:        g('config-zeroMarker-name') || DEFAULT_CONFIG.zeroMarker.name,
-                description: g('config-zeroMarker-desc') || DEFAULT_CONFIG.zeroMarker.description,
-            },
             letter: {
                 defaultGreeting: g('config-letter-greeting') || DEFAULT_CONFIG.letter.defaultGreeting,
                 defaultContent:  g('config-letter-content')  || DEFAULT_CONFIG.letter.defaultContent,
@@ -464,12 +455,6 @@ export function applyConfigToDOM(cfg: SiteConfig): void {
     s('section-partnerA-badge-role',       `The ${cfg.partnerA.roleLabel}`);
     s('section-partnerA-gallery-subtitle', `Photos shown on ${cfg.partnerA.pageSlug}.html`);
 
-    // ── Zero marker
-    s('section-zero-marker-label', `Upload ${cfg.zeroMarker.name} Image`);
-    s('section-zero-marker-info',  `Upload gambar ${cfg.zeroMarker.name} atau karakter lain yang mewakili "friendzone".`);
-    p('sasukeName',        cfg.zeroMarker.name);
-    p('sasukeDescription', cfg.zeroMarker.description);
-
     // ── Partner B section
     s('section-partnerB-heading',          `${cfg.partnerB.roleLabel} Profile`);
     s('section-partnerB-subtitle',         `${cfg.partnerB.nickname}'s Profile Section`);
@@ -514,8 +499,6 @@ export function applyConfigToDOM(cfg: SiteConfig): void {
     v('config-pB-defaultTitle',   cfg.partnerB.defaultTitle);
     v('config-pB-defaultBio',     cfg.partnerB.defaultBio);
     v('config-pB-pageSlug',       cfg.partnerB.pageSlug);
-    v('config-zeroMarker-name',   cfg.zeroMarker.name);
-    v('config-zeroMarker-desc',   cfg.zeroMarker.description);
     v('config-letter-greeting',   cfg.letter.defaultGreeting);
     v('config-letter-content',    cfg.letter.defaultContent);
     v('config-letter-closing',    cfg.letter.defaultClosing);

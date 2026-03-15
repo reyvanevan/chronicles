@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import DaysTogetherSection from '../components/DaysTogetherSection.astro';
-import LoveProgress from '../components/LoveProgress.astro';
 import AboutSection from '../components/AboutSection.astro';
 import GallerySection from '../components/GallerySection.astro';
 import MemoriesSection from '../components/MemoriesSection.astro';
@@ -99,7 +98,6 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             </div>
         </section>
         <DaysTogetherSection />
-        <LoveProgress />
         <AboutSection />
         <GallerySection />
         <MemoriesSection />
@@ -113,7 +111,6 @@ import MusicPlayer from '../components/MusicPlayer.astro';
         
         import { db } from '../lib/firebase-config.js';
         import { doc, getDoc, updateDoc, setDoc, increment } from "firebase/firestore";
-        import { getLoveProgress, getMilestoneMessage, formatRelativeTime } from '../lib/firestore-service.js';
 
         // Track visit (session-based to avoid duplicate counting on refresh)
         async function trackVisit() {
@@ -519,232 +516,9 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             noteText.textContent = 'Setiap hari yang lewat tetap kita hitung, bukan karena takut lupa, tapi karena ini memang layak dirayakan pelan-pelan.';
         }
 
-        // Load Love Progress for landing page
-        async function loadLoveProgress() {
-            try {
-                const progress = await getLoveProgress();
-                const container = document.getElementById('love-progress-section');
-                
-                if (progress.isVisible === false) {
-                    if (container) container.classList.add('hidden');
-                    return;
-                } else {
-                    if (container) container.classList.remove('hidden');
-                }
-
-                const currentValue = progress.currentProgress || 0;
-                const milestone = getMilestoneMessage(currentValue);
-
-                const progressBar = document.getElementById('landing-progress-bar');
-                const progressIndicator = document.getElementById('landing-progress-indicator');
-                const progressValue = document.getElementById('landing-progress-value');
-                const progressDisplay = document.getElementById('progress-display');
-                const milestoneEmoji = document.getElementById('landing-milestone-emoji');
-                const milestoneText = document.getElementById('landing-milestone-text');
-                const lastUpdateEl = document.getElementById('landing-last-update');
-                const visitorCountEl = document.getElementById('visitor-count');
-
-                if (progressBar) {
-                    progressBar.style.width = `${currentValue}%`;
-                }
-                if (progressIndicator) {
-                    progressIndicator.style.left = `${currentValue}%`;
-                }
-                if (progressValue) {
-                    progressValue.textContent = currentValue;
-                }
-                if (progressDisplay) {
-                    progressDisplay.textContent = `${currentValue}%`;
-                }
-                if (milestoneEmoji) {
-                    milestoneEmoji.textContent = milestone.emoji;
-                }
-                if (milestoneText) {
-                    milestoneText.textContent = `"${milestone.message}"`;
-                }
-                if (lastUpdateEl && progress.lastUpdate) {
-                    lastUpdateEl.textContent = progress.lastUpdate.toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    });
-                }
-
-                // Load Sasuke's image for 0% marker
-                const sasukeDoc = await getDoc(doc(db, "landing", "sasukeImage"));
-                if (sasukeDoc.exists() && sasukeDoc.data().url) {
-                    const sasukeImg = document.querySelector('#love-progress-section img[alt="Sasuke"]');
-                    if (sasukeImg) {
-                        sasukeImg.src = sasukeDoc.data().url;
-                    }
-                }
-
-                // Load Rey's profile photo for the 100% side
-                const profileDoc = await getDoc(doc(db, "landing", "profileRey"));
-                if (profileDoc.exists()) {
-                    const reyPhoto = document.getElementById('landing-rey-photo');
-                    if (reyPhoto && profileDoc.data().photo) {
-                        reyPhoto.src = profileDoc.data().photo;
-                    }
-                }
-
-                // Display visitor count from stats
-                const statsDoc = await getDoc(doc(db, "landing", "stats"));
-                if (statsDoc.exists() && visitorCountEl) {
-                    visitorCountEl.textContent = statsDoc.data().totalVisits?.toLocaleString() || '0';
-                }
-
-                // Show confetti if 100%!
-                if (progress.currentProgress === 100) {
-                    celebrateReunion();
-                }
-
-                console.log('✅ Love progress loaded');
-            } catch (error) {
-                console.error('Love progress loading error:', error);
-            }
-        }
-
-        // Confetti celebration for 100%
-        function celebrateReunion() {
-            const container = document.getElementById('love-progress-section');
-            if (!container) return;
-
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.innerHTML = ['❤️', '💖', '💕', '✨', '🎉'][Math.floor(Math.random() * 5)];
-                    confetti.className = 'fixed pointer-events-none text-2xl z-50';
-                    confetti.style.left = `${Math.random() * 100}vw`;
-                    confetti.style.top = '-20px';
-                    confetti.style.animation = `confetti-fall ${2 + Math.random() * 2}s ease-out forwards`;
-                    document.body.appendChild(confetti);
-
-                    setTimeout(() => confetti.remove(), 4000);
-                }, i * 50);
-            }
-        }
-
-        // Share love progress
-        window.shareLoveProgress = async function () {
-            const progress = await getLoveProgress();
-            const text = `Perjalanan pulang kami: ${progress.currentProgress || 0}%\n\n❤️ Doakan kami ya...\n\n`;
-            const url = window.location.origin;
-
-            if (navigator.share) {
-                try {
-                    await navigator.share({ title: 'Perjalanan Pulang', text, url });
-                } catch (e) {
-                    console.log('Share cancelled');
-                }
-            } else {
-                const fullText = text + url;
-                await navigator.clipboard.writeText(fullText);
-                alert('Link berhasil disalin! 📋');
-            }
-        };
-
-        // Toggle history timeline
-        let historyLoaded = false;
-        window.toggleHistory = async function() {
-            const timeline = document.getElementById('historyTimeline');
-            const chevron = document.getElementById('historyChevron');
-            const isHidden = timeline.classList.contains('hidden');
-
-            if (isHidden) {
-                timeline.classList.remove('hidden');
-                chevron.style.transform = 'rotate(180deg)';
-                
-                if (!historyLoaded) {
-                    await loadHistoryTimeline();
-                    historyLoaded = true;
-                }
-            } else {
-                timeline.classList.add('hidden');
-                chevron.style.transform = 'rotate(0deg)';
-            }
-        };
-
-        // Load and render history timeline
-        async function loadHistoryTimeline() {
-            try {
-                const progress = await getLoveProgress();
-                const history = progress.history || [];
-                const historyList = document.getElementById('historyList');
-
-                if (history.length === 0) {
-                    historyList.innerHTML = `
-                        <div class="text-center py-8 text-slate-400 dark:text-slate-500">
-                            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2"></i>
-                            <p class="text-sm">No history yet</p>
-                        </div>
-                    `;
-                    lucide.createIcons();
-                    return;
-                }
-
-                // Sort by date descending (newest first)
-                const sortedHistory = [...history].sort((a, b) => {
-                    const dateA = a.date?.toDate ? a.date.toDate() : new Date(a.date);
-                    const dateB = b.date?.toDate ? b.date.toDate() : new Date(b.date);
-                    return dateB - dateA;
-                });
-
-                // Render timeline items
-                historyList.innerHTML = sortedHistory.map((item, index) => {
-                    const date = item.date?.toDate ? item.date.toDate() : new Date(item.date);
-                    const value = item.value || 0;
-                    const note = item.note || '';
-                    const isLast = index === sortedHistory.length - 1;
-
-                    return `
-                        <div class="flex gap-4 relative">
-                            ${!isLast ? '<div class="absolute left-5 top-12 w-0.5 h-full bg-gradient-to-b from-pink-300 to-transparent dark:from-pink-700"></div>' : ''}
-                            
-                            <div class="relative flex-shrink-0">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-pink-500/30 ring-4 ring-pink-100 dark:ring-pink-900/30">
-                                    ${value}%
-                                </div>
-                            </div>
-                            
-                            <div class="flex-1 pb-6">
-                                <div class="glass-card rounded-xl p-4 hover:shadow-lg transition-shadow">
-                                    <div class="flex items-start justify-between gap-4 mb-2">
-                                        <div>
-                                            <h4 class="font-semibold text-slate-800 dark:text-white">
-                                                Update to ${value}%
-                                            </h4>
-                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                                ${formatRelativeTime(date)}
-                                            </p>
-                                        </div>
-                                        ${value === 100 ? '<span class="text-2xl">🎉</span>' : value >= 75 ? '<span class="text-xl">💕</span>' : value >= 50 ? '<span class="text-xl">💗</span>' : value >= 25 ? '<span class="text-xl">💙</span>' : '<span class="text-xl">🤍</span>'}
-                                    </div>
-                                    ${note ? `<p class="text-sm text-slate-600 dark:text-slate-300 italic">"${note}"</p>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                lucide.createIcons();
-            } catch (error) {
-                console.error('Failed to load history:', error);
-                const historyList = document.getElementById('historyList');
-                historyList.innerHTML = `
-                    <div class="text-center py-8 text-red-400">
-                        <i data-lucide="alert-circle" class="w-8 h-8 mx-auto mb-2"></i>
-                        <p class="text-sm">Failed to load history</p>
-                    </div>
-                `;
-                lucide.createIcons();
-            }
-        }
-
         // Run on page load
         trackVisit();
         loadLandingData();
-        loadLoveProgress();
         loadPublicTimePreview();
         
         // Music control
