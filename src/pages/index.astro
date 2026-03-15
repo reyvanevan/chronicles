@@ -189,7 +189,8 @@ import MusicPlayer from '../components/MusicPlayer.astro';
 
         const FEATURE_VISIBILITY_FALLBACK = {
             public: {
-                progressPreview: true
+                progressPreview: true,
+                ourStoryProgressPreview: true
             }
         };
 
@@ -219,8 +220,13 @@ import MusicPlayer from '../components/MusicPlayer.astro';
                     if (el && value) el.textContent = value;
                 };
 
-                const configDoc = await getDoc(doc(db, 'config', 'site'));
+                const [configDoc, featureVisibilityDoc] = await Promise.all([
+                    getDoc(doc(db, 'config', 'site')),
+                    getDoc(doc(db, 'config', 'featureVisibility'))
+                ]);
                 const cfgRaw = configDoc.exists() ? configDoc.data() : {};
+                const visibilityRaw = featureVisibilityDoc.exists() ? featureVisibilityDoc.data() : {};
+                const showOurStoryPreview = (visibilityRaw?.public?.ourStoryProgressPreview ?? FEATURE_VISIBILITY_FALLBACK.public.ourStoryProgressPreview) !== false;
                 const siteConfig = {
                     startDate: cfgRaw.startDate || '',
                     letter: {
@@ -257,7 +263,7 @@ import MusicPlayer from '../components/MusicPlayer.astro';
                 }
                 if (letterQuoteDisplay) letterQuoteDisplay.textContent = `"${siteConfig.letter.defaultClosing}"`;
 
-                renderDaysTogetherPreview(siteConfig.startDate);
+                renderDaysTogetherPreview(siteConfig.startDate, showOurStoryPreview);
 
                 // Load Profile
                 const profileDoc = await getDoc(doc(db, "landing", "profile"));
@@ -456,7 +462,7 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             if (label) label.textContent = safeValue;
         }
 
-        function renderDaysTogetherPreview(startDateValue) {
+        function renderDaysTogetherPreview(startDateValue, isVisible = true) {
             const section = document.getElementById('days-together-section');
             const daysText = document.getElementById('landing-days-together');
             const noteText = document.getElementById('landing-days-together-note');
@@ -465,6 +471,11 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             const nextAnniversaryDateText = document.getElementById('landing-next-anniversary-date');
 
             if (!section || !daysText || !noteText || !sinceText || !nextAnniversaryText || !nextAnniversaryDateText) return;
+
+            if (!isVisible) {
+                section.classList.add('hidden');
+                return;
+            }
 
             if (!startDateValue) {
                 section.classList.add('hidden');
