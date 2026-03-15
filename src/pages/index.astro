@@ -57,16 +57,6 @@ import MusicPlayer from '../components/MusicPlayer.astro';
                             <div class="space-y-5">
                                 <div>
                                     <div class="mb-2 flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
-                                        <span>Life progress</span>
-                                        <span id="public-life-progress-value" class="font-semibold text-slate-900 dark:text-white">0%</span>
-                                    </div>
-                                    <div class="h-2 overflow-hidden rounded-full bg-slate-200/80 dark:bg-slate-800">
-                                        <div id="public-life-progress-bar" class="h-full rounded-full bg-gradient-to-r from-pink-500 to-rose-500" style="width: 0%"></div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="mb-2 flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
                                         <span>This year</span>
                                         <span id="public-year-progress-value" class="font-semibold text-slate-900 dark:text-white">0%</span>
                                     </div>
@@ -403,13 +393,9 @@ import MusicPlayer from '../components/MusicPlayer.astro';
         function renderPublicTimePreview(config) {
             const now = new Date();
             const birthDate = new Date(`${config.birthDate}T00:00:00`);
-            const endOfLife = new Date(birthDate);
-            endOfLife.setFullYear(endOfLife.getFullYear() + Number(config.lifeExpectancyYears || 80));
 
             const livedMs = Math.max(now.getTime() - birthDate.getTime(), 0);
-            const lifeSpanMs = Math.max(endOfLife.getTime() - birthDate.getTime(), 1);
             const ageYears = livedMs / (365.2425 * 24 * 60 * 60 * 1000);
-            const lifeProgress = (livedMs / lifeSpanMs) * 100;
 
             const lastBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
             const nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
@@ -427,8 +413,7 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             setPublicText('public-age-value', ageYears.toFixed(9));
             setPublicText('public-season-value', season);
             setPublicText('public-milestone-value', `H-${Math.max(daysToBirthday, 0)} to next birthday`);
-            setPublicText('public-preview-note', buildPublicPreviewNote(season, lifeProgress));
-            setPublicProgress('public-life-progress-bar', 'public-life-progress-value', lifeProgress);
+            setPublicText('public-preview-note', buildPublicPreviewNote(season, yearProgress, dayProgress));
             setPublicProgress('public-year-progress-bar', 'public-year-progress-value', yearProgress);
             setPublicProgress('public-day-progress-bar', 'public-day-progress-value', dayProgress);
         }
@@ -439,14 +424,14 @@ import MusicPlayer from '../components/MusicPlayer.astro';
             return matched?.label || 'Still unfolding';
         }
 
-        function buildPublicPreviewNote(season, lifeProgress) {
-            if (lifeProgress >= 70) {
-                return `Deep into ${season}, and still collecting beautiful reasons to stay soft.`;
+        function buildPublicPreviewNote(season, yearProgress, dayProgress) {
+            if (yearProgress >= 75) {
+                return `The year is almost complete, but ${season} still has room for one more good memory.`;
             }
-            if (lifeProgress >= 40) {
-                return `Somewhere inside ${season}, with enough room left for wonder, repair, and warmth.`;
+            if (dayProgress >= 75) {
+                return `Late in the day, still choosing gentle moments inside ${season}.`;
             }
-            return `Still early in ${season}, where almost everything meaningful is quietly taking shape.`;
+            return `Another page of ${season}, unfolding quietly in its own time.`;
         }
 
         function setPublicText(id, value) {
